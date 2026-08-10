@@ -1,0 +1,16 @@
+# Systeme
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editeurs
+.idea/
+*.swp
+
+# Dependances (si un build est ajoute plus tard)
+node_modules/
+dist/
+
+# Fichiers lourds temporaires
+*.zip
+*.rar

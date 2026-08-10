@@ -1,0 +1,21 @@
+{
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "html.format.wrapLineLength": 0,
+  "emmet.includeLanguages": { "html": "html" },
+  "search.exclude": {
+    "**/media/**": true,
+    "**/pdfs/**": true
+  },
+  "files.associations": {
+    "*.json": "jsonc"
+  }
+}

@@ -1,0 +1,22 @@
+# --- FITUT : redirections des pages supprimées lors de la refonte ---
+RewriteEngine On
+
+Redirect 301 /palmares.html      /nos-editions.html
+Redirect 301 /hommages.html      /nos-editions.html
+Redirect 301 /espace-presse.html /index.html
+
+# --- Performance : compression et cache ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg        "access plus 1 year"
+  ExpiresByType image/png         "access plus 1 year"
+  ExpiresByType image/webp        "access plus 1 year"
+  ExpiresByType image/svg+xml     "access plus 1 year"
+  ExpiresByType text/css          "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/json  "access plus 1 day"
+</IfModule>
