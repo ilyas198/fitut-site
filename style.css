@@ -2232,49 +2232,36 @@ button:focus-visible {
 }
 .skip-link:focus { left: 0; }
 
-/* ---- HERO ---- */
+/* ---- HERO : panneau de texte fixe + bande de visuels en défilement vertical ---- */
 .hero {
   position: relative;
-  min-height: 100svh;
-  min-height: 100vh;
+  height: 100svh;
+  height: 100vh;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;      /* mobile : texte au-dessus, visuel en dessous */
   overflow: hidden;
   background: var(--charcoal);
 }
-@media (max-width: 767px) {
-  .hero { min-height: 88svh; }
+@media (min-width: 1024px) {
+  .hero { flex-direction: row; }   /* desktop : texte à gauche, visuel à droite */
 }
 
-.hero-media { position: absolute; inset: 0; }
-.hero-slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 1.4s ease, transform 8s ease-out;
-  will-change: opacity, transform;
-}
-.hero-slide.is-active { opacity: 1; transform: scale(1); }
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to top, rgba(18,18,18,0.92) 0%, rgba(18,18,18,0.55) 45%, rgba(18,18,18,0.35) 100%);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding-top: calc(var(--nav-h) + 4rem);
-  padding-bottom: 5.5rem;
+/* -- Panneau de texte -- */
+.hero-text {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--nav-h) + 3rem) clamp(1.25rem, 5vw, 2rem) 1.75rem;
   color: var(--cream);
 }
-@media (min-width: 768px) { .hero-content { padding-bottom: 7rem; } }
+@media (min-width: 1024px) {
+  .hero-text {
+    flex: 0 0 42%;
+    height: 100%;
+    padding: calc(var(--nav-h) + 4rem) clamp(2rem, 4vw, 3.5rem) 3rem clamp(1.5rem, 4vw, 3.5rem);
+  }
+}
 
 .hero-kicker {
   font-size: 0.7rem;
@@ -2282,31 +2269,34 @@ button:focus-visible {
   text-transform: uppercase;
   color: var(--gold-light);
   font-weight: 500;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
 }
 .hero-title {
-  font-size: clamp(2.3rem, 8vw, 5.5rem);
+  font-size: clamp(1.75rem, 6.5vw, 3.4rem);
   font-weight: 300;
-  line-height: 1.08;
+  line-height: 1.1;
   color: #fff;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
+}
+@media (min-width: 1024px) {
+  .hero-title { font-size: clamp(2.1rem, 3.2vw, 3.4rem); }
 }
 .hero-dates {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.15rem, 3.5vw, 1.8rem);
+  font-size: clamp(1.05rem, 3.5vw, 1.5rem);
   font-style: italic;
   color: var(--gold-light);
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
 }
 .hero-lead {
-  max-width: 560px;
-  font-size: 0.95rem;
-  line-height: 1.85;
+  max-width: 480px;
+  font-size: 0.88rem;
+  line-height: 1.75;
   color: rgba(247, 243, 236, 0.82);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
 .btn {
   display: inline-block;
@@ -2329,31 +2319,110 @@ button:focus-visible {
   .btn { text-align: center; }
 }
 
+/* -- Bande de visuels : plusieurs images empilées, translation verticale franche -- */
+.hero-visual {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 200px;
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .hero-visual { flex: 1 1 58%; height: 100%; min-height: 0; }
+}
+
+.hero-visual-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+/* Position de repli avant l'exécution de main.js : évite tout flash au chargement. */
+.hero-visual-slide:nth-child(1) { transform: translateY(0%); }
+.hero-visual-slide:nth-child(2) { transform: translateY(100%); }
+.hero-visual-slide:nth-child(3) { transform: translateY(200%); }
+.hero-visual-slide:nth-child(n+4) { transform: translateY(300%); }
+.hero-visual-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-visual::after {         /* voile discret en bas, pour la lisibilité des puces/flèches */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18,18,18,0.45) 0%, rgba(18,18,18,0) 30%);
+  pointer-events: none;
+}
+
+/* -- Flèches précédent/suivant -- */
+.hero-visual-controls {
+  position: absolute;
+  right: clamp(0.75rem, 2.5vw, 1.5rem);
+  bottom: 4.5rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.hero-arrow {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(247, 243, 236, 0.35);
+  border-radius: 50%;
+  background: rgba(18, 18, 18, 0.32);
+  color: var(--cream);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: background var(--transition), border-color var(--transition);
+}
+.hero-arrow svg { width: 18px; height: 18px; }
+.hero-arrow:hover { background: rgba(18, 18, 18, 0.55); border-color: var(--gold-light); }
+@media (hover: none) {
+  .hero-arrow:hover { background: rgba(18, 18, 18, 0.32); border-color: rgba(247, 243, 236, 0.35); }
+}
+
+/* -- Puces de progression : minuteur, comme un diaporama qui s'annonce -- */
 .hero-progress {
   position: absolute;
-  bottom: 1.75rem;
   left: 0; right: 0;
+  bottom: 1.5rem;
   z-index: 3;
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 .hero-dot {
-  width: 42px;
+  width: 34px;
   height: 3px;
   padding: 0;
   border: none;
   background: rgba(247, 243, 236, 0.3);
   cursor: pointer;
-  transition: background var(--transition);
   position: relative;
+  overflow: hidden;
 }
 .hero-dot::before {           /* zone de clic élargie pour le tactile */
   content: '';
   position: absolute;
   inset: -14px -4px;
 }
-.hero-dot.is-active { background: var(--gold-light); }
+.hero-dot-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--gold-light);
+}
+.hero-dot-fill.is-filling { transition: width linear; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual-slide { transition-duration: 0.01s !important; }
+  .hero-dot-fill.is-filling { transition: none !important; }
+}
 
 /* ---- COMPTE À REBOURS ---- */
 .countdown-section {
