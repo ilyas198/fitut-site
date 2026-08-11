@@ -1,10 +1,21 @@
 /* =========================================
-   FITUT — Global Stylesheet
-   Aesthetic: Editorial Theatre — warm cream,
-   deep charcoal, gold accent. Cormorant + Montserrat.
+   FITUT — Feuille de style globale
+
+   REFONTE EN COURS (voir .claude/skills/fitut-design/SKILL.md — source de
+   vérité de toute décision visuelle). Deux systèmes de tokens coexistent
+   le temps de la migration, lot par lot :
+
+   - Ancien système (crème / charbon / or, Cormorant + Montserrat) :
+     encore utilisé par les 6 pages actuelles. Conservé tel quel pour que
+     le site reste affichable pendant la refonte. À retirer une fois
+     toutes les pages migrées.
+   - Nouveau système « la salle et la scène » : posé ici en fondation
+     (LOT 1). Aucune page ne le consomme encore — il prend le relais
+     page par page dans les lots suivants.
    ========================================= */
 
 :root {
+  /* ---------- ANCIEN SYSTÈME (conservé le temps de la refonte) ---------- */
   --cream: #f7f3ec;
   --charcoal: #1c1c1c;
   --gold: #b8922a;
@@ -13,6 +24,88 @@
   --line: rgba(28,28,28,0.12);
   --nav-h: 60px;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ==========================================================
+     NOUVEAU SYSTÈME — « la salle et la scène »
+     fitut-design SKILL.md : axes verrouillés, ne pas modifier
+     sans revalider la skill (§0 — axes verrouillés / axes libres).
+     ========================================================== */
+
+  /* ---------- Couleurs (§10) ---------- */
+  /* La salle — fond noir, on regarde */
+  --noir-salle:     #0B0E12;
+  --noir-coulisse:  #151A20;
+
+  /* La scène — fond chaux, on lit */
+  --chaux:          #EDEBE4;
+  --chaux-profond:  #DFDCD2;
+
+  /* L'encre — texte sur fond clair */
+  --encre:          #14181D;
+  --encre-tiers:    #5D666F;
+
+  /* Les signaux */
+  --bleu-detroit:   #16407F;   /* seule couleur interactive : liens, focus, accent */
+  --rouge-officiel: #C1272D;   /* rare : Haut Patronage, Grand Prix, état "en cours" */
+
+  /* Filets — séparateur autorisé, jamais d'ombre */
+  --filet-clair:    rgba(20, 24, 29, 0.14);    /* sur fond --chaux */
+  --filet-sombre:   rgba(237, 235, 228, 0.16); /* sur fond --noir-salle */
+
+  /* ---------- Typographie — familles (§9) ---------- */
+  --police-affiche: 'Archivo', system-ui, sans-serif;
+  --police-revue:   'Newsreader', Georgia, serif;
+  --police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
+  --police-arabe:   'IBM Plex Sans Arabic', 'Noto Naskh Arabic', serif;
+
+  /* ---------- Typographie — échelle, ratio 1,333 (quarte juste) (§9) ---------- */
+  --pas-xs:   0.750rem;   /* surtitres, crédits */
+  --pas-s:    0.875rem;   /* métadonnées */
+  --pas-base: 1rem;       /* texte courant */
+  --pas-m:    1.333rem;   /* chapeaux */
+  --pas-l:    1.777rem;   /* titres de section */
+  --pas-xl:   2.369rem;   /* titres de page */
+  --pas-2xl:  clamp(3rem, 9vw, 6.313rem);    /* affiche */
+  --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
+
+  /* ---------- Grilles — largeurs de contenu par registre (§11) ---------- */
+  --largeur-revue:   680px;   /* lecture longue */
+  --largeur-archive: 1040px;  /* listes, tableaux, programme */
+  --largeur-affiche: 100%;    /* pleine largeur, sans marge */
+  --marge-regie-tablette: 88px;
+  --marge-regie-desktop:  140px;
+
+  /* ---------- Espacements — base 8, sauts francs (§12) ---------- */
+  --esp-1: 8px;
+  --esp-2: 16px;
+  --esp-3: 24px;
+  --esp-4: 40px;
+  --esp-5: 64px;
+  --esp-6: 96px;
+  --esp-7: 144px;   /* entre sections */
+  --esp-8: 216px;   /* bascule salle ↔ scène */
+
+  /* ---------- Mouvement — durées et courbes (§34) ---------- */
+  --duree-ui:      200ms;   /* survol, focus, ouverture de menu */
+  --duree-contenu: 400ms;   /* apparition au défilement, opacité seule */
+  --duree-hero:   1200ms;   /* lever de rideau, une seule fois */
+
+  --courbe-sortie: cubic-bezier(0.22, 1, 0.36, 1);   /* apparitions */
+  --courbe-entree: cubic-bezier(0.65, 0, 0.35, 1);   /* disparitions */
+}
+
+/* ==========================================================
+   Respect de prefers-reduced-motion (§31, §34) — posé ici en
+   fondation : le lever de rideau devient une apparition instantanée,
+   les apparitions au défilement perdent leur transition. S'applique
+   dès qu'un composant utilise --duree-* / --courbe-* ci-dessus.
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duree-ui: 0ms;
+    --duree-contenu: 0ms;
+    --duree-hero: 0ms;
+  }
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
