@@ -6,6 +6,22 @@ organisé par l'Association de l'Action Universitaire (ASAU).
 Ce fichier est le point d'entrée : lis-le avant toute modification.
 Voir aussi @README.md pour la documentation destinée aux humains.
 
+> ### ⚠️ Hiérarchie des skills
+> `fitut-design` = **source de vérité** (identité, direction artistique, couleurs,
+> typographie, images, mouvement, composants, anti-patterns).
+> `frontend-design` = **source de méthode** (processus, exploration de composition,
+> architecture des composants, qualité d'exécution).
+> Ordre : `fitut-design` → direction arrêtée → `frontend-design` → architecture →
+> implémentation → contrôle avant livraison.
+> **En cas de conflit, `fitut-design` l'emporte toujours.** Voir sa section 0.
+>
+> ### ⚠️ Toute décision visuelle passe par la skill `fitut-design`
+> Avant de créer ou de modifier une page, un composant, une couleur, une police, un
+> espacement, une grille, un traitement d'image ou une animation : consulter
+> **`.claude/skills/fitut-design/SKILL.md`**. Elle fait autorité et l'emporte sur les
+> réflexes par défaut. La section **DO NOT** et le **contrôle avant livraison** sont
+> à respecter systématiquement.
+
 ---
 
 ## 1. Nature du projet
