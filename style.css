@@ -316,7 +316,11 @@ section { padding: 6rem 0; }
   }
 }
 
-/* ---- FIXED BANNER ---- */
+/* ---- FIXED BANNER ----
+   --banner-h : hauteur réelle du bandeau à chaque palier, calculée
+   (padding*2 + line-height héritée de body{line-height:1.7} + bordure
+   1px), pas devinée — sert au calcul de hauteur du hero (LOT 4). */
+:root { --banner-h: 50px; }
 .fixed-banner {
   position: fixed;
   top: var(--nav-h);
@@ -336,6 +340,7 @@ section { padding: 6rem 0; }
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 @media (max-width: 768px) {
+  :root { --banner-h: 41px; }
   .fixed-banner {
     padding: 0.6rem 0.75rem;
     font-size: 0.75rem;
@@ -343,6 +348,7 @@ section { padding: 6rem 0; }
   }
 }
 @media (max-width: 480px) {
+  :root { --banner-h: 35px; }
   .fixed-banner {
     padding: 0.5rem 0.5rem;
     font-size: 0.65rem;
@@ -1453,14 +1459,18 @@ button:focus-visible {
    HERO (LOT 4 phase A) — « l'affiche et la distribution », fitut-design
    §16. Système nouveau exclusivement. Remplace intégralement l'ancien
    hero-slider (panneau fixe + bande de visuels) : plus de diaporama,
-   plus de main.js dédié. Le bandeau Haut Patronage (.fixed-banner,
-   ancien système) reste au-dessus, en position fixe — le hero compense
-   sa hauteur par un padding-top.
+   plus de main.js dédié.
+
+   Hauteur exacte de la fenêtre, sans scroll : le hero commence juste
+   sous la navbar + le bandeau Haut Patronage (margin-top) et occupe
+   très exactement le reste du viewport (height, pas min-height) —
+   les deux se compensent pour totaliser 100svh pile. svh plutôt que vh
+   pour éviter le saut causé par la barre d'adresse mobile.
    ========================================================== */
 .hero {
   position: relative;
-  min-height: 100svh;
-  min-height: 100vh;
+  margin-top: calc(var(--nav-h) + var(--banner-h));
+  height: calc(100svh - var(--nav-h) - var(--banner-h));
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -1469,9 +1479,10 @@ button:focus-visible {
 .hero-grille {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--esp-4);
+  gap: var(--esp-2);
   width: 100%;
-  padding: calc(var(--nav-h) + 4.5rem) var(--esp-2) var(--esp-4);
+  max-height: 100%;
+  padding: var(--esp-2);
 }
 .hero-grille > .marge-regie,
 .hero-grille > .hero-affiche,
@@ -1480,7 +1491,8 @@ button:focus-visible {
 @media (min-width: 600px) {
   .hero-grille {
     grid-template-columns: var(--marge-regie-tablette) 1fr;
-    padding: calc(var(--nav-h) + 4.5rem) var(--esp-3) var(--esp-5);
+    gap: var(--esp-3);
+    padding: var(--esp-3);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-affiche { grid-column: 2; grid-row: 1; }
@@ -1488,9 +1500,13 @@ button:focus-visible {
 }
 @media (min-width: 1024px) {
   .hero-grille {
-    grid-template-columns: var(--marge-regie-desktop) minmax(0, 1fr) minmax(300px, 440px);
+    /* Affiche ~1/3 de la largeur de contenu (colonnes 2+3 combinées) :
+       2fr / (2fr+1fr) = 1/3. Le titre cède de l'échelle avant l'affiche
+       en cas de conflit, jamais l'inverse. */
+    grid-template-columns: var(--marge-regie-desktop) minmax(0, 2fr) minmax(240px, 1fr);
     align-items: center;
-    padding: calc(var(--nav-h) + 4.5rem) var(--esp-4) var(--esp-5);
+    gap: var(--esp-4);
+    padding: var(--esp-4);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
@@ -1512,6 +1528,19 @@ button:focus-visible {
 .hero-titre [lang="fr"] { font-size: var(--pas-3xl); }
 .hero-titre [lang="ar"] { font-size: var(--pas-2xl); } /* pas immédiatement inférieur, §9 */
 
+/* Palier le plus contraint (téléphone court, ex. 375×640) : --pas-3xl a
+   un plancher de 4rem qui ne descend jamais, quelle que soit la hauteur
+   disponible. Réduit explicitement le titre et resserre la distribution
+   ici plutôt que de laisser le contenu déborder de .hero (overflow:hidden)
+   ou de faire défiler la section — voir le calcul dans le message du
+   commit : le titre et l'affiche compressés ne suffisent pas seuls,
+   point à trancher avec l'utilisateur. */
+@media (max-width: 599px) {
+  .hero-titre [lang="fr"] { font-size: clamp(1.75rem, 9vw, 2.5rem); }
+  .hero-titre [lang="ar"] { font-size: clamp(1.375rem, 7vw, 1.777rem); }
+  .hero-distribution .distribution-ligne { padding: var(--esp-1) 0; gap: 0; }
+}
+
 .hero-distribution { max-width: var(--largeur-archive); }
 
 .hero-actions {
@@ -1532,6 +1561,9 @@ button:focus-visible {
 
 .hero-affiche-cadre {
   aspect-ratio: 3 / 4;
+  width: auto;
+  max-height: 22svh; /* hauteur plafonnée plutôt que largeur fixe — .hero a une hauteur stricte */
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1541,6 +1573,14 @@ button:focus-visible {
   color: var(--papier-tiers);
   text-align: center;
   padding: var(--esp-2);
+}
+@media (min-width: 600px) {
+  .hero-affiche-cadre { max-height: 38svh; }
+}
+@media (min-width: 1024px) {
+  /* La largeur (1/3 de la grille, ci-dessus) pilote la taille ; ce plafond
+     n'est qu'un filet de sécurité sur les fenêtres très hautes et étroites. */
+  .hero-affiche-cadre { width: 100%; max-height: 70svh; margin: 0; }
 }
 
 /* ---- COMPTE À REBOURS ---- */
