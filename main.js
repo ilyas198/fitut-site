@@ -187,14 +187,6 @@
   piste.setAttribute('aria-hidden', 'false');
 })();
 
-// Navbar scroll shadow
-const navbar = document.getElementById('navbar');
-if (navbar) {
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-  });
-}
-
 // Burger menu (breakpoint aligné sur style.css @media max-width: 1100px)
 const NAV_MOBILE_MQ = window.matchMedia('(max-width: 1100px)');
 
