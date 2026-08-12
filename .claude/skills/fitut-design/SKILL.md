@@ -288,11 +288,13 @@ Display, Raleway. Ne jamais introduire une police hors de ce tableau sans valida
 
   /* L'encre */
   --encre:          #14181D;
-  --encre-tiers:    #5D666F;
+  --encre-tiers:    #5D666F;      /* réservé aux surtitres/crédits, voir §31 */
+  --encre-tiers-aa: #434B52;      /* texte secondaire courant, AAA garanti */
 
   /* Les signaux */
-  --bleu-detroit:   #16407F;
-  --rouge-officiel: #C1272D;
+  --bleu-detroit:   #16407F;      /* accent interactif — registre scène uniquement */
+  --rouge-officiel: #C1272D;      /* Haut Patronage, Grand Prix — registre scène */
+  --rouge-salle:    #E8695E;      /* signal rouge lisible — registre salle uniquement */
 
   /* Filets */
   --filet-clair:    rgba(20, 24, 29, 0.14);
@@ -300,17 +302,37 @@ Display, Raleway. Ne jamais introduire une police hors de ce tableau sans valida
 }
 ```
 
+**La couleur interactive dépend du registre — « le noir précède la lumière ».**
+Le bleu appartient à la scène (on lit, l'encre existe) ; sur la salle (on regarde,
+le noir précède), l'état interactif n'est pas une teinte mais un **éclaircissement** :
+
+| Registre | État repos | État survol/actif | Focus |
+|---|---|---|---|
+| **Scène** (fond `--chaux`) | `color: inherit` | `color`/`border-color: var(--bleu-detroit)` | `outline: 2px solid var(--bleu-detroit)` |
+| **Salle** (fond `--noir-salle`/`--noir-coulisse`) | `color: var(--chaux)` à l'opacité réduite ou `border-color: var(--filet-sombre)` | le texte passe à `--chaux` plein, le filet passe de `--filet-sombre` à `--chaux` | `outline: 2px solid var(--chaux)` |
+
+`--bleu-detroit` ne s'applique **jamais** sur un fond `--noir-salle` ou `--noir-coulisse`
+(1,91:1 — échoue même le seuil UI 3:1, voir §31). C'est un axe verrouillé au même titre
+que la palette elle-même : ne pas réintroduire de bleu en registre salle sans revalider
+cette section.
+
 **Règles d'emploi**
-- `--bleu-detroit` : liens, focus, accent principal. C'est la seule couleur interactive.
-- `--rouge-officiel` : **rare**. Réservé au Haut Patronage, au Grand Prix, à l'état
-  « en cours ». Jamais en fond, jamais sur une grande surface.
+- `--bleu-detroit` : liens, focus, accent principal — **registre scène uniquement**.
+- `--rouge-officiel` : **rare**, registre scène. Réservé au Haut Patronage, au Grand Prix,
+  à l'état « en cours ». Jamais en fond, jamais sur une grande surface.
+- `--rouge-salle` : équivalent de `--rouge-officiel` quand un signal rouge est requis en
+  registre salle (ex. état « en cours » sur une entrée de programme). Mêmes usages rares,
+  jamais en fond.
+- `--encre-tiers` : réservé aux surtitres et crédits (texte large ou non essentiel, AA
+  suffisant). **Interdit pour du texte courant** — utiliser `--encre-tiers-aa` (AAA).
 - **Toute couleur passe par une variable.** Aucune valeur hexadécimale en dur dans les
   règles CSS ni dans un attribut `style`.
 - Aucune information n'est portée par la couleur seule : le rouge est toujours doublé
   d'un libellé.
 
 **Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs
-d'accent multiples dans un même écran, transparences empilées (glassmorphism).
+d'accent multiples dans un même écran, transparences empilées (glassmorphism), bleu
+interactif sur fond salle.
 
 ## 11. Grilles
 
@@ -429,17 +451,29 @@ Aucun n'utilise d'arrondi, d'ombre ni de fond coloré.
 | `.bouton` | les deux | rectangle, hauteur min 48 px, padding `--esp-2` / `--esp-4` | mono caps `--pas-s`, `0.12em` |
 | `.fiche-adresse` | scène | nom, adresse, capacité, plan statique — en liste de définition | nom en revue, données en mono |
 
-**États d'interaction — identiques pour tous les composants cliquables :**
+**États d'interaction — la structure est identique pour tous les composants
+cliquables, la couleur dépend du registre (§10 : « la couleur interactive dépend
+du registre ») :**
 
 ```css
+/* Registre scène (fond --chaux) */
 /* repos    */ color: inherit; border-color: var(--filet-clair);
 /* survol   */ border-color: var(--bleu-detroit); color: var(--bleu-detroit);
 /* focus    */ outline: 2px solid var(--bleu-detroit); outline-offset: 3px;
 /* actif    */ opacity: 0.7;
 /* désactivé*/ opacity: 0.4; cursor: not-allowed;
+
+/* Registre salle (fond --noir-salle / --noir-coulisse) */
+/* repos    */ color: var(--chaux); border-color: var(--filet-sombre);
+/* survol   */ border-color: var(--chaux); color: var(--chaux);
+/* focus    */ outline: 2px solid var(--chaux); outline-offset: 3px;
+/* actif    */ opacity: 0.7;
+/* désactivé*/ opacity: 0.4; cursor: not-allowed;
 ```
 
-Aucun état n'utilise `transform`, `box-shadow` ni changement de fond.
+Aucun état n'utilise `transform`, `box-shadow` ni changement de fond. `--bleu-detroit`
+ne doit jamais apparaître dans la variante salle : voir §10 et §31 pour la raison
+(1,91:1, échoue le seuil de contraste UI).
 
 ### Exemple — la distribution
 
@@ -652,9 +686,20 @@ quasi exclusivement mobile pendant les cinq jours du festival.
 
 ## 31. Accessibilité
 
-- **Contrastes AAA** sur l'ensemble de la palette. Vérifier tout nouveau couple.
+- **Contrastes vérifiés par calcul** (formule WCAG, pas à l'estime) :
+  - **AAA (7:1) pour le texte courant** — `--encre`/`--chaux` (14,94:1), `--encre`/
+    `--chaux-profond` (12,99:1), `--chaux`/`--noir-salle` (16,21:1), `--chaux`/
+    `--noir-coulisse` (14,66:1), `--bleu-detroit`/`--chaux` (8,49:1), `--encre-tiers-aa`/
+    `--chaux` (7,4:1)
+  - **AA large / signaux non essentiels (3:1 à 4,5:1)** — `--encre-tiers`/`--chaux`
+    (4,90:1, surtitres/crédits uniquement), `--rouge-officiel`/`--chaux` (4,90:1),
+    `--rouge-salle`/`--noir-salle` (6,09:1, AAA en fait), `--rouge-salle`/`--noir-coulisse`
+    (5,51:1)
+  - **Interdit** : `--bleu-detroit` sur `--noir-salle`/`--noir-coulisse` (1,91:1, échoue
+    même le seuil UI 3:1) — voir §10, la couleur interactive dépend du registre
 - `lang` et `dir` corrects sur tout contenu non français, police adaptée
-- Focus visible : `--bleu-detroit`, 2 px, décalage 3 px, jamais supprimé
+- Focus visible, **2 px, décalage 3 px, jamais supprimé** — `--bleu-detroit` en registre
+  scène, `--chaux` en registre salle (voir §10)
 - Hiérarchie de titres stricte, **un seul `h1` par page**
 - `prefers-reduced-motion` : le lever de rideau devient une apparition instantanée
 - Filtres utilisables au clavier, changements annoncés en `aria-live`

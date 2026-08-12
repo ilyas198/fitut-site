@@ -182,3 +182,18 @@ Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements 
 - Remplacement des images hotlinkées par les fichiers locaux
 - Nettoyage des styles en ligne restants dans les anciennes pages
 - Favicon et images Open Graph (`media/og/`)
+
+---
+
+## 9. Dette technique — refonte « la salle et la scène »
+
+Suivi des écarts assumés temporairement pendant la refonte pilotée par
+`.claude/skills/fitut-design/SKILL.md` (voir aussi `.claude/skills/frontend-design/SKILL.md`).
+
+- **Polices en CDN, pas encore auto-hébergées.** `fitut-design` §32 exige des `.woff2`
+  auto-hébergés. Le temps du développement, les 4 familles (`Archivo` variable,
+  `Newsreader`, `IBM Plex Mono`, `IBM Plex Sans Arabic`) sont chargées via Google Fonts :
+  `preconnect` vers `fonts.googleapis.com` et `fonts.gstatic.com`, un seul lien
+  regroupant les 4 familles, `display=swap`, sous-ensembles latin + arabic uniquement.
+  Ajouté au `<head>` de chaque page au moment de sa migration vers le nouveau système.
+  **À solder au LOT 8** : bascule vers des `.woff2` auto-hébergés dans `assets/fonts/`.

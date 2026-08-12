@@ -42,11 +42,15 @@
 
   /* L'encre — texte sur fond clair */
   --encre:          #14181D;
-  --encre-tiers:    #5D666F;
+  --encre-tiers:    #5D666F;   /* AA 4,90:1 sur --chaux — réservé aux surtitres/crédits */
+  --encre-tiers-aa: #434B52;   /* AAA 7,44:1 sur --chaux — texte secondaire courant */
 
-  /* Les signaux */
-  --bleu-detroit:   #16407F;   /* seule couleur interactive : liens, focus, accent */
-  --rouge-officiel: #C1272D;   /* rare : Haut Patronage, Grand Prix, état "en cours" */
+  /* Les signaux — la couleur interactive dépend du registre (fitut-design §10) :
+     bleu = scène (on lit), éclaircissement vers --chaux = salle (on regarde).
+     --bleu-detroit ne s'applique JAMAIS sur --noir-salle/--noir-coulisse (1,91:1). */
+  --bleu-detroit:   #16407F;   /* accent interactif — registre scène uniquement */
+  --rouge-officiel: #C1272D;   /* rare : Haut Patronage, Grand Prix — registre scène */
+  --rouge-salle:    #E8695E;   /* rare : équivalent rouge — registre salle uniquement */
 
   /* Filets — séparateur autorisé, jamais d'ombre */
   --filet-clair:    rgba(20, 24, 29, 0.14);    /* sur fond --chaux */
