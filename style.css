@@ -52,6 +52,10 @@
   --texte:          #1A1420;  /* 16,04:1 sur --papier */
   --texte-tiers:    #584A4E;  /* 7,46:1 sur --papier — surtitres, crédits, métadonnées */
 
+  /* Texte secondaire sur fond sombre — seul moyen d'obtenir une hiérarchie
+     de texte en registre encre/rideau, opacity étant interdit sur du texte */
+  --papier-tiers:   #C9BDB4;  /* 9,99:1 sur --encre-nuit, 7,29:1 sur --rideau */
+
   /* Filets — séparateur autorisé, jamais d'ombre */
   --filet-sombre:   rgba(246, 241, 234, 0.16); /* sur fond --encre-nuit/--rideau */
   --filet-clair:    rgba(26, 20, 32, 0.14);    /* sur fond --papier */
@@ -2020,6 +2024,7 @@ button:focus-visible {
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   letter-spacing: 0.05em;
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit — .entree-programme est registre encre uniquement */
 }
 .entree-programme-meta span + span::before { content: ' \00b7 '; }
 a.entree-programme-lien { display: block; }
@@ -2067,6 +2072,20 @@ a.entree-programme-lien { display: block; }
   text-transform: uppercase;
 }
 .registre-papier .citation cite { color: var(--texte-tiers); } /* 7,46:1, AAA */
+.registre-encre .citation cite,
+.registre-rideau .citation cite { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
+
+/* ---- Crédit photographique (§13) — pas un des 8 composants, mais un
+   texte secondaire sous toute image, même logique de hiérarchie. ---- */
+.credit-photo {
+  display: block;
+  margin-top: var(--esp-1);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  color: var(--texte-tiers); /* défaut : registre papier, 7,46:1 */
+}
+.registre-encre .credit-photo,
+.registre-rideau .credit-photo { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
 
 /* ---- 6. .filet-section (§15) — les deux registres ---- */
 .filet-section {

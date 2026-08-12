@@ -46,10 +46,9 @@
       font-family: var(--police-donnees);
       font-size: var(--pas-xs);
     }
-    .registre-papier .demo-etat-label { color: var(--texte-tiers); } /* 7,46:1, AAA — token existant */
-    /* Pas d'équivalent "tiers" pour encre/rideau (voir bilan) et jamais
-       d'opacity sur du texte (§10, §31) : demo-etat-label y hérite de la
-       couleur pleine du registre, la hiérarchie vient de --pas-xs seul. */
+    .registre-papier .demo-etat-label { color: var(--texte-tiers); } /* 7,46:1, AAA */
+    .registre-encre .demo-etat-label,
+    .registre-rideau .demo-etat-label { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
     .demo-piece { display: flex; flex-direction: column; gap: var(--esp-1); }
     /* .skip-link vient de l'ancien système (--charcoal/--cream) : réaligné
        ici sur les tokens de cette page, pas dans style.css. */
@@ -144,6 +143,9 @@
                 de Tanger, organisée par l'Association de l'Action Universitaire (ASAU).</p>
             </div>
           </div>
+          <p class="demo-etat-label">.credit-photo (§13, --papier-tiers en registre sombre) est posé
+            dans style.css mais pas démontré ici : aucune image ni crédit photographique réel dans
+            les données actuelles pour l'illustrer sans en inventer un.</p>
         </div>
 
         <hr class="filet-section">
@@ -247,6 +249,21 @@
         <div class="demo-bloc">
           <h2 class="demo-titre-composant">1. .surtitre — registre papier</h2>
           <p class="surtitre">Chiffres 2025 — 9 pays · 12 spectacles · 130 festivaliers</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">5. .citation — même citation qu'en registre rideau, pour comparer la hiérarchie</h2>
+          <blockquote class="citation">
+            <p>Créée en 2005 par Tahar Elqour en compagnie des jeunes étudiants de l'École
+              Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action
+              Universitaire est chérie pour sa diversification culturelle et artistique
+              mais surtout par sa jeunesse qui la porte.</p>
+            <cite>qui-sommes-nous.html, ASAU</cite>
+          </blockquote>
+          <p class="demo-etat-label">Attribution en --texte-tiers (7,46:1) ici, en --papier-tiers
+            (7,29:1) en registre rideau plus haut — même rôle, deux tokens.</p>
         </div>
 
         <hr class="filet-section">
