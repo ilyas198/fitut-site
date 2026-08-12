@@ -9,9 +9,11 @@
      encore utilisé par les 6 pages actuelles. Conservé tel quel pour que
      le site reste affichable pendant la refonte. À retirer une fois
      toutes les pages migrées.
-   - Nouveau système « la salle et la scène » : posé ici en fondation
-     (LOT 1). Aucune page ne le consomme encore — il prend le relais
-     page par page dans les lots suivants.
+   - Nouveau système à trois registres (encre / rideau / papier), palette
+     dérivée du logo officiel : posé ici en fondation. Remplace
+     intégralement la version « la salle et la scène » du LOT 1 suite à
+     la révision de la skill — aucun code n'utilisait encore ces tokens
+     hors composants.html (LOT 3), reconstruit au même mouvement.
    ========================================= */
 
 :root {
@@ -26,41 +28,39 @@
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ==========================================================
-     NOUVEAU SYSTÈME — « la salle et la scène »
+     NOUVEAU SYSTÈME — trois registres, palette du logo officiel
      fitut-design SKILL.md : axes verrouillés, ne pas modifier
      sans revalider la skill (§0 — axes verrouillés / axes libres).
      ========================================================== */
 
-  /* ---------- Couleurs (§10) ---------- */
-  /* La salle — fond noir, on regarde */
-  --noir-salle:     #0B0E12;
-  --noir-coulisse:  #151A20;
+  /* ---------- Couleurs (§10) — dérivées du logo officiel ---------- */
+  /* Primaire : l'encre — base majoritaire, on regarde */
+  --encre-nuit:     #0A1428;
+  --encre-coulisse: #101C33;  /* surfaces secondaires sur fond sombre */
 
-  /* La scène — fond chaux, on lit */
-  --chaux:          #EDEBE4;
-  --chaux-profond:  #DFDCD2;
+  /* Secondaire : les surfaces */
+  --rideau:         #5B1327;  /* bordeaux du logo — interruptions, Grand Prix (§26) */
+  --rideau-profond: #3E0C1B;  /* variante pour aplats denses */
+  --papier:         #F6F1EA;  /* blanc chaud — registre de lecture, on lit */
+  --papier-ombre:   #E9E0D5;  /* aplats secondaires sur papier */
 
-  /* L'encre — texte sur fond clair */
-  --encre:          #14181D;
-  --encre-tiers:    #5D666F;   /* AA 4,90:1 sur --chaux — réservé aux surtitres/crédits */
-  --encre-tiers-aa: #434B52;   /* AAA 7,44:1 sur --chaux — texte secondaire courant */
+  /* Accent : le corail — sur fond sombre UNIQUEMENT (2,72:1 sur --papier, échec) */
+  --corail:         #FF5D38;  /* registre encre : 6,01:1 */
+  --corail-clair:   #FF8A63;  /* registre rideau : 5,79:1, AA large */
 
-  /* Les signaux — la couleur interactive dépend du registre (fitut-design §10) :
-     bleu = scène (on lit), éclaircissement vers --chaux = salle (on regarde).
-     --bleu-detroit ne s'applique JAMAIS sur --noir-salle/--noir-coulisse (1,91:1). */
-  --bleu-detroit:   #16407F;   /* accent interactif — registre scène uniquement */
-  --rouge-officiel: #C1272D;   /* rare : Haut Patronage, Grand Prix — registre scène */
-  --rouge-salle:    #E8695E;   /* rare : équivalent rouge — registre salle uniquement */
+  /* Texte sur papier */
+  --texte:          #1A1420;  /* 16,04:1 sur --papier */
+  --texte-tiers:    #584A4E;  /* 7,46:1 sur --papier — surtitres, crédits, métadonnées */
 
   /* Filets — séparateur autorisé, jamais d'ombre */
-  --filet-clair:    rgba(20, 24, 29, 0.14);    /* sur fond --chaux */
-  --filet-sombre:   rgba(237, 235, 228, 0.16); /* sur fond --noir-salle */
+  --filet-sombre:   rgba(246, 241, 234, 0.16); /* sur fond --encre-nuit/--rideau */
+  --filet-clair:    rgba(26, 20, 32, 0.14);    /* sur fond --papier */
 
   /* ---------- Typographie — familles (§9) ---------- */
-  --police-affiche: 'Archivo', system-ui, sans-serif;
-  --police-revue:   'Newsreader', Georgia, serif;
+  --police-affiche: 'Readex Pro', system-ui, sans-serif;
+  --police-revue:   'Literata', Georgia, serif;
   --police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
-  --police-arabe:   'IBM Plex Sans Arabic', 'Noto Naskh Arabic', serif;
+  --police-arabe:   'Readex Pro', 'Noto Naskh Arabic', sans-serif;
 
   /* ---------- Typographie — échelle, ratio 1,333 (quarte juste) (§9) ---------- */
   --pas-xs:   0.750rem;   /* surtitres, crédits */
@@ -87,7 +87,7 @@
   --esp-5: 64px;
   --esp-6: 96px;
   --esp-7: 144px;   /* entre sections */
-  --esp-8: 216px;   /* bascule salle ↔ scène */
+  --esp-8: 216px;   /* bascule encre ↔ rideau ↔ papier */
 
   /* ---------- Mouvement — durées et courbes (§34) ---------- */
   --duree-ui:      200ms;   /* survol, focus, ouverture de menu */

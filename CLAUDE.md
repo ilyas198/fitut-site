@@ -218,15 +218,17 @@ Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements 
 
 ---
 
-## 9. Dette technique — refonte « la salle et la scène »
+## 9. Dette technique — refonte à trois registres (encre / rideau / papier)
 
 Suivi des écarts assumés temporairement pendant la refonte pilotée par
 `.claude/skills/fitut-design/SKILL.md` (voir aussi `.claude/skills/frontend-design/SKILL.md`).
 
 - **Polices en CDN, pas encore auto-hébergées.** `fitut-design` §32 exige des `.woff2`
-  auto-hébergés. Le temps du développement, les 4 familles (`Archivo` variable,
-  `Newsreader`, `IBM Plex Mono`, `IBM Plex Sans Arabic`) sont chargées via Google Fonts :
-  `preconnect` vers `fonts.googleapis.com` et `fonts.gstatic.com`, un seul lien
-  regroupant les 4 familles, `display=swap`, sous-ensembles latin + arabic uniquement.
-  Ajouté au `<head>` de chaque page au moment de sa migration vers le nouveau système.
+  auto-hébergés. Le temps du développement, les 3 familles (`Readex Pro` variable,
+  latin + arabe dans un seul fichier ; `Literata` ; `IBM Plex Mono`) sont chargées via
+  Google Fonts : `preconnect` vers `fonts.googleapis.com` et `fonts.gstatic.com`, un seul
+  lien regroupant les 3 familles, `display=swap`. `Archivo`, `Newsreader` et
+  `IBM Plex Sans Arabic` (LOT 1 initial) sont abandonnées suite à la révision de la skill —
+  `Readex Pro` couvre le latin et l'arabe dans un seul dessin (§9). Ajouté au `<head>` de
+  chaque page au moment de sa migration vers le nouveau système.
   **À solder au LOT 8** : bascule vers des `.woff2` auto-hébergés dans `assets/fonts/`.
