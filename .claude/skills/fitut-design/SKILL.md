@@ -194,7 +194,9 @@ espacées, alignée dans la marge de régie.
   font-size: var(--pas-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--corail);      /* sur fond sombre */
+  color: var(--corail);      /* registre encre */
+  /* registre rideau : --corail-clair — le corail plein n'y fait que 4,39:1 */
+  /* registre papier : --rideau — le corail y est illisible (2,72:1) */
 }
 ```
 
@@ -315,8 +317,11 @@ sans validation.
   --corail-clair:   #FF8A63;  /* variante lisible sur --rideau */
 
   /* — Texte sur papier — */
-  --texte:          #1A1420;
-  --texte-tiers:    #584A4E;  /* AA — métadonnées, crédits */
+  --texte:          #1A1420;  /* texte sur papier */
+  --texte-tiers:    #584A4E;  /* AAA sur papier — métadonnées, crédits */
+
+  /* — Texte secondaire sur fond sombre — */
+  --papier-tiers:   #C9BDB4;  /* AAA sur encre (9,99:1) ET sur rideau (7,29:1) */
 
   /* — Filets — */
   --filet-sombre:   rgba(246, 241, 234, 0.16);
@@ -335,7 +340,19 @@ l'accent est `--rideau`.
 Sur `--encre-nuit` il tombe à 1,4:1 — invisible. Il n'est utilisable qu'en **fond de bloc**,
 ou en **couleur de texte sur `--papier`** (11,92:1, AAA).
 
-**3. La couleur interactive dépend du registre.**
+**3. La hiérarchie du texte dépend aussi du registre.**
+
+| Registre | Texte principal | Texte secondaire |
+|---|---|---|
+| **Encre** | `--papier` (16,34:1) | `--papier-tiers` (9,99:1) |
+| **Rideau** | `--papier` (11,92:1) | `--papier-tiers` (7,29:1) |
+| **Papier** | `--texte` (16,04:1) | `--texte-tiers` (7,54:1) |
+
+`--papier-tiers` est le seul moyen d'obtenir une hiérarchie de texte sur fond sombre,
+puisque `opacity` est interdit. Métadonnées, crédits photo, attributions de citation,
+mentions secondaires.
+
+**4. La couleur interactive dépend du registre.**
 
 | Registre | Lien / survol / focus |
 |---|---|
@@ -674,9 +691,12 @@ passe par la fonction `esc()`.
 - **par édition** — chronologique, dans la fiche d'édition
 - **par prix** — « tous les Grands Prix depuis 2007 », une histoire que le site actuel
   ne permet pas de lire
-Intitulés de prix en `Plex Mono`, titres de pièces en `Literata` italique. Le Grand Prix
-est le **seul** élément à porter `--rideau`.
+Intitulés de prix en `Plex Mono`, titres de pièces en `Literata` italique.
 
+**Le Grand Prix est le seul élément distingué**, et la manière dépend du registre :
+- en registre **papier**, il porte `--rideau` en couleur de texte (11,92:1)
+- en registre **encre ou rideau**, `--rideau` serait illisible en texte (1,4:1) : la ligne
+  devient alors un **bloc de fond `--rideau`** avec le texte en `--papier` dessus
 Le palmarès reste **du texte indexable**, jamais une image.
 
 ## 27. Actualités
