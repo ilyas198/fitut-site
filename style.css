@@ -1449,196 +1449,98 @@ button:focus-visible {
 }
 .skip-link:focus { left: 0; }
 
-/* ---- HERO : panneau de texte fixe + bande de visuels en défilement vertical ---- */
+/* ==========================================================
+   HERO (LOT 4 phase A) — « l'affiche et la distribution », fitut-design
+   §16. Système nouveau exclusivement. Remplace intégralement l'ancien
+   hero-slider (panneau fixe + bande de visuels) : plus de diaporama,
+   plus de main.js dédié. Le bandeau Haut Patronage (.fixed-banner,
+   ancien système) reste au-dessus, en position fixe — le hero compense
+   sa hauteur par un padding-top.
+   ========================================================== */
 .hero {
   position: relative;
-  height: 100svh;
-  height: 100vh;
+  min-height: 100svh;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;      /* mobile : texte au-dessus, visuel en dessous */
+  align-items: center;
   overflow: hidden;
-  background: var(--charcoal);
-}
-@media (min-width: 1024px) {
-  .hero { flex-direction: row; }   /* desktop : texte à gauche, visuel à droite */
 }
 
-/* -- Panneau de texte -- */
-.hero-text {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: calc(var(--nav-h) + 3rem) clamp(1.25rem, 5vw, 2rem) 1.75rem;
-  color: var(--cream);
+.hero-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-4);
+  width: 100%;
+  padding: calc(var(--nav-h) + 4.5rem) var(--esp-2) var(--esp-4);
+}
+.hero-grille > .marge-regie,
+.hero-grille > .hero-affiche,
+.hero-grille > .hero-contenu { grid-column: 1; }
+
+@media (min-width: 600px) {
+  .hero-grille {
+    grid-template-columns: var(--marge-regie-tablette) 1fr;
+    padding: calc(var(--nav-h) + 4.5rem) var(--esp-3) var(--esp-5);
+  }
+  .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
+  .hero-grille > .hero-affiche { grid-column: 2; grid-row: 1; }
+  .hero-grille > .hero-contenu { grid-column: 2; grid-row: 2; }
 }
 @media (min-width: 1024px) {
-  .hero-text {
-    flex: 0 0 42%;
-    height: 100%;
-    padding: calc(var(--nav-h) + 4rem) clamp(2rem, 4vw, 3.5rem) 3rem clamp(1.5rem, 4vw, 3.5rem);
+  .hero-grille {
+    grid-template-columns: var(--marge-regie-desktop) minmax(0, 1fr) minmax(300px, 440px);
+    align-items: center;
+    padding: calc(var(--nav-h) + 4.5rem) var(--esp-4) var(--esp-5);
+  }
+  .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
+  .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
+  .hero-grille > .hero-affiche { grid-column: 3; grid-row: 1; }
+}
+
+/* Surtitre : horizontal sur mobile (comportement par défaut de .surtitre),
+   vertical dans la marge de régie dès que celle-ci existe (§11, §16). */
+@media (min-width: 600px) {
+  .hero-surtitre {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    justify-self: center;
+    white-space: nowrap;
   }
 }
 
-.hero-kicker {
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-light);
-  font-weight: 500;
-  margin-bottom: 0.85rem;
-}
-.hero-title {
-  font-size: clamp(1.75rem, 6.5vw, 3.4rem);
-  font-weight: 300;
-  line-height: 1.1;
-  color: #fff;
-  margin-bottom: 0.85rem;
-}
-@media (min-width: 1024px) {
-  .hero-title { font-size: clamp(2.1rem, 3.2vw, 3.4rem); }
-}
-.hero-dates {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.05rem, 3.5vw, 1.5rem);
-  font-style: italic;
-  color: var(--gold-light);
-  margin-bottom: 0.85rem;
-}
-.hero-lead {
-  max-width: 480px;
-  font-size: 0.88rem;
-  line-height: 1.75;
-  color: rgba(247, 243, 236, 0.82);
-  margin-bottom: 1.5rem;
-}
+.hero-titre { margin-bottom: var(--esp-3); }
+.hero-titre [lang="fr"] { font-size: var(--pas-3xl); }
+.hero-titre [lang="ar"] { font-size: var(--pas-2xl); } /* pas immédiatement inférieur, §9 */
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hero-distribution { max-width: var(--largeur-archive); }
 
-.btn {
-  display: inline-block;
-  padding: 0.95rem 1.9rem;
-  font-size: 0.74rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 500;
-  border: 1px solid transparent;
-  transition: all var(--transition);
-  min-height: 48px;          /* confort tactile */
-  line-height: 1.6;
-}
-.btn-primary { background: var(--gold); color: #fff; border-color: var(--gold); }
-.btn-primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
-.btn-ghost { color: var(--cream); border-color: rgba(247, 243, 236, 0.45); }
-.btn-ghost:hover { background: rgba(247, 243, 236, 0.12); border-color: var(--cream); }
-@media (max-width: 480px) {
-  .hero-actions { flex-direction: column; align-items: stretch; }
-  .btn { text-align: center; }
-}
-
-/* -- Bande de visuels : plusieurs images empilées, translation verticale franche -- */
-.hero-visual {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 200px;
-  overflow: hidden;
-}
-@media (min-width: 1024px) {
-  .hero-visual { flex: 1 1 58%; height: 100%; min-height: 0; }
-}
-
-.hero-visual-slide {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-/* Position de repli avant l'exécution de main.js : évite tout flash au chargement. */
-.hero-visual-slide:nth-child(1) { transform: translateY(0%); }
-.hero-visual-slide:nth-child(2) { transform: translateY(100%); }
-.hero-visual-slide:nth-child(3) { transform: translateY(200%); }
-.hero-visual-slide:nth-child(n+4) { transform: translateY(300%); }
-.hero-visual-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.hero-visual::after {         /* voile discret en bas, pour la lisibilité des puces/flèches */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18,18,18,0.45) 0%, rgba(18,18,18,0) 30%);
-  pointer-events: none;
-}
-
-/* -- Flèches précédent/suivant -- */
-.hero-visual-controls {
-  position: absolute;
-  right: clamp(0.75rem, 2.5vw, 1.5rem);
-  bottom: 4.5rem;
-  z-index: 3;
+.hero-actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-3);
+  margin-top: var(--esp-4);
 }
-.hero-arrow {
-  width: 44px;
-  height: 44px;
+.hero-lien {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px; /* cible tactile — texte seul, pas de fond, zone de clic élargie */
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  letter-spacing: 0.05em;
+}
+
+.hero-affiche-cadre {
+  aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(247, 243, 236, 0.35);
-  border-radius: 0;
-  background: rgba(18, 18, 18, 0.32);
-  color: var(--cream);
-  cursor: pointer;
-  backdrop-filter: blur(2px);
-  transition: background var(--transition), border-color var(--transition);
-}
-.hero-arrow svg { width: 18px; height: 18px; }
-.hero-arrow:hover { background: rgba(18, 18, 18, 0.55); border-color: var(--gold-light); }
-@media (hover: none) {
-  .hero-arrow:hover { background: rgba(18, 18, 18, 0.32); border-color: rgba(247, 243, 236, 0.35); }
-}
-
-/* -- Puces de progression : minuteur, comme un diaporama qui s'annonce -- */
-.hero-progress {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 1.5rem;
-  z-index: 3;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.hero-dot {
-  width: 34px;
-  height: 3px;
-  padding: 0;
-  border: none;
-  background: rgba(247, 243, 236, 0.3);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.hero-dot::before {           /* zone de clic élargie pour le tactile */
-  content: '';
-  position: absolute;
-  inset: -14px -4px;
-}
-.hero-dot-fill {
-  position: absolute;
-  inset: 0;
-  width: 0%;
-  background: var(--gold-light);
-}
-.hero-dot-fill.is-filling { transition: width linear; }
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-visual-slide { transition-duration: 0.01s !important; }
-  .hero-dot-fill.is-filling { transition: none !important; }
+  border: 1px solid var(--filet-sombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  color: var(--papier-tiers);
+  text-align: center;
+  padding: var(--esp-2);
 }
 
 /* ---- COMPTE À REBOURS ---- */
