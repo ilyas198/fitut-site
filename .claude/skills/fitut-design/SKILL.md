@@ -289,7 +289,7 @@ système coexiste, LOT 6) — trouvé sur plusieurs composants du LOT 3/4, corri
 ne doit hériter.**
 
 ```css
---interligne-serre:   1.2;    /* titres d'affiche */
+--interligne-serre:   1.05;   /* titres d'affiche — échelle d'affiche, composition compacte */
 --interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
 --interligne-lecture: 1.65;   /* texte de revue */
 ```

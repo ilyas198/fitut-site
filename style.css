@@ -77,7 +77,7 @@
   --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
 
   /* ---------- Typographie — interlignage, jamais d'héritage (§9) ---------- */
-  --interligne-serre:   1.2;    /* titres d'affiche */
+  --interligne-serre:   1.05;   /* titres d'affiche — échelle d'affiche, composition compacte */
   --interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
   --interligne-lecture: 1.65;   /* texte de revue */
 
@@ -1537,11 +1537,15 @@ button:focus-visible {
    un plancher de 4rem qui ne descend jamais, quelle que soit la hauteur
    disponible. Réduit explicitement le titre et resserre la distribution
    ici plutôt que de laisser le contenu déborder de .hero (overflow:hidden)
-   ou de faire défiler la section — voir le calcul dans le message du
-   commit : le titre et l'affiche compressés ne suffisent pas seuls,
-   point à trancher avec l'utilisateur. */
+   ou de faire défiler la section.
+   Le français est fixé à 2 lignes par un <br> dans le HTML (« Le théâtre
+   universitaire / rassemble le monde ») — la taille ci-dessous est
+   plafonnée pour que la ligne la plus longue (25 car.) tienne sur une
+   seule ligne dans les 343px de contenu à 375px de large (estimation de
+   largeur de caractère, pas une mesure de rendu réel, marge prise en
+   conséquence). */
 @media (max-width: 599px) {
-  .hero-titre [lang="fr"] { font-size: clamp(1.75rem, 9vw, 2.5rem); }
+  .hero-titre [lang="fr"] { font-size: clamp(1.375rem, 6.5vw, 1.65rem); }
   .hero-titre [lang="ar"] { font-size: clamp(1.375rem, 7vw, 1.777rem); }
 }
 /* Le resserrement de .distribution sous 600px vit désormais dans le
@@ -1569,7 +1573,8 @@ button:focus-visible {
 .hero-affiche-cadre {
   aspect-ratio: 3 / 4;
   width: auto;
-  max-height: 22svh; /* hauteur plafonnée plutôt que largeur fixe — .hero a une hauteur stricte */
+  max-height: 16svh; /* mobile : vignette d'annonce, pas l'objet — desktop (>=600px, inchangé
+    ci-dessous) reste l'échelle où l'affiche doit être un objet à part entière */
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -2012,8 +2017,8 @@ a.entree-programme-lien { display: block; }
 .fiche-archive-annee {
   font-family: var(--police-affiche);
   font-size: var(--pas-2xl);
-  line-height: var(--interligne-serre); /* était 0,9 en dur — plus lâche pour un grand chiffre
-    d'affiche, à repasser en dur si le rendu ne convient pas, voir bilan */
+  line-height: 0.9; /* en dur, volontairement hors des 3 tokens : un chiffre d'affiche
+    (l'année en marge de régie) n'est pas un rôle de lecture, pas de var(--interligne-*) */
 }
 .fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
 .fiche-archive-corps p { max-width: var(--largeur-revue); line-height: var(--interligne-lecture); }
