@@ -1816,18 +1816,23 @@ button:focus-visible {
 }
 
 /* ==========================================================
-   LOT 3 — LES 8 COMPOSANTS (fitut-design §15)
-   Système nouveau exclusivement : aucune valeur en dur, aucun token
-   de l'ancien système. Consommé par composants.html (page de
-   démonstration temporaire, non liée au menu, à supprimer en fin de
-   projet — voir LOT 8). Aucune des 6 pages existantes n'utilise ce
-   bloc pour l'instant.
+   LOT 3 (repris) — LES 8 COMPOSANTS, système à trois registres
+   (fitut-design §6, §10, §15). Système nouveau exclusivement : aucune
+   valeur en dur, aucun token de l'ancien système. Consommé par
+   composants.html (page de démonstration temporaire, non liée au menu,
+   à supprimer en fin de projet — voir LOT 8). Aucune des 6 pages
+   existantes n'utilise ce bloc pour l'instant — LOT 4.
+
+   Règle §35 bis : un composant ne définit jamais sa propre couleur
+   d'état, il hérite de son registre. Le bloc "États d'interaction"
+   ci-dessous couvre les 3 registres une seule fois ; les composants
+   ne font que poser leur structure.
    ========================================================== */
 
-/* ---- Registres — bascule salle / scène (§6) ---- */
-.registre-scene { background: var(--chaux); color: var(--encre); }
-.registre-salle { background: var(--noir-salle); color: var(--chaux); }
-.registre-salle--coulisse { background: var(--noir-coulisse); }
+/* ---- Registres — bascule encre / rideau / papier (§6) ---- */
+.registre-encre  { background: var(--encre-nuit); color: var(--papier); }
+.registre-rideau { background: var(--rideau); color: var(--papier); }
+.registre-papier { background: var(--papier); color: var(--texte); }
 
 /* ---- Grille de régie (§11) — colonne 1 réservée aux surtitres/années/
    numéros, contenu en colonnes 2-12. Mobile : empilé, marge de régie
@@ -1862,18 +1867,82 @@ button:focus-visible {
 .section-demo { padding: var(--esp-6) 0; }
 .section-demo + .section-demo { margin-top: var(--esp-8); }
 
-/* ---- 1. .surtitre (§6) — les deux registres ---- */
+/* ==========================================================
+   ÉTATS D'INTERACTION — les trois registres, une seule fois (§10, §15)
+   ========================================================== */
+
+/* Registre encre */
+.registre-encre a,
+.registre-encre .bouton {
+  color: var(--papier);
+  border-color: var(--filet-sombre);
+}
+.registre-encre a:hover,
+.registre-encre .bouton:hover  { color: var(--corail); border-color: var(--corail); }
+.registre-encre a:focus-visible,
+.registre-encre .bouton:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+
+/* Registre rideau — le corail plein n'y passe qu'en AA large (4,39:1) :
+   corail-clair uniquement (5,79:1), y compris pour l'état repos hérité
+   de .registre-rideau ci-dessus. */
+.registre-rideau a:hover,
+.registre-rideau .bouton:hover { color: var(--corail-clair); border-color: var(--corail-clair); }
+.registre-rideau a:focus-visible,
+.registre-rideau .bouton:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+
+/* Registre papier — le corail y est ILLISIBLE (2,72:1), accent = --rideau */
+.registre-papier a,
+.registre-papier .bouton {
+  color: var(--texte);
+  border-color: var(--filet-clair);
+}
+.registre-papier a:hover,
+.registre-papier .bouton:hover { color: var(--rideau); border-color: var(--rideau); }
+.registre-papier a:focus-visible,
+.registre-papier .bouton:focus-visible { outline: 2px solid var(--rideau); outline-offset: 3px; }
+
+/* Communs aux trois registres */
+:is(a, .bouton):active { border-width: 2px; }
+:is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); cursor: not-allowed; }
+
+/* ---- 1. .surtitre (§6) — les deux registres, jamais d'opacity sur du
+   texte (§10, §31) : une couleur explicite par registre. ---- */
 .surtitre {
   display: block;
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--encre-tiers);
+  color: var(--corail); /* défaut : registre encre, 6,01:1 (§31) */
 }
-.registre-salle .surtitre { color: var(--chaux); }
+.registre-rideau .surtitre { color: var(--corail-clair); } /* 5,79:1, AA large */
+.registre-papier .surtitre { color: var(--rideau); } /* 11,92:1 (§10 règle 1) */
 
-/* ---- 2. .distribution (§15, §26) — registre salle ---- */
+/* ---- L'élément signature — .titre-bilingue (§6) ---- */
+.titre-bilingue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+}
+.titre-bilingue [lang="fr"] {
+  display: block;
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+.titre-bilingue [lang="ar"] {
+  display: block;
+  font-family: var(--police-arabe);
+  direction: rtl;
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: var(--corail); /* même règle registre-aware que .surtitre (§9, §31) */
+}
+.registre-rideau .titre-bilingue [lang="ar"] { color: var(--corail-clair); }
+.registre-papier .titre-bilingue [lang="ar"] { color: var(--rideau); }
+
+/* ---- 2. .distribution (§15, §26) — registre encre ---- */
 .distribution { margin: 0; }
 .distribution-ligne {
   display: grid;
@@ -1882,7 +1951,6 @@ button:focus-visible {
   padding: var(--esp-2) 0;
   border-bottom: 1px solid var(--filet-sombre);
 }
-.registre-scene .distribution-ligne { border-bottom-color: var(--filet-clair); }
 .distribution dt {
   font-family: var(--police-donnees);
   font-size: var(--pas-s);
@@ -1917,14 +1985,20 @@ button:focus-visible {
     bottom: 0.4em;
     border-bottom: 1px dotted var(--filet-sombre);
   }
-  .registre-scene .distribution dt::after { border-bottom-color: var(--filet-clair); }
+}
+/* Grand Prix (§26) : --rideau est une surface, jamais un texte sur fond
+   sombre (§10 règle 2, 1,4:1 — invisible) — traité en fond de bloc,
+   texte --papier dessus (11,92:1, AAA), pas en couleur de texte directe. */
+.distribution-ligne--grand-prix {
+  background: var(--rideau);
+  padding: var(--esp-2) var(--esp-3);
+  margin: 0 calc(-1 * var(--esp-3));
+  border-bottom: none;
 }
 .distribution-ligne--grand-prix dt,
-.distribution-ligne--grand-prix dd { color: var(--rouge-salle); }
-.registre-scene .distribution-ligne--grand-prix dt,
-.registre-scene .distribution-ligne--grand-prix dd { color: var(--rouge-officiel); }
+.distribution-ligne--grand-prix dd { color: var(--papier); }
 
-/* ---- 3. .entree-programme (§15, §20) — registre salle ---- */
+/* ---- 3. .entree-programme (§15, §20) — registre encre ---- */
 .entree-programme {
   padding: var(--esp-3) 0;
   border-bottom: 1px solid var(--filet-sombre);
@@ -1939,7 +2013,6 @@ button:focus-visible {
   font-family: var(--police-revue);
   font-style: italic;
   font-size: var(--pas-base);
-  opacity: 0.85;
   margin-top: var(--esp-1);
 }
 .entree-programme-meta {
@@ -1947,11 +2020,11 @@ button:focus-visible {
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   letter-spacing: 0.05em;
-  opacity: 0.7;
 }
 .entree-programme-meta span + span::before { content: ' \00b7 '; }
+a.entree-programme-lien { display: block; }
 
-/* ---- 4. .fiche-archive (§15, §24) — registre salle ---- */
+/* ---- 4. .fiche-archive (§15, §24) — registre encre ---- */
 .fiche-archive {
   display: grid;
   grid-template-columns: 1fr;
@@ -1966,7 +2039,6 @@ button:focus-visible {
   font-family: var(--police-affiche);
   font-size: var(--pas-2xl);
   line-height: 0.9;
-  color: var(--chaux);
 }
 .fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
 .fiche-archive-corps p { max-width: var(--largeur-revue); line-height: 1.65; }
@@ -1977,7 +2049,8 @@ button:focus-visible {
   padding-left: var(--esp-3);
   border-left: 1px solid var(--filet-clair);
 }
-.registre-salle .citation { border-left-color: var(--filet-sombre); }
+.registre-encre .citation,
+.registre-rideau .citation { border-left-color: var(--filet-sombre); }
 .citation p {
   font-family: var(--police-revue);
   font-style: italic;
@@ -1992,8 +2065,8 @@ button:focus-visible {
   font-size: var(--pas-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.7;
 }
+.registre-papier .citation cite { color: var(--texte-tiers); } /* 7,46:1, AAA */
 
 /* ---- 6. .filet-section (§15) — les deux registres ---- */
 .filet-section {
@@ -2004,10 +2077,11 @@ button:focus-visible {
   border: none;
   border-top: 1px solid var(--filet-clair);
 }
-.registre-salle .filet-section { border-top-color: var(--filet-sombre); }
+.registre-encre .filet-section,
+.registre-rideau .filet-section { border-top-color: var(--filet-sombre); }
 
-/* ---- 7. .bouton (§15) — la structure est commune, la couleur
-   dépend du registre (§10, corrigé au LOT 1). ---- */
+/* ---- 7. .bouton (§15) — structure commune, couleur héritée du
+   registre (bloc "États d'interaction" plus haut). ---- */
 .bouton {
   display: inline-flex;
   align-items: center;
@@ -2020,30 +2094,18 @@ button:focus-visible {
   text-transform: uppercase;
   line-height: 1;
   background: transparent;
-  border: 1px solid var(--filet-clair);
-  color: inherit;
+  border: 1px solid; /* couleur posée par le bloc États d'interaction */
   cursor: pointer;
   transition: border-color var(--duree-ui) var(--courbe-sortie),
               color var(--duree-ui) var(--courbe-sortie);
 }
-.registre-salle .bouton { border-color: var(--filet-sombre); }
-
-.registre-scene .bouton:hover { border-color: var(--bleu-detroit); color: var(--bleu-detroit); }
-.registre-scene .bouton:focus-visible { outline: 2px solid var(--bleu-detroit); outline-offset: 3px; }
-
-.registre-salle .bouton:hover { border-color: var(--chaux); color: var(--chaux); }
-.registre-salle .bouton:focus-visible { outline: 2px solid var(--chaux); outline-offset: 3px; }
-
-.bouton.est-actif { opacity: 0.7; }
-.bouton:disabled,
-.bouton.est-desactive { opacity: 0.4; cursor: not-allowed; }
-
 @media (hover: none) {
-  .registre-scene .bouton:hover { border-color: var(--filet-clair); color: inherit; }
-  .registre-salle .bouton:hover { border-color: var(--filet-sombre); color: inherit; }
+  .registre-encre .bouton:hover,
+  .registre-rideau .bouton:hover,
+  .registre-papier .bouton:hover { color: inherit; border-color: inherit; }
 }
 
-/* ---- 8. .fiche-adresse (§15, §29) — registre scène ---- */
+/* ---- 8. .fiche-adresse (§15, §29) — registre papier ---- */
 .fiche-adresse { max-width: var(--largeur-archive); }
 .fiche-adresse dt {
   font-family: var(--police-revue);
@@ -2055,7 +2117,7 @@ button:focus-visible {
   margin: var(--esp-1) 0 0;
   font-family: var(--police-donnees);
   font-size: var(--pas-s);
-  color: var(--encre-tiers-aa);
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
 }
 .fiche-adresse-plan {
   margin-top: var(--esp-3);
@@ -2064,18 +2126,9 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--filet-clair);
-  background: var(--chaux-profond);
+  background: var(--papier-ombre);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
-  color: var(--encre-tiers-aa); /* --encre-tiers tombe à 4,26:1 sur --chaux-profond, sous AA */
+  color: var(--texte-tiers); /* 6,42:1 sur --papier-ombre, AA — vérifié, pas supposé */
 }
 
-/* ---- États d'interaction communs (hors .bouton) — mêmes règles,
-   voir §10/§15 pour la table complète par registre. ---- */
-.est-actif { opacity: 0.7; }
-.est-desactive { opacity: 0.4; cursor: not-allowed; }
-a.entree-programme-lien { display: block; color: inherit; }
-.registre-scene a.entree-programme-lien:hover .entree-programme-titre { color: var(--bleu-detroit); }
-.registre-salle a.entree-programme-lien:hover .entree-programme-titre { color: var(--chaux); }
-.registre-scene a.entree-programme-lien:focus-visible { outline: 2px solid var(--bleu-detroit); outline-offset: 3px; }
-.registre-salle a.entree-programme-lien:focus-visible { outline: 2px solid var(--chaux); outline-offset: 3px; }
