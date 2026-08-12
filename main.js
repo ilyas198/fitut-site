@@ -214,64 +214,6 @@ if (burger && navLinks) {
   });
 }
 
-// Barre sociale fixe : reste centrée entre la navbar (--nav-h) et le haut du footer
-const SOCIAL_SIDEBAR_HIDE_MQ = window.matchMedia('(max-width: 900px)');
-(function initSocialSidebarClamp() {
-  const sidebar = document.querySelector('.social-sidebar');
-  const footer = document.querySelector('.site-footer');
-  if (!sidebar || !footer) return;
-
-  let raf = 0;
-  const margin = 14;
-
-  function update() {
-    if (SOCIAL_SIDEBAR_HIDE_MQ.matches) {
-      sidebar.style.removeProperty('top');
-      sidebar.style.removeProperty('transform');
-      return;
-    }
-
-    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 60;
-    const vh = window.innerHeight;
-    const footerTop = footer.getBoundingClientRect().top;
-    const half = sidebar.offsetHeight / 2;
-
-    const ideal = vh * 0.5;
-    const maxCenter = footerTop - margin - half;
-    const minCenter = navH + margin + half;
-
-    let center = Math.min(ideal, maxCenter);
-    center = Math.max(center, minCenter);
-    if (minCenter > maxCenter) {
-      center = (minCenter + maxCenter) / 2;
-    }
-
-    sidebar.style.top = `${center}px`;
-    sidebar.style.transform = 'translateY(-50%)';
-  }
-
-  function requestUpdate() {
-    if (raf) return;
-    raf = requestAnimationFrame(() => {
-      raf = 0;
-      update();
-    });
-  }
-
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate);
-  SOCIAL_SIDEBAR_HIDE_MQ.addEventListener('change', requestUpdate);
-  if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(requestUpdate).observe(footer);
-  }
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(requestUpdate).catch(() => requestUpdate());
-  } else {
-    requestUpdate();
-  }
-})();
-
 // Scroll reveal (ré-applicable au contenu injecté dynamiquement)
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {

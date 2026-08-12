@@ -453,22 +453,7 @@ section { padding: 6rem 0; }
   text-transform: uppercase;
 }
 
-/* ---- SOCIAL — sidebar fixe (desktop) : position verticale ajustée au scroll dans main.js pour éviter le footer ; footer (mobile) ---- */
-.social-sidebar {
-  position: fixed;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem 0.5rem;
-  background: rgba(28, 28, 28, 0.92);
-  border-radius: 0 6px 6px 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-  z-index: 999;
-}
-
+/* ---- SOCIAL — liens sociaux dans le footer (barre latérale flottante retirée, fitut-design §17) ---- */
 .social-icon {
   display: inline-flex;
   align-items: center;
@@ -479,19 +464,8 @@ section { padding: 6rem 0; }
 }
 .social-icon svg { display: block; }
 
-.social-icon-sidebar {
-  width: 38px;
-  height: 38px;
-}
-.social-icon-sidebar svg { width: 18px; height: 18px; }
-.social-icon-sidebar:hover {
-  color: var(--gold);
-  background: rgba(247, 243, 236, 0.08);
-  transform: translateX(2px);
-}
-
 .footer-social {
-  display: none;
+  display: flex;
   justify-content: center;
   gap: 0.9rem;
   margin: 1.5rem 0 0.5rem;
@@ -1049,10 +1023,6 @@ section { padding: 6rem 0; }
 @media (max-width: 900px) {
   .gallery-grid { grid-template-columns: 1fr; }
   .carnaval-route { grid-template-columns: 1fr; }
-
-  /* Barre sociale latérale -> masquée sur mobile, icônes dans le footer */
-  .social-sidebar { display: none; }
-  .footer-social { display: flex; }
 
   /* Liste des prix : taille un peu réduite pour tenir sur mobile */
   .prix-item-medium { font-size: 0.85rem; padding: 0.7rem 1.2rem; }

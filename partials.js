@@ -59,12 +59,6 @@ const HEADER_HTML = `
   </nav>
 `;
 
-const SIDEBAR_HTML = `
-  <aside class="social-sidebar" aria-label="R\u00e9seaux sociaux">
-    ${renderSocialIcons('social-icon-sidebar')}
-  </aside>
-`;
-
 const FOOTER_INNER_HTML = `
   <div class="container">
     <img src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-2-1024x215.png" alt="Association de l'Action Universitaire (ASAU)" class="footer-logo" width="320" height="67" loading="lazy">
@@ -88,13 +82,6 @@ const FOOTER_INNER_HTML = `
 
   const footerEl = document.getElementById('site-footer');
   if (footerEl) footerEl.innerHTML = FOOTER_INNER_HTML;
-
-  // La barre latérale est injectée juste après le header (positionnement fixe via CSS)
-  if (headerEl) {
-    headerEl.insertAdjacentHTML('afterend', SIDEBAR_HTML);
-  } else {
-    document.body.insertAdjacentHTML('afterbegin', SIDEBAR_HTML);
-  }
 
   // Marquer le lien actif d'après l'URL courante
   const rawPath = location.pathname.split('/').pop() || 'index.html';
