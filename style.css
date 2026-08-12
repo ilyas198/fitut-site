@@ -860,6 +860,108 @@ section { padding: 6rem 0; }
   }
 }
 
+/* ==========================================================
+   MIGRATION LOT 2c — classes issues des 54 attributs style= en ligne
+   de qui-sommes-nous.html, le-festival.html, le-carnaval.html et
+   edition.html. Migration à rendu strictement identique : aucune valeur
+   corrigée (les rgba(247,243,236,X)/rgba(28,28,28,X) sans token exact
+   restent littérales, anti-patterns non retirés — voir LOT 2d). Ces
+   classes appliquent l'ancien système et disparaîtront à la refonte de
+   ces 4 pages au LOT 6.
+   ========================================================== */
+
+.section-sombre {
+  background: var(--charcoal);
+  color: var(--cream);
+  padding: 6rem 0; /* = --esp-6 au LOT 6, ne pas migrer avant (voir LOT 2c) */
+}
+.titre-clair { color: var(--cream); }
+
+.value-card--sombre { border-color: rgba(247, 243, 236, 0.15); }
+.value-card--sombre p { color: rgba(247, 243, 236, 0.6); }
+
+.stat-label--sombre { color: rgba(247, 243, 236, 0.5); }
+
+.texte-emphase { color: var(--charcoal); }
+
+.texte-lead {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--warm-grey);
+}
+.texte-lead--espace { margin-top: 1.5rem; /* = --esp-3 au LOT 6, ne pas migrer avant */ }
+/* Les 3 variantes ci-dessous se ressemblent mais ne sont PAS interchangeables :
+   --intro n'est pas centré (les 2 autres le sont) ; --impact et --competition
+   centrés tous les deux mais diffèrent aussi par la marge basse (0 / 3rem),
+   pas seulement par la largeur. Fusion à revalider — voir LOT 2c. */
+.texte-lead--intro { max-width: 780px; }
+.texte-lead--impact { max-width: 750px; margin: 0 auto; text-align: center; }
+.texte-lead--competition { max-width: 720px; margin: 0 auto 3rem; text-align: center; }
+.texte-lead-sombre {
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  text-align: center;
+  color: rgba(247, 243, 236, 0.7);
+  line-height: 1.9;
+}
+
+.section-encadree {
+  background: rgba(184, 146, 42, 0.05);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.container--centre { text-align: center; }
+
+.route-titre { margin: 0.5rem 0 1rem; }
+.route-texte { color: var(--warm-grey); line-height: 1.9; }
+/* Inversion visuelle du second temps du parcours — n'a aucun rapport avec
+   le lang="ar"/dir="rtl" d'un vrai contenu arabe (fitut-design §5). */
+.route-etape--inverse { direction: rtl; text-align: right; }
+.route-etape-contenu { direction: ltr; text-align: left; }
+.route-etape-image { direction: ltr; }
+
+.bloc-intro-centre { max-width: 800px; margin: 0 auto; text-align: center; }
+.logo-asau-intro {
+  height: 60px;
+  width: auto;
+  margin: 0 auto 2.5rem; /* = --esp-4 au LOT 6, ne pas migrer avant */
+}
+.section-claire-bordee { background: var(--cream); border-top: 1px solid var(--line); }
+
+.image-hero-page { margin-top: var(--nav-h); height: 55vh; overflow: hidden; }
+.image-couvrante { width: 100%; height: 100%; object-fit: cover; }
+.titre-intro-page {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin-bottom: 2rem;
+}
+.photo-grid--espace { margin-top: 3rem; }
+.chargement-page { padding: 8rem 0; text-align: center; }
+
+/* Seul cas où une valeur reste inline : --img porte le CONTENU (quelle
+   image), pas la mise en forme. Image à rapatrier en local plus tard —
+   le point de modification doit rester unique et visible. */
+.page-hero--image {
+  background-image: var(--img);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.voile-sombre { position: absolute; inset: 0; background: rgba(28, 28, 28, 0.55); }
+.contenu-superpose { position: relative; z-index: 1; }
+.titre-sur-image { color: #fff; }
+.texte-intro-italique {
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--charcoal);
+}
+.section-sans-haut { padding: 0 0 6rem; /* = --esp-6 au LOT 6, ne pas migrer avant */ }
+
 /* ---- FOOTER ---- */
 .site-footer {
   background: var(--charcoal);
@@ -904,67 +1006,42 @@ section { padding: 6rem 0; }
   }
 }
 
-/* Override inline section padding styles for mobile */
-section[style*="padding:6rem"] {
-  padding: 6rem 0 !important;
-}
+/* Paliers responsives des classes issues de la migration LOT 2c —
+   anciennement des sélecteurs d'attribut [style*="..."] ciblant les
+   inline styles, retargetés vers les classes qui les remplacent.
+   Comportement conservé à l'identique (mêmes paliers, même !important,
+   qui n'est plus nécessaire mais ne change rien au rendu). */
 @media (max-width: 900px) {
-  section[style*="padding:6rem"] {
-    padding: 4.5rem 0 !important;
-  }
+  .section-sombre { padding: 4.5rem 0 !important; }
 }
 @media (max-width: 768px) {
-  section[style*="padding:6rem"] {
-    padding: 4rem 0 !important;
-  }
+  .section-sombre { padding: 4rem 0 !important; }
 }
 @media (max-width: 640px) {
-  section[style*="padding:6rem"] {
-    padding: 3rem 0 !important;
-  }
+  .section-sombre { padding: 3rem 0 !important; }
 }
 @media (max-width: 480px) {
-  section[style*="padding:6rem"] {
-    padding: 2.5rem 0 !important;
-  }
+  .section-sombre { padding: 2.5rem 0 !important; }
 }
 
-/* Override inline text sizes for mobile */
-p[style*="font-size:1.05rem"] {
-  font-size: 1.05rem !important;
-}
 @media (max-width: 768px) {
-  p[style*="font-size:1.05rem"] {
-    font-size: 1rem !important;
-  }
+  .texte-lead { font-size: 1rem !important; }
 }
 @media (max-width: 480px) {
-  p[style*="font-size:1.05rem"] {
-    font-size: 0.95rem !important;
-  }
+  .texte-lead { font-size: 0.95rem !important; }
 }
-div[style*="height:55vh"] {
-  height: 55vh !important;
-}
+
 @media (max-width: 900px) {
-  div[style*="height:55vh"] {
-    height: 45vh !important;
-  }
+  .image-hero-page { height: 45vh !important; }
 }
 @media (max-width: 768px) {
-  div[style*="height:55vh"] {
-    height: 40vh !important;
-  }
+  .image-hero-page { height: 40vh !important; }
 }
 @media (max-width: 640px) {
-  div[style*="height:55vh"] {
-    height: 35vh !important;
-  }
+  .image-hero-page { height: 35vh !important; }
 }
 @media (max-width: 480px) {
-  div[style*="height:55vh"] {
-    height: 32vh !important;
-  }
+  .image-hero-page { height: 32vh !important; }
 }
 .reveal {
   opacity: 0;
