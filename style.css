@@ -1814,3 +1814,268 @@ button:focus-visible {
   color: var(--gold);
   font-weight: 500;
 }
+
+/* ==========================================================
+   LOT 3 — LES 8 COMPOSANTS (fitut-design §15)
+   Système nouveau exclusivement : aucune valeur en dur, aucun token
+   de l'ancien système. Consommé par composants.html (page de
+   démonstration temporaire, non liée au menu, à supprimer en fin de
+   projet — voir LOT 8). Aucune des 6 pages existantes n'utilise ce
+   bloc pour l'instant.
+   ========================================================== */
+
+/* ---- Registres — bascule salle / scène (§6) ---- */
+.registre-scene { background: var(--chaux); color: var(--encre); }
+.registre-salle { background: var(--noir-salle); color: var(--chaux); }
+.registre-salle--coulisse { background: var(--noir-coulisse); }
+
+/* ---- Grille de régie (§11) — colonne 1 réservée aux surtitres/années/
+   numéros, contenu en colonnes 2-12. Mobile : empilé, marge de régie
+   disparaît (le surtitre passe au-dessus du contenu). ---- */
+.grille-regie {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  max-width: var(--largeur-archive);
+  padding: 0 var(--esp-2);
+  margin: 0 auto;
+}
+.grille-regie > .marge-regie,
+.grille-regie > .contenu-regie { grid-column: 1; }
+@media (min-width: 600px) {
+  .grille-regie {
+    grid-template-columns: var(--marge-regie-tablette) repeat(11, 1fr);
+    column-gap: var(--esp-3);
+    padding: 0 var(--esp-3);
+  }
+  .grille-regie > .contenu-regie { grid-column: 2 / -1; }
+}
+@media (min-width: 1024px) {
+  .grille-regie {
+    grid-template-columns: var(--marge-regie-desktop) repeat(11, 1fr);
+    padding: 0 var(--esp-4);
+  }
+}
+
+/* ---- Rythme des sections de démonstration — toute bascule de registre
+   est précédée de --esp-8 (règle §6). ---- */
+.section-demo { padding: var(--esp-6) 0; }
+.section-demo + .section-demo { margin-top: var(--esp-8); }
+
+/* ---- 1. .surtitre (§6) — les deux registres ---- */
+.surtitre {
+  display: block;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--encre-tiers);
+}
+.registre-salle .surtitre { color: var(--chaux); }
+
+/* ---- 2. .distribution (§15, §26) — registre salle ---- */
+.distribution { margin: 0; }
+.distribution-ligne {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-1);
+  padding: var(--esp-2) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+.registre-scene .distribution-ligne { border-bottom-color: var(--filet-clair); }
+.distribution dt {
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.distribution dd {
+  margin: 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+}
+.distribution dd em { font-style: italic; }
+/* Tout contenu en langue arabe reçoit la police arabe (§5), qu'il occupe
+   tout l'élément (titre) ou un span imbriqué dans une ligne mixte
+   français/arabe (palmarès) — le sélecteur reste générique pour couvrir
+   les deux cas plutôt que de supposer où lang="ar" est posé. */
+[lang="ar"] { font-family: var(--police-arabe); }
+@media (min-width: 1024px) {
+  .distribution-ligne {
+    grid-template-columns: minmax(200px, 320px) 1fr;
+    align-items: baseline;
+    gap: var(--esp-3);
+  }
+  .distribution dt {
+    position: relative;
+    padding-right: var(--esp-2);
+  }
+  .distribution dt::after {
+    content: '';
+    position: absolute;
+    left: 100%; right: calc(-1 * var(--esp-3));
+    bottom: 0.4em;
+    border-bottom: 1px dotted var(--filet-sombre);
+  }
+  .registre-scene .distribution dt::after { border-bottom-color: var(--filet-clair); }
+}
+.distribution-ligne--grand-prix dt,
+.distribution-ligne--grand-prix dd { color: var(--rouge-salle); }
+.registre-scene .distribution-ligne--grand-prix dt,
+.registre-scene .distribution-ligne--grand-prix dd { color: var(--rouge-officiel); }
+
+/* ---- 3. .entree-programme (§15, §20) — registre salle ---- */
+.entree-programme {
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+.entree-programme-titre {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+}
+.entree-programme-titre[lang="ar"] { letter-spacing: 0; }
+.entree-programme-traduction {
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-base);
+  opacity: 0.85;
+  margin-top: var(--esp-1);
+}
+.entree-programme-meta {
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+.entree-programme-meta span + span::before { content: ' \00b7 '; }
+
+/* ---- 4. .fiche-archive (§15, §24) — registre salle ---- */
+.fiche-archive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-3);
+  padding: var(--esp-4) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+@media (min-width: 600px) {
+  .fiche-archive { grid-template-columns: auto 1fr; align-items: start; gap: var(--esp-4); }
+}
+.fiche-archive-annee {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-2xl);
+  line-height: 0.9;
+  color: var(--chaux);
+}
+.fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
+.fiche-archive-corps p { max-width: var(--largeur-revue); line-height: 1.65; }
+
+/* ---- 5. .citation (§15) — les deux registres ---- */
+.citation {
+  max-width: var(--largeur-revue);
+  padding-left: var(--esp-3);
+  border-left: 1px solid var(--filet-clair);
+}
+.registre-salle .citation { border-left-color: var(--filet-sombre); }
+.citation p {
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-m);
+  line-height: 1.65;
+}
+.citation cite {
+  display: block;
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-style: normal;
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ---- 6. .filet-section (§15) — les deux registres ---- */
+.filet-section {
+  display: block;
+  height: 0;
+  width: 100%;
+  margin: var(--esp-4) 0;
+  border: none;
+  border-top: 1px solid var(--filet-clair);
+}
+.registre-salle .filet-section { border-top-color: var(--filet-sombre); }
+
+/* ---- 7. .bouton (§15) — la structure est commune, la couleur
+   dépend du registre (§10, corrigé au LOT 1). ---- */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: var(--esp-2) var(--esp-4);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid var(--filet-clair);
+  color: inherit;
+  cursor: pointer;
+  transition: border-color var(--duree-ui) var(--courbe-sortie),
+              color var(--duree-ui) var(--courbe-sortie);
+}
+.registre-salle .bouton { border-color: var(--filet-sombre); }
+
+.registre-scene .bouton:hover { border-color: var(--bleu-detroit); color: var(--bleu-detroit); }
+.registre-scene .bouton:focus-visible { outline: 2px solid var(--bleu-detroit); outline-offset: 3px; }
+
+.registre-salle .bouton:hover { border-color: var(--chaux); color: var(--chaux); }
+.registre-salle .bouton:focus-visible { outline: 2px solid var(--chaux); outline-offset: 3px; }
+
+.bouton.est-actif { opacity: 0.7; }
+.bouton:disabled,
+.bouton.est-desactive { opacity: 0.4; cursor: not-allowed; }
+
+@media (hover: none) {
+  .registre-scene .bouton:hover { border-color: var(--filet-clair); color: inherit; }
+  .registre-salle .bouton:hover { border-color: var(--filet-sombre); color: inherit; }
+}
+
+/* ---- 8. .fiche-adresse (§15, §29) — registre scène ---- */
+.fiche-adresse { max-width: var(--largeur-archive); }
+.fiche-adresse dt {
+  font-family: var(--police-revue);
+  font-size: var(--pas-m);
+  margin-top: var(--esp-3);
+}
+.fiche-adresse dt:first-child { margin-top: 0; }
+.fiche-adresse dd {
+  margin: var(--esp-1) 0 0;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  color: var(--encre-tiers-aa);
+}
+.fiche-adresse-plan {
+  margin-top: var(--esp-3);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--filet-clair);
+  background: var(--chaux-profond);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  color: var(--encre-tiers-aa); /* --encre-tiers tombe à 4,26:1 sur --chaux-profond, sous AA */
+}
+
+/* ---- États d'interaction communs (hors .bouton) — mêmes règles,
+   voir §10/§15 pour la table complète par registre. ---- */
+.est-actif { opacity: 0.7; }
+.est-desactive { opacity: 0.4; cursor: not-allowed; }
+a.entree-programme-lien { display: block; color: inherit; }
+.registre-scene a.entree-programme-lien:hover .entree-programme-titre { color: var(--bleu-detroit); }
+.registre-salle a.entree-programme-lien:hover .entree-programme-titre { color: var(--chaux); }
+.registre-scene a.entree-programme-lien:focus-visible { outline: 2px solid var(--bleu-detroit); outline-offset: 3px; }
+.registre-salle a.entree-programme-lien:focus-visible { outline: 2px solid var(--chaux); outline-offset: 3px; }

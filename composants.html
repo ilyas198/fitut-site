@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Démonstration des 8 composants — LOT 3 (page temporaire)</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Polices : CDN Google Fonts pendant le développement, voir CLAUDE.md §9
+       (dette technique). Bascule vers du .woff2 auto-hébergé au LOT 8. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Styles propres à cette page de démonstration uniquement — jamais
+       dans style.css, qui ne doit contenir que le système partagé. */
+    body { font-family: var(--police-revue); }
+    .demo-entete {
+      padding: var(--esp-5) var(--esp-2) var(--esp-4);
+      border-bottom: 1px solid var(--filet-clair);
+    }
+    .demo-entete h1 {
+      font-family: var(--police-affiche);
+      font-size: var(--pas-xl);
+      letter-spacing: -0.02em;
+      max-width: var(--largeur-archive);
+      margin: var(--esp-2) auto 0;
+      padding: 0 var(--esp-2);
+    }
+    .demo-entete p {
+      max-width: var(--largeur-revue);
+      margin: var(--esp-2) auto 0;
+      padding: 0 var(--esp-2);
+      font-size: var(--pas-base);
+      line-height: 1.65;
+    }
+    .demo-entete .surtitre { max-width: var(--largeur-archive); margin: 0 auto; padding: 0 var(--esp-2); }
+    .demo-titre-composant {
+      font-family: var(--police-affiche);
+      font-size: var(--pas-l);
+      letter-spacing: -0.01em;
+      margin-bottom: var(--esp-3);
+    }
+    .demo-bloc + .demo-bloc { margin-top: var(--esp-5); }
+    .demo-boutons { display: flex; flex-wrap: wrap; gap: var(--esp-2); align-items: center; }
+    .demo-etat-label {
+      display: block;
+      margin-top: var(--esp-1);
+      font-family: var(--police-donnees);
+      font-size: var(--pas-xs);
+      color: var(--encre-tiers-aa); /* pas d'opacity : 0,6 tombait à 4,40:1 sur --chaux, sous AA */
+    }
+    .registre-salle .demo-etat-label { color: var(--chaux); opacity: 0.7; } /* 8,19:1 sur --noir-salle */
+    .demo-piece { display: flex; flex-direction: column; gap: var(--esp-1); }
+    /* .skip-link vient de l'ancien système (--charcoal/--cream) : réaligné
+       ici sur les tokens de cette page, pas dans style.css. */
+    .skip-link:focus { background: var(--noir-salle); color: var(--chaux); }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <!-- ============ EN-TÊTE DE LA DÉMONSTRATION (registre scène) ============ -->
+  <header class="demo-entete registre-scene">
+    <p class="surtitre">LOT 3 — page temporaire, non liée au menu, à supprimer au LOT 8</p>
+    <h1>Les 8 composants de fitut&#8209;design §15</h1>
+    <p>Chaque composant est montré dans son registre imposé (salle ou scène), avec ses états
+      d'interaction réels — survole ou navigue au clavier pour voir le survol et le focus. Tout
+      le contenu ci-dessous est réel, tiré de <code>data/editions.json</code> et de
+      <code>CLAUDE.md</code> : aucune donnée inventée.</p>
+  </header>
+
+  <main id="contenu">
+
+  <!-- ============ REGISTRE SALLE — distribution, entree-programme, fiche-archive, filet, bouton, surtitre ============ -->
+  <section class="section-demo registre-salle">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre salle — 5 composants</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre — registre salle</h2>
+          <p class="surtitre">18ᵉ édition — Tanger — 3.11 › 7.11.2025</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">2. .distribution — palmarès de la 17ᵉ édition (2024)</h2>
+          <dl class="distribution">
+            <div class="distribution-ligne distribution-ligne--grand-prix">
+              <dt>Grand Prix du Festival</dt>
+              <dd>« <span lang="ar" dir="rtl">مسرحية Zucco</span> » — Institut Supérieur d'Art Dramatique
+                et d'Animation Culturelle (ISADAC), Rabat</dd>
+            </div>
+            <div class="distribution-ligne">
+              <dt>Prix du Jury</dt>
+              <dd>Troupe de l'Université Ain Shams pour «
+                <span lang="ar" dir="rtl">حدث صدفة في مكان ما</span> », Égypte</dd>
+            </div>
+            <div class="distribution-ligne">
+              <dt>Prix des Droits de l'Homme</dt>
+              <dd>« <span lang="ar" dir="rtl">مسرحية الخادمتان</span> » — Université Abdelmalek
+                Essaâdi, Tanger</dd>
+            </div>
+          </dl>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">3. .entree-programme — sélection de la 18ᵉ édition (2025)</h2>
+          <a class="entree-programme entree-programme-lien" href="edition.html?n=18">
+            <p class="entree-programme-titre">Ficções do Interlúdio</p>
+            <p class="entree-programme-traduction">TeatrUBI</p>
+            <p class="entree-programme-meta">
+              <span>Universidade da Beira Interior</span>
+              <span>Portugal</span>
+              <span>langue [à confirmer]</span>
+              <span>durée [à confirmer]</span>
+              <span>lieu [à confirmer]</span>
+            </p>
+          </a>
+          <p class="demo-etat-label">Champs langue/durée/lieu absents de data/editions.json aujourd'hui — signalé au bilan.</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">4. .fiche-archive — 1ʳᵉ édition (2007)</h2>
+          <div class="fiche-archive">
+            <p class="fiche-archive-annee">2007</p>
+            <div class="fiche-archive-corps">
+              <p>La toute première édition du Festival International du Théâtre Universitaire
+                de Tanger, organisée par l'Association de l'Action Universitaire (ASAU).</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre salle (pas de bleu, éclaircissement vers --chaux)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → filet et texte passent à --chaux plein</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --chaux</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton est-actif">Déposer une candidature</button>
+              <span class="demo-etat-label">actif — opacité 0,7</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" disabled>Complet</button>
+              <span class="demo-etat-label">désactivé — opacité 0,4</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTRE SCÈNE — surtitre, citation, fiche-adresse, filet, bouton ============ -->
+  <section class="section-demo registre-scene">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre scène — 4 composants</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre — registre scène</h2>
+          <p class="surtitre">Chiffres 2025 — 9 pays · 12 spectacles · 130 festivaliers</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">5. .citation</h2>
+          <blockquote class="citation">
+            <p>Créée en 2005 par Tahar Elqour en compagnie des jeunes étudiants de l'École
+              Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action
+              Universitaire est chérie pour sa diversification culturelle et artistique
+              mais surtout par sa jeunesse qui la porte.</p>
+            <cite>qui-sommes-nous.html, ASAU</cite>
+          </blockquote>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">8. .fiche-adresse</h2>
+          <dl class="fiche-adresse">
+            <dt>Palais des Arts et de la Culture</dt>
+            <dd>Adresse [à confirmer] — Tanger</dd>
+            <dd>Capacité [à confirmer]</dd>
+          </dl>
+          <div class="fiche-adresse-plan" role="img" aria-label="Plan statique à ajouter">
+            [plan statique à ajouter]
+          </div>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre scène (--bleu-detroit, 8,49:1 AAA)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → filet et texte passent à --bleu-detroit</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --bleu-detroit</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton est-actif">Déposer une candidature</button>
+              <span class="demo-etat-label">actif — opacité 0,7</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" disabled>Complet</button>
+              <span class="demo-etat-label">désactivé — opacité 0,4</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">6. .filet-section</h2>
+          <p class="demo-etat-label">
+            Le filet de 1px utilisé six fois sur cette page pour séparer chaque composant en
+            est la démonstration — aucun exemplaire supplémentaire ci-dessous.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+</body>
+</html>
