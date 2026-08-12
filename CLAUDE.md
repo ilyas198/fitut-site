@@ -92,6 +92,39 @@ Redirections 301 des trois pages supprimées : dans `.htaccess`.
 
 ---
 
+## 3 bis. ⚠️ Bug hérité découvert pendant la refonte — le hero n'a jamais rendu ce qu'il devait
+
+Trouvaille la plus importante du LOT 2a (nettoyage CSS), à connaître avant de juger
+l'ancien rendu de l'accueil.
+
+Le commit « Refonte du hero : panneau de texte fixe + bande de visuels en défilement
+vertical » (`649c3df`) a bien livré la structure `.hero-text` / `.hero-visual` prévue —
+mais `style.css` contenait encore, plus haut dans le fichier, un **bloc `.hero`/`.hero-title`
+de l'ère précédente (le carrousel `hero-slider`)** que personne n'avait supprimé. En CSS,
+à spécificité égale, une propriété non réécrite par la règle la plus récente reste héritée
+de la règle la plus ancienne — et ce bloc ancien n'a jamais été explicitement remplacé.
+
+**Conséquence concrète : le hero affiché en production n'a jamais eu le rendu prévu par la
+refonte.** Le titre s'affichait silencieusement en `Cormorant Garamond`, **en capitales**,
+avec un `letter-spacing` négatif et une `text-shadow` — et le conteneur héritait d'un
+`align-items: center; justify-content: center;` centrant tout le panneau de texte — alors
+que la refonte prévoyait un titre aligné à gauche, dans la police courante, sans ombre.
+Ce défaut existait **depuis le commit initial du projet** (`37ace43`, vérifié via
+`git show`), donc avant même la refonte du hero — la refonte a changé la structure HTML
+sans jamais toucher à l'ancien bloc CSS qui continuait de peser dessus.
+
+**Si le rendu de l'accueil semblait ne pas convenir avant cette refonte-là, c'est
+potentiellement pourquoi** : ce qui était visible à l'écran n'a jamais correspondu à ce que
+le code du hero actuel était censé produire.
+
+Corrigé au LOT 2a (`b5934a4`) : l'ancien bloc `.hero`/`.hero-title` (et toute la section
+hero-slider morte qui l'entourait) a été supprimé. Le même défaut existait aussi sur
+`.team-grid`/`.team-member img` (grille équipe) et sur `.venue-card`/`.venues-grid`
+(cartes de lieux, celui-ci fusionné par calcul de cascade plutôt que par suppression —
+voir le message du commit `b5934a4`).
+
+---
+
 ## 4. Contraintes permanentes
 
 ### SEO — à ne jamais casser
