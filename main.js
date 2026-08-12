@@ -212,19 +212,9 @@ if (burger && navLinks) {
     setBurgerExpanded(open);
   });
 
-  document.querySelectorAll('.dropdown > a').forEach(a => {
-    a.addEventListener('click', e => {
-      if (NAV_MOBILE_MQ.matches) {
-        e.preventDefault();
-        a.parentElement.classList.toggle('open');
-      }
-    });
-  });
-
   const closeMobileNav = () => {
     navLinks.classList.remove('open');
     setBurgerExpanded(false);
-    document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
   };
 
   NAV_MOBILE_MQ.addEventListener('change', e => {
