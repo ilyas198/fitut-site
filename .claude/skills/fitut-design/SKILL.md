@@ -530,9 +530,14 @@ Aucun n'utilise d'arrondi, d'ombre ni de fond coloré.
 .registre-papier .bouton:hover { color: var(--rideau); border-color: var(--rideau); }
 .registre-papier a:focus-visible { outline: 2px solid var(--rideau); outline-offset: 3px; }
 
+/* ─── État désactivé : dépend du registre, comme tout le reste ─── */
+.registre-encre  :is(a, .bouton)[aria-disabled="true"],
+.registre-rideau :is(a, .bouton)[aria-disabled="true"] { color: var(--papier-tiers); }
+.registre-papier :is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); }
+
 /* ─── Communs aux trois registres ─── */
-:is(a, .bouton):active     { border-width: 2px; }
-:is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); cursor: not-allowed; }
+:is(a, .bouton):active { border-width: 2px; }
+:is(a, .bouton)[aria-disabled="true"] { cursor: not-allowed; border-style: dashed; }
 ```
 
 ### Exemple — la distribution
