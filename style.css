@@ -1538,8 +1538,10 @@ button:focus-visible {
 @media (max-width: 599px) {
   .hero-titre [lang="fr"] { font-size: clamp(1.75rem, 9vw, 2.5rem); }
   .hero-titre [lang="ar"] { font-size: clamp(1.375rem, 7vw, 1.777rem); }
-  .hero-distribution .distribution-ligne { padding: var(--esp-1) 0; gap: 0; }
 }
+/* Le resserrement de .distribution sous 600px vit désormais dans le
+   composant lui-même (voir plus bas) : plus besoin d'un correctif
+   propre au hero, il profite à tous les usages de .distribution. */
 
 .hero-distribution { max-width: var(--largeur-archive); }
 
@@ -1893,25 +1895,36 @@ button:focus-visible {
 .registre-rideau .titre-bilingue [lang="ar"] { color: var(--corail-clair); }
 .registre-papier .titre-bilingue [lang="ar"] { color: var(--rideau); }
 
-/* ---- 2. .distribution (§15, §26) — registre encre ---- */
+/* ---- 2. .distribution (§15, §26) — registre encre ----
+   Clé-valeur sur une seule ligne dès le mobile — dt à gauche, dd à
+   droite, jamais empilé (mesuré : l'empilement doublait la hauteur
+   sans raison). Le filet de conduite pointillé n'apparaît qu'à partir
+   de 1024px, en plus de la colonne dt élargie — pas un changement de
+   structure, un embellissement. */
 .distribution { margin: 0; }
 .distribution-ligne {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--esp-1);
-  padding: var(--esp-2) 0;
+  grid-template-columns: minmax(auto, 40%) 1fr;
+  align-items: baseline;
+  gap: var(--esp-2);
+  padding: var(--esp-1) 0;
   border-bottom: 1px solid var(--filet-sombre);
+}
+@media (min-width: 600px) {
+  .distribution-ligne { padding: var(--esp-3) 0; } /* --esp-1 mobile, --esp-3 dès 600px (desktop) */
 }
 .distribution dt {
   font-family: var(--police-donnees);
   font-size: var(--pas-s);
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  line-height: 1.35; /* explicite : héritait du 1.7 de body (ancien système), signalé au bilan */
 }
 .distribution dd {
   margin: 0;
   font-family: var(--police-revue);
   font-size: var(--pas-base);
+  line-height: 1.35; /* idem */
 }
 .distribution dd em { font-style: italic; }
 /* Tout contenu en langue arabe reçoit la police arabe (§5), qu'il occupe
@@ -1922,7 +1935,6 @@ button:focus-visible {
 @media (min-width: 1024px) {
   .distribution-ligne {
     grid-template-columns: minmax(200px, 320px) 1fr;
-    align-items: baseline;
     gap: var(--esp-3);
   }
   .distribution dt {
