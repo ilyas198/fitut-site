@@ -83,7 +83,6 @@ Répondre à ces cinq questions. Si une réponse manque, la poser à l'utilisate
    fiche d'archive, un texte de revue ? **Par défaut, ce n'est pas une carte.** → §15
 4. **Composition** — où est l'asymétrie ? Un bloc centré doit être justifié. → §7
 5. **Mobile** — à quoi ressemble ce bloc à 375 px ? On le conçoit là d'abord. → §30
-
 ---
 
 ## 1. Identité du FITUT
@@ -166,7 +165,6 @@ Règles de rythme :
 - Le papier occupe au minimum **30 %** de la hauteur de chaque page. Une page entièrement
   sombre tombe dans le défaut ② (voir §0).
 - Toute bascule de registre est précédée de `--esp-8`.
-
 ### L'élément signature : la ligne bilingue
 
 Le logotype du FITUT est bilingue par construction — les tracés du mot « fitut » se lisent
@@ -218,7 +216,6 @@ Elle passe par quatre canaux et **jamais par le motif** :
 2. **Les couleurs de la marque** — bordeaux et corail viennent du logo, pas d'un cliché
 3. **Le registre institutionnel** — la sobriété d'un document officiel
 4. **La lumière** — contraste dur du détroit dans le traitement photo (§13)
-
 **Interdits absolus** : zellige, arabesque, moucharabieh, main de Fatma, calligraphie
 décorative, motif géométrique « oriental », dégradé « couchant marocain », palmier,
 babouche, théière.
@@ -235,7 +232,6 @@ babouche, théière.
    changement de registre.
 6. **Une seule couleur d'accent visible à la fois** dans le champ de vision.
 7. **Le filet de 1 px est le seul séparateur autorisé.**
-
 ## 8. Principes UX
 
 1. **Le contenu est déjà remarquable ; l'interface s'efface.**
@@ -248,7 +244,6 @@ babouche, théière.
    vide ni un « à venir ». Comportement déjà en place dans `editions.js`, à étendre.
 6. **Jamais de vocabulaire commercial.** Pas de « Découvrez », « Rejoignez-nous »,
    « Ne manquez pas », « Réservez votre place ».
-
 ## 9. Typographie
 
 Le logotype est géométrique, monolinéaire, à contreformes généreuses, et bilingue dans un
@@ -293,7 +288,6 @@ familles sont libres et hébergeables localement.
 - Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`
 - Titres de pièces : `Literata` italique, toujours
 - Lettrine autorisée uniquement sur le premier paragraphe d'un texte institutionnel long
-
 **Interdits** : Montserrat, Cormorant Garamond, Poppins, Inter, Lato, Open Sans, Playfair
 Display, Raleway, Archivo, Newsreader. Ne jamais introduire une police hors de ce tableau
 sans validation.
@@ -372,7 +366,6 @@ courant long.
   libellé ou d'une position.
 - **Ne jamais appliquer `opacity` à du texte** — l'opacité réduit le contraste réel, pas
   seulement l'apparence. Utiliser une couleur explicite.
-
 **Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs d'accent
 multiples dans un même écran, transparences empilées (glassmorphism), crème + or.
 
@@ -437,7 +430,6 @@ l'hétérogénéité du fonds actuel.
   portraits — jamais de portrait rond
 - Chaque image porte un **crédit photographique visible** en `Plex Mono` sous l'image
 - Toujours `alt` descriptif, `width`, `height` explicites, `loading="lazy"` sauf le hero
-
 **L'affiche officielle ne se recadre jamais et ne sert jamais de fond avec du texte
 par-dessus.** C'est l'objet du festival, on la présente entière.
 
@@ -496,11 +488,34 @@ Aucun n'utilise d'arrondi, d'ombre ni de fond coloré.
 **États d'interaction — identiques pour tous les composants cliquables :**
 
 ```css
-/* repos    */ color: inherit; border-color: var(--filet-clair);
-/* survol   */ border-color: var(--corail); color: var(--corail);
-/* focus    */ outline: 2px solid var(--corail); outline-offset: 3px;
-/* actif    */ opacity: 0.7;
-/* désactivé*/ opacity: 0.4; cursor: not-allowed;
+/* ─── Registre ENCRE ─── */
+.registre-encre a,
+.registre-encre .bouton {
+  color: var(--papier);
+  border-color: var(--filet-sombre);
+}
+.registre-encre a:hover,
+.registre-encre .bouton:hover  { color: var(--corail); border-color: var(--corail); }
+.registre-encre a:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+
+/* ─── Registre RIDEAU ─── le corail plein n'y passe qu'en AA large */
+.registre-rideau a:hover,
+.registre-rideau .bouton:hover { color: var(--corail-clair); border-color: var(--corail-clair); }
+.registre-rideau a:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+
+/* ─── Registre PAPIER ─── le corail y est ILLISIBLE (2,72:1) */
+.registre-papier a,
+.registre-papier .bouton {
+  color: var(--texte);
+  border-color: var(--filet-clair);
+}
+.registre-papier a:hover,
+.registre-papier .bouton:hover { color: var(--rideau); border-color: var(--rideau); }
+.registre-papier a:focus-visible { outline: 2px solid var(--rideau); outline-offset: 3px; }
+
+/* ─── Communs aux trois registres ─── */
+:is(a, .bouton):active     { border-width: 2px; }
+:is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); cursor: not-allowed; }
 ```
 
 ### Exemple — la distribution
@@ -659,7 +674,6 @@ passe par la fonction `esc()`.
 - **par édition** — chronologique, dans la fiche d'édition
 - **par prix** — « tous les Grands Prix depuis 2007 », une histoire que le site actuel
   ne permet pas de lire
-
 Intitulés de prix en `Plex Mono`, titres de pièces en `Literata` italique. Le Grand Prix
 est le **seul** élément à porter `--rideau`.
 
@@ -711,7 +725,6 @@ quasi exclusivement mobile pendant les cinq jours du festival.
 - Cibles tactiles de **48 px minimum**, zone de clic élargie sur les éléments fins
 - **Aucune information ni action dépendante du survol**
 - `@media (hover: none)` neutralise tous les effets de survol
-
 ## 31. Accessibilité
 
 - **Contrastes** : AAA pour tout texte courant ; le corail et le corail-clair sont en AA
@@ -725,7 +738,6 @@ quasi exclusivement mobile pendant les cinq jours du festival.
 - Filtres utilisables au clavier, changements annoncés en `aria-live`
 - Aucune information portée par la couleur seule
 - Conserver le `skip-link`
-
 ## 32. Performance
 
 Public au Maroc, souvent en 4G.
@@ -736,7 +748,6 @@ Public au Maroc, souvent en 4G.
 - **Aucune librairie tierce, aucun framework, aucun build.** HTML/CSS/JS natif.
 - Cible : moins de **200 ko** à la première vue hors images
 - Ne jamais minifier : le projet doit rester lisible et éditable à la main
-
 ## 33. SEO
 
 Le contenu est un gisement de longue traîne inexploité.
@@ -751,7 +762,6 @@ Le contenu est un gisement de longue traîne inexploité.
 - Palmarès en texte, jamais en image
 - Maintenir les redirections 301 existantes
 - Mettre à jour `sitemap.xml` après tout ajout de page ou d'édition
-
 ## 34. Motion design
 
 **Un seul moment orchestré, puis le silence.**
@@ -764,7 +774,6 @@ Partout ailleurs :
 - Apparition au défilement : **opacité seule**, 400 ms, **aucune translation**
 - Survol : changement de couleur de filet uniquement, **jamais de mise à l'échelle**
 - `prefers-reduced-motion` respecté systématiquement
-
 **Tokens de mouvement — aucune durée ni courbe en dur :**
 
 ```css
@@ -795,9 +804,12 @@ animation qui ne sert pas le sujet.
   superlatif, pas de « unique », « inoubliable », « exceptionnel ».
 - Les libellés d'action décrivent ce qui se passe : « Déposer une candidature », pas
   « Cliquez ici » ni « Postuler maintenant ».
-
 ## 35 bis. Convention de code CSS
 
+- **Toute section porte sa classe de registre** : `.registre-encre`, `.registre-rideau`
+  ou `.registre-papier`. Elle n'est pas décorative — elle pilote le fond, la couleur de
+  texte et les états d'interaction accessibles. Un composant ne définit jamais ses propres
+  couleurs d'état : il hérite de son registre.
 - **Noms de classes en français**, en minuscules, mots séparés par un tiret :
   `.entree-programme`, `.fiche-archive`, `.marge-regie`
 - Variante d'un composant : suffixe `--` → `.bouton--primaire`, `.fiche-archive--a-venir`
@@ -809,7 +821,6 @@ animation qui ne sert pas le sujet.
 - **Ne jamais faire dépendre la mise en forme d'un sélecteur d'élément** (`section`, `div`)
   qui entrerait en conflit de spécificité avec une classe. Marges et espacements entre
   sections passent exclusivement par des classes.
-
 ## 36. Anti-patterns à éviter
 
 Chacun de ces éléments est présent ou l'a été dans le code, et doit disparaître :
@@ -857,7 +868,6 @@ dans la conversation en cours.**
 - ❌ Ne pas construire une page uniquement avec des cartes
 - ❌ Ne pas introduire une bibliothèque d'icônes
 - ❌ Ne pas utiliser d'emoji dans l'interface
-
 ## Culture
 
 - ❌ Ne pas utiliser de zellige, arabesque, moucharabieh, main de Fatma, calligraphie
@@ -866,7 +876,6 @@ dans la conversation en cours.**
 - ❌ Ne pas traiter le Haut Patronage comme un badge marketing
 - ❌ Ne pas afficher un titre arabe en police de repli système
 - ❌ Ne pas oublier `lang` et `dir` sur un contenu non français
-
 ## Contenu
 
 - ❌ Ne pas inventer un chiffre, une date, un nom de troupe ou un palmarès
@@ -874,7 +883,6 @@ dans la conversation en cours.**
 - ❌ Ne pas coder en dur des données d'édition dans le HTML
 - ❌ Ne pas employer de vocabulaire commercial ni de superlatif
 - ❌ Ne pas afficher un palmarès sous forme d'image
-
 ## Technique
 
 - ❌ Ne pas introduire de framework, de build, de npm, de Tailwind
@@ -885,14 +893,12 @@ dans la conversation en cours.**
 - ❌ Ne pas supprimer le `skip-link`, le `focus-visible` ni `prefers-reduced-motion`
 - ❌ Ne pas casser une balise SEO ni un bloc JSON-LD existant
 - ❌ Ne pas minifier le code
-
 ## Mouvement
 
 - ❌ Ne pas ajouter de parallaxe, de curseur personnalisé, de défilement détourné
 - ❌ Ne pas animer un chiffre d'archive
 - ❌ Ne pas mettre à l'échelle au survol
 - ❌ Ne pas ajouter d'animation qui ne serve pas le sujet
-
 ---
 
 # CONTRÔLE AVANT LIVRAISON
@@ -914,6 +920,5 @@ Vérifier ces onze points avant d'annoncer qu'un travail visuel est terminé.
       l'environnement le permet, sinon relecture du HTML produit bloc par bloc
 - [ ] **Test du défaut ③** — sans le surtitrage et sans la bascule de registres, la page
       garderait-elle une identité FITUT ? Si non, elle n'est pas terminée.
-
 Si un point échoue, corriger avant de livrer. Si un point ne peut pas être respecté,
 le signaler explicitement à l'utilisateur avec la raison.
