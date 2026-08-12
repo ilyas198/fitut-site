@@ -10,7 +10,7 @@
        (dette technique). Bascule vers du .woff2 auto-hébergé au LOT 8. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
   <style>
@@ -19,17 +19,12 @@
     body { font-family: var(--police-revue); }
     .demo-entete {
       padding: var(--esp-5) var(--esp-2) var(--esp-4);
-      border-bottom: 1px solid var(--filet-clair);
+      border-bottom: 1px solid var(--filet-sombre);
     }
-    .demo-entete h1 {
-      font-family: var(--police-affiche);
-      font-size: var(--pas-xl);
-      letter-spacing: -0.02em;
-      max-width: var(--largeur-archive);
-      margin: var(--esp-2) auto 0;
-      padding: 0 var(--esp-2);
-    }
-    .demo-entete p {
+    .demo-entete .titre-bilingue { max-width: var(--largeur-archive); margin: var(--esp-2) auto 0; padding: 0 var(--esp-2); }
+    .demo-entete .titre-bilingue [lang="fr"] { font-size: var(--pas-xl); }
+    .demo-entete .titre-bilingue [lang="ar"] { font-size: var(--pas-l); }
+    .demo-entete p.demo-chapeau {
       max-width: var(--largeur-revue);
       margin: var(--esp-2) auto 0;
       padding: 0 var(--esp-2);
@@ -50,41 +45,48 @@
       margin-top: var(--esp-1);
       font-family: var(--police-donnees);
       font-size: var(--pas-xs);
-      color: var(--encre-tiers-aa); /* pas d'opacity : 0,6 tombait à 4,40:1 sur --chaux, sous AA */
     }
-    .registre-salle .demo-etat-label { color: var(--chaux); opacity: 0.7; } /* 8,19:1 sur --noir-salle */
+    .registre-papier .demo-etat-label { color: var(--texte-tiers); } /* 7,46:1, AAA — token existant */
+    /* Pas d'équivalent "tiers" pour encre/rideau (voir bilan) et jamais
+       d'opacity sur du texte (§10, §31) : demo-etat-label y hérite de la
+       couleur pleine du registre, la hiérarchie vient de --pas-xs seul. */
     .demo-piece { display: flex; flex-direction: column; gap: var(--esp-1); }
     /* .skip-link vient de l'ancien système (--charcoal/--cream) : réaligné
        ici sur les tokens de cette page, pas dans style.css. */
-    .skip-link:focus { background: var(--noir-salle); color: var(--chaux); }
+    .skip-link:focus { background: var(--encre-nuit); color: var(--papier); }
   </style>
 </head>
 <body>
 
   <a class="skip-link" href="#contenu">Aller au contenu</a>
 
-  <!-- ============ EN-TÊTE DE LA DÉMONSTRATION (registre scène) ============ -->
-  <header class="demo-entete registre-scene">
+  <!-- ============ EN-TÊTE DE LA DÉMONSTRATION (registre encre) ============ -->
+  <header class="demo-entete registre-encre">
     <p class="surtitre">LOT 3 — page temporaire, non liée au menu, à supprimer au LOT 8</p>
-    <h1>Les 8 composants de fitut&#8209;design §15</h1>
-    <p>Chaque composant est montré dans son registre imposé (salle ou scène), avec ses états
-      d'interaction réels — survole ou navigue au clavier pour voir le survol et le focus. Tout
-      le contenu ci-dessous est réel, tiré de <code>data/editions.json</code> et de
-      <code>CLAUDE.md</code> : aucune donnée inventée.</p>
+    <h1 class="titre-bilingue">
+      <span lang="fr">Le théâtre universitaire rassemble le monde</span>
+      <span lang="ar" dir="rtl">المسرح الجامعي يجمع العالم</span>
+    </h1>
+    <p class="demo-chapeau">Chaque composant cliquable (lien, <code>.bouton</code>) apparaît dans les
+      trois registres ci-dessous, pour prouver que ses états s'adaptent au contexte — survole ou
+      navigue au clavier pour les voir. Tout le contenu est réel, tiré de
+      <code>data/editions.json</code> et de <code>CLAUDE.md</code> : aucune donnée inventée. Le
+      titre bilingue ci-dessus reprend exactement la paire française/arabe de la skill §6, sans
+      en inventer une autre ailleurs sur cette page.</p>
   </header>
 
   <main id="contenu">
 
-  <!-- ============ REGISTRE SALLE — distribution, entree-programme, fiche-archive, filet, bouton, surtitre ============ -->
-  <section class="section-demo registre-salle">
+  <!-- ============ REGISTRE ENCRE — majoritaire ============ -->
+  <section class="section-demo registre-encre">
     <div class="grille-regie">
       <div class="marge-regie">
-        <p class="surtitre">Registre salle — 5 composants</p>
+        <p class="surtitre">Registre encre — majoritaire</p>
       </div>
       <div class="contenu-regie">
 
         <div class="demo-bloc">
-          <h2 class="demo-titre-composant">1. .surtitre — registre salle</h2>
+          <h2 class="demo-titre-composant">1. .surtitre</h2>
           <p class="surtitre">18ᵉ édition — Tanger — 3.11 › 7.11.2025</p>
         </div>
 
@@ -109,6 +111,8 @@
                 Essaâdi, Tanger</dd>
             </div>
           </dl>
+          <p class="demo-etat-label">Grand Prix : --rideau en fond de bloc, jamais en texte sur fond
+            sombre (§10 règle 2) — voir le message du commit.</p>
         </div>
 
         <hr class="filet-section">
@@ -145,7 +149,7 @@
         <hr class="filet-section">
 
         <div class="demo-bloc">
-          <h2 class="demo-titre-composant">7. .bouton — registre salle (pas de bleu, éclaircissement vers --chaux)</h2>
+          <h2 class="demo-titre-composant">7. .bouton — registre encre (--corail, 6,01:1)</h2>
           <div class="demo-boutons">
             <div class="demo-piece">
               <button type="button" class="bouton">Voir le programme →</button>
@@ -153,19 +157,19 @@
             </div>
             <div class="demo-piece">
               <button type="button" class="bouton">Survole-moi</button>
-              <span class="demo-etat-label">survol → filet et texte passent à --chaux plein</span>
+              <span class="demo-etat-label">survol → --corail</span>
             </div>
             <div class="demo-piece">
               <button type="button" class="bouton">Navigue au clavier (Tab)</button>
-              <span class="demo-etat-label">focus → outline 2px --chaux</span>
+              <span class="demo-etat-label">focus → outline 2px --corail</span>
             </div>
             <div class="demo-piece">
-              <button type="button" class="bouton est-actif">Déposer une candidature</button>
-              <span class="demo-etat-label">actif — opacité 0,7</span>
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
             </div>
             <div class="demo-piece">
-              <button type="button" class="bouton" disabled>Complet</button>
-              <span class="demo-etat-label">désactivé — opacité 0,4</span>
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --texte-tiers</span>
             </div>
           </div>
         </div>
@@ -174,17 +178,17 @@
     </div>
   </section>
 
-  <!-- ============ REGISTRE SCÈNE — surtitre, citation, fiche-adresse, filet, bouton ============ -->
-  <section class="section-demo registre-scene">
+  <!-- ============ REGISTRE RIDEAU — rare, interruption ============ -->
+  <section class="section-demo registre-rideau">
     <div class="grille-regie">
       <div class="marge-regie">
-        <p class="surtitre">Registre scène — 4 composants</p>
+        <p class="surtitre">Registre rideau — rare</p>
       </div>
       <div class="contenu-regie">
 
         <div class="demo-bloc">
-          <h2 class="demo-titre-composant">1. .surtitre — registre scène</h2>
-          <p class="surtitre">Chiffres 2025 — 9 pays · 12 spectacles · 130 festivaliers</p>
+          <h2 class="demo-titre-composant">1. .surtitre — registre rideau</h2>
+          <p class="surtitre">141 prix archivés — éditions 1 à 17</p>
         </div>
 
         <hr class="filet-section">
@@ -198,6 +202,51 @@
               mais surtout par sa jeunesse qui la porte.</p>
             <cite>qui-sommes-nous.html, ASAU</cite>
           </blockquote>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre rideau (--corail-clair, 5,79:1 — AA large)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → --corail-clair (le corail plein échoue ici, 4,39:1)</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --corail-clair</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --texte-tiers</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTRE PAPIER — lecture ============ -->
+  <section class="section-demo registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre papier — lecture</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre — registre papier</h2>
+          <p class="surtitre">Chiffres 2025 — 9 pays · 12 spectacles · 130 festivaliers</p>
         </div>
 
         <hr class="filet-section">
@@ -217,7 +266,17 @@
         <hr class="filet-section">
 
         <div class="demo-bloc">
-          <h2 class="demo-titre-composant">7. .bouton — registre scène (--bleu-detroit, 8,49:1 AAA)</h2>
+          <h2 class="demo-titre-composant">6. .filet-section</h2>
+          <p class="demo-etat-label">
+            Le filet de 1px utilisé six fois sur cette page pour séparer chaque composant en
+            est la démonstration — aucun exemplaire supplémentaire ci-dessous.
+          </p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre papier (--rideau, 11,92:1 — AAA)</h2>
           <div class="demo-boutons">
             <div class="demo-piece">
               <button type="button" class="bouton">Voir le programme →</button>
@@ -225,31 +284,21 @@
             </div>
             <div class="demo-piece">
               <button type="button" class="bouton">Survole-moi</button>
-              <span class="demo-etat-label">survol → filet et texte passent à --bleu-detroit</span>
+              <span class="demo-etat-label">survol → --rideau (le corail est illisible ici, 2,72:1)</span>
             </div>
             <div class="demo-piece">
               <button type="button" class="bouton">Navigue au clavier (Tab)</button>
-              <span class="demo-etat-label">focus → outline 2px --bleu-detroit</span>
+              <span class="demo-etat-label">focus → outline 2px --rideau</span>
             </div>
             <div class="demo-piece">
-              <button type="button" class="bouton est-actif">Déposer une candidature</button>
-              <span class="demo-etat-label">actif — opacité 0,7</span>
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
             </div>
             <div class="demo-piece">
-              <button type="button" class="bouton" disabled>Complet</button>
-              <span class="demo-etat-label">désactivé — opacité 0,4</span>
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --texte-tiers</span>
             </div>
           </div>
-        </div>
-
-        <hr class="filet-section">
-
-        <div class="demo-bloc">
-          <h2 class="demo-titre-composant">6. .filet-section</h2>
-          <p class="demo-etat-label">
-            Le filet de 1px utilisé six fois sur cette page pour séparer chaque composant en
-            est la démonstration — aucun exemplaire supplémentaire ci-dessous.
-          </p>
         </div>
 
       </div>
