@@ -76,6 +76,11 @@
   --pas-2xl:  clamp(3rem, 9vw, 6.313rem);    /* affiche */
   --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
 
+  /* ---------- Typographie — interlignage, jamais d'héritage (§9) ---------- */
+  --interligne-serre:   1.2;    /* titres d'affiche */
+  --interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
+  --interligne-lecture: 1.65;   /* texte de revue */
+
   /* ---------- Grilles — largeurs de contenu par registre (§11) ---------- */
   --largeur-revue:   680px;   /* lecture longue */
   --largeur-archive: 1040px;  /* listes, tableaux, programme */
@@ -1866,6 +1871,7 @@ button:focus-visible {
   font-size: var(--pas-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  line-height: var(--interligne-donnees);
   color: var(--corail); /* défaut : registre encre, 6,01:1 (§31) */
 }
 .registre-rideau .surtitre { color: var(--corail-clair); } /* 5,79:1, AA large */
@@ -1882,14 +1888,14 @@ button:focus-visible {
   font-family: var(--police-affiche);
   font-weight: 500;
   letter-spacing: -0.03em;
-  line-height: 1.04;
+  line-height: var(--interligne-serre); /* était 1,04 en dur, harmonisé */
 }
 .titre-bilingue [lang="ar"] {
   display: block;
   font-family: var(--police-arabe);
   direction: rtl;
   letter-spacing: 0;
-  line-height: 1.3;
+  line-height: var(--interligne-serre); /* était 1,3 — reste un rôle de titre, voir bilan */
   color: var(--corail); /* même règle registre-aware que .surtitre (§9, §31) */
 }
 .registre-rideau .titre-bilingue [lang="ar"] { color: var(--corail-clair); }
@@ -1918,13 +1924,14 @@ button:focus-visible {
   font-size: var(--pas-s);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  line-height: 1.35; /* explicite : héritait du 1.7 de body (ancien système), signalé au bilan */
+  line-height: var(--interligne-donnees);
 }
 .distribution dd {
   margin: 0;
   font-family: var(--police-revue);
   font-size: var(--pas-base);
-  line-height: 1.35; /* idem */
+  line-height: var(--interligne-donnees); /* dd est en police-revue mais reste une valeur de fait
+    courte (lauréat, date...), pas un texte de lecture — voir bilan si ça doit changer */
 }
 .distribution dd em { font-style: italic; }
 /* Tout contenu en langue arabe reçoit la police arabe (§5), qu'il occupe
@@ -1970,12 +1977,14 @@ button:focus-visible {
   font-family: var(--police-affiche);
   font-size: var(--pas-l);
   letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
 }
 .entree-programme-titre[lang="ar"] { letter-spacing: 0; }
 .entree-programme-traduction {
   font-family: var(--police-revue);
   font-style: italic;
   font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
   margin-top: var(--esp-1);
 }
 .entree-programme-meta {
@@ -1983,6 +1992,7 @@ button:focus-visible {
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   letter-spacing: 0.05em;
+  line-height: var(--interligne-donnees);
   color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit — .entree-programme est registre encre uniquement */
 }
 .entree-programme-meta span + span::before { content: ' \00b7 '; }
@@ -2002,10 +2012,11 @@ a.entree-programme-lien { display: block; }
 .fiche-archive-annee {
   font-family: var(--police-affiche);
   font-size: var(--pas-2xl);
-  line-height: 0.9;
+  line-height: var(--interligne-serre); /* était 0,9 en dur — plus lâche pour un grand chiffre
+    d'affiche, à repasser en dur si le rendu ne convient pas, voir bilan */
 }
 .fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
-.fiche-archive-corps p { max-width: var(--largeur-revue); line-height: 1.65; }
+.fiche-archive-corps p { max-width: var(--largeur-revue); line-height: var(--interligne-lecture); }
 
 /* ---- 5. .citation (§15) — les deux registres ---- */
 .citation {
@@ -2019,7 +2030,7 @@ a.entree-programme-lien { display: block; }
   font-family: var(--police-revue);
   font-style: italic;
   font-size: var(--pas-m);
-  line-height: 1.65;
+  line-height: var(--interligne-lecture);
 }
 .citation cite {
   display: block;
@@ -2029,6 +2040,7 @@ a.entree-programme-lien { display: block; }
   font-size: var(--pas-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  line-height: var(--interligne-donnees);
 }
 .registre-papier .citation cite { color: var(--texte-tiers); } /* 7,46:1, AAA */
 .registre-encre .citation cite,
@@ -2041,6 +2053,7 @@ a.entree-programme-lien { display: block; }
   margin-top: var(--esp-1);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
   color: var(--texte-tiers); /* défaut : registre papier, 7,46:1 */
 }
 .registre-encre .credit-photo,
@@ -2070,7 +2083,9 @@ a.entree-programme-lien { display: block; }
   font-size: var(--pas-s);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  line-height: 1;
+  line-height: 1; /* déjà explicite, volontairement hors des 3 valeurs : centrage
+    vertical d'un libellé d'un seul mot dans une boîte de hauteur fixe (48px min),
+    pas un rôle de lecture — voir bilan si ça doit s'aligner quand même */
   background: transparent;
   border: 1px solid; /* couleur posée par le bloc États d'interaction */
   cursor: pointer;
@@ -2088,6 +2103,7 @@ a.entree-programme-lien { display: block; }
 .fiche-adresse dt {
   font-family: var(--police-revue);
   font-size: var(--pas-m);
+  line-height: var(--interligne-lecture);
   margin-top: var(--esp-3);
 }
 .fiche-adresse dt:first-child { margin-top: 0; }
@@ -2095,6 +2111,7 @@ a.entree-programme-lien { display: block; }
   margin: var(--esp-1) 0 0;
   font-family: var(--police-donnees);
   font-size: var(--pas-s);
+  line-height: var(--interligne-donnees);
   color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
 }
 .fiche-adresse-plan {
@@ -2107,6 +2124,7 @@ a.entree-programme-lien { display: block; }
   background: var(--papier-ombre);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
   color: var(--texte-tiers); /* 6,42:1 sur --papier-ombre, AA — vérifié, pas supposé */
 }
 

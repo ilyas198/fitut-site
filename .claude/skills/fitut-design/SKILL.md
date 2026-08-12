@@ -282,12 +282,25 @@ familles sont libres et hébergeables localement.
 --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
 ```
 
+**Interlignage — trois valeurs, jamais d'héritage.** Un composant qui ne fixe pas son
+`line-height` hérite silencieusement de celui de la page (encore `1.7` tant que l'ancien
+système coexiste, LOT 6) — trouvé sur plusieurs composants du LOT 3/4, corrigé après coup.
+**Tout élément de texte des 8 composants fixe l'une des trois valeurs ci-dessous — aucun
+ne doit hériter.**
+
+```css
+--interligne-serre:   1.2;    /* titres d'affiche */
+--interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
+--interligne-lecture: 1.65;   /* texte de revue */
+```
+
 **Règles de composition**
-- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: 1.04`
-- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur, en `--corail`
-  sur fond sombre ou `--rideau` sur papier
-- Texte de revue : `Literata`, `line-height: 1.65`, **68 caractères maximum** par ligne
-- Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`
+- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: var(--interligne-serre)`
+- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur,
+  `line-height: var(--interligne-serre)`, en `--corail` sur fond sombre ou `--rideau` sur papier
+- Texte de revue : `Literata`, `line-height: var(--interligne-lecture)`, **68 caractères
+  maximum** par ligne
+- Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`, `line-height: var(--interligne-donnees)`
 - Titres de pièces : `Literata` italique, toujours
 - Lettrine autorisée uniquement sur le premier paragraphe d'un texte institutionnel long
 **Interdits** : Montserrat, Cormorant Garamond, Poppins, Inter, Lato, Open Sans, Playfair
