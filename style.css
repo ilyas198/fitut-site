@@ -1905,9 +1905,14 @@ button:focus-visible {
 .registre-papier a:focus-visible,
 .registre-papier .bouton:focus-visible { outline: 2px solid var(--rideau); outline-offset: 3px; }
 
+/* État désactivé : dépend du registre, comme tout le reste */
+.registre-encre  :is(a, .bouton)[aria-disabled="true"],
+.registre-rideau :is(a, .bouton)[aria-disabled="true"] { color: var(--papier-tiers); }
+.registre-papier :is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); }
+
 /* Communs aux trois registres */
 :is(a, .bouton):active { border-width: 2px; }
-:is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); cursor: not-allowed; }
+:is(a, .bouton)[aria-disabled="true"] { cursor: not-allowed; border-style: dashed; }
 
 /* ---- 1. .surtitre (§6) — les deux registres, jamais d'opacity sur du
    texte (§10, §31) : une couleur explicite par registre. ---- */
