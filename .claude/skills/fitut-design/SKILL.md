@@ -43,8 +43,8 @@ exploration s'applique **uniquement aux axes libres**.
 |---|---|
 | Palette et rôles de couleur (§10) | Composition interne d'une section |
 | Familles et échelle typographiques (§9) | Répartition dans la grille 12 colonnes |
-| Bascule salle ↔ scène (§6) | Ordre et densité des blocs |
-| Surtitrage comme unique signature (§6) | Architecture et découpage des composants |
+| Bascule encre ↔ rideau ↔ papier (§6) | Ordre et densité des blocs |
+| Ligne bilingue + surtitrage (§6) | Architecture et découpage des composants |
 | Traitement photo (§13) | Hiérarchie interne d'une fiche |
 | Échelle d'espacement (§12) | Points d'entrée et parcours de lecture |
 | Motion : un seul moment orchestré (§34) | Chorégraphie interne du lever de rideau |
@@ -62,12 +62,12 @@ la direction du défaut.
 | Défaut signalé | Position du FITUT | Garde-fou |
 |---|---|---|
 | ① crème + serif à fort contraste + terracotta | **rejeté** (§10, DO NOT) | — |
-| ② fond quasi noir + un accent vif unique | **proximité réelle** | Le site n'est **jamais intégralement sombre**. Sur toute page, le registre *scène* occupe au minimum 40 % de la hauteur. L'accent n'est ni acide ni vermillon : c'est un ultramarine profond, et le rouge est un signal rare, jamais un accent d'ambiance. |
-| ③ mise en page broadsheet, filets fins, angles vifs, colonnes denses | **proximité réelle** | Interdiction du pastiche de journal : **pas de texte en colonnes multiples**, pas de filet qui ne sépare rien, pas de manchette. Un filet n'apparaît que s'il sépare deux blocs de nature différente. Ce qui distingue le FITUT du broadsheet est la bascule de registre et le surtitrage porteur de données — si ces deux éléments disparaissent d'une page, la page tombe dans le défaut ③. |
+| ② fond quasi noir + un accent vif unique | **proximité réelle** | Le site n'est **jamais intégralement sombre** : le registre *papier* occupe au minimum 30 % de chaque page, et le *rideau* interrompt l'encre. La base n'est pas un noir neutre mais un bleu encre, et l'accent corail vient du logo officiel — ce n'est pas un accent choisi pour trancher. |
+| ③ mise en page broadsheet, filets fins, angles vifs, colonnes denses | **proximité réelle** | Interdiction du pastiche de journal : **pas de texte en colonnes multiples**, pas de filet qui ne sépare rien, pas de manchette. Un filet n'apparaît que s'il sépare deux blocs de nature différente. Ce qui distingue le FITUT du broadsheet est la bascule à trois registres et la ligne bilingue — si ces éléments disparaissent d'une page, la page tombe dans le défaut ③. |
 
-Test à s'appliquer avant de livrer une page : *si je retirais le surtitrage et la bascule
-salle/scène, resterait-il quelque chose de spécifique au FITUT ?* Si la réponse est non,
-la page n'est pas terminée.
+Test à s'appliquer avant de livrer une page : *si je retirais la ligne bilingue, le
+surtitrage et la bascule de registres, resterait-il quelque chose de spécifique au FITUT ?*
+Si la réponse est non, la page n'est pas terminée.
 
 ---
 
@@ -75,8 +75,8 @@ la page n'est pas terminée.
 
 Répondre à ces cinq questions. Si une réponse manque, la poser à l'utilisateur.
 
-1. **Registre** — ce bloc appartient-il à *la salle* (fond noir, on regarde) ou à
-   *la scène* (fond chaux, on lit) ? → §6
+1. **Registre** — ce bloc est-il *encre* (base, on regarde), *rideau* (interruption rare)
+   ou *papier* (on lit) ? → §6
 2. **Surtitre** — quel fait réel porte l'annotation en marge ? Si aucun fait réel
    n'existe, **il n'y a pas de surtitre**. → §6
 3. **Forme juste** — le contenu est-il une distribution, une entrée de programme, une
@@ -146,25 +146,45 @@ prévenir : c'est une décision structurelle, pas un ajout.
 
 ## 6. Direction artistique
 
-### Le principe : la salle et la scène
+### Le principe : trois registres
 
-Un théâtre a deux états, et le noir les précède.
+Le site n'a pas deux états mais trois, qui se relaient. Chacun a un fond, un rôle et
+une posture de lecture.
 
 | Registre | Fond | Contenu | Posture |
 |---|---|---|---|
-| **La salle** | `--noir-salle` | hero, spectacles, archives, palmarès, galeries, affiches | on regarde |
-| **La scène** | `--chaux` | ASAU, textes, informations pratiques, contact, partenaires | on lit |
+| **L'encre** | `--encre-nuit` | base majoritaire : hero, spectacles, archives, galeries, navigation | on regarde |
+| **Le rideau** | `--rideau` | moments d'interruption : chiffres clés, hommages, appel à candidature, Grand Prix | on s'arrête |
+| **Le papier** | `--papier` | institution et lecture : ASAU, textes longs, palmarès, informations pratiques, contact | on lit |
 
-Aucune page n'est entièrement dans un seul registre. **La bascule d'un registre à l'autre
-est l'événement rythmique du site** — c'est elle qui remplace le centrage et les
-séparateurs décoratifs. Elle ne coûte aucune animation.
+**La bascule d'un registre à l'autre est l'événement rythmique du site** — c'est elle qui
+remplace le centrage et les séparateurs décoratifs. Elle ne coûte aucune animation.
 
-Règle : une bascule de registre est toujours précédée de `--esp-8`.
+Règles de rythme :
+- L'encre est **majoritaire**. Le rideau est **rare** : au maximum deux blocs par page,
+  jamais deux consécutifs. Sa force vient de sa rareté.
+- Le papier occupe au minimum **30 %** de la hauteur de chaque page. Une page entièrement
+  sombre tombe dans le défaut ② (voir §0).
+- Toute bascule de registre est précédée de `--esp-8`.
 
-### L'élément signature : le surtitrage
+### L'élément signature : la ligne bilingue
 
-Au FITUT, le surtitrage est l'objet technique qui rend le festival possible. Le site
-l'adopte comme dispositif typographique transversal.
+Le logotype du FITUT est bilingue par construction — les tracés du mot « fitut » se lisent
+simultanément en latin et en arabe, et les deux baselines, française et arabe, sont
+justifiées à la même largeur exacte.
+
+**Le site reprend ce geste comme signature.** Tout titre majeur porte sa contrepartie
+arabe, à parité typographique, jamais en note ni en repli.
+
+```html
+<h1 class="titre-bilingue">
+  <span lang="fr">Le théâtre universitaire rassemble le monde</span>
+  <span lang="ar" dir="rtl">المسرح الجامعي يجمع العالم</span>
+</h1>
+```
+
+Le second élément signature est le **surtitre** : une ligne fine en monospace, capitales
+espacées, alignée dans la marge de régie.
 
 ```html
 <p class="surtitre">Éd. 19 — Tanger — 26.10 › 30.10.2026</p>
@@ -176,28 +196,28 @@ l'adopte comme dispositif typographique transversal.
   font-size: var(--pas-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--encre-tiers);
+  color: var(--corail);      /* sur fond sombre */
 }
 ```
 
 **Règle absolue : un surtitre porte toujours un fait vérifiable.** Édition, année, pays,
-langue de représentation, durée, lieu, nombre. Jamais un mot d'ambiance
-(« Découvrez », « Notre univers », « L'expérience »).
+langue de représentation, durée, lieu, nombre. Jamais un mot d'ambiance (« Découvrez »,
+« Notre univers », « L'expérience »).
 
 Le surtitre remplace partout : les eyebrows décoratifs, la numérotation 01/02/03, les
 sous-titres centrés, les petites lignes dorées.
 
-**C'est la seule audace du site.** Tout le reste est discipliné. Ne pas ajouter un second
-élément signature.
+**Ces deux éléments sont les seules audaces du site.** Tout le reste est discipliné.
+Ne pas en ajouter un troisième.
 
 ### La dimension marocaine
 
 Elle passe par quatre canaux et **jamais par le motif** :
 
-1. **Le registre institutionnel** — la sobriété d'un document officiel
-2. **La bilingualité** — l'arabe à parité typographique
-3. **La lumière** — contraste dur du détroit dans le traitement photo (§13)
-4. **Le rouge national** — signal institutionnel rare, jamais couleur d'ambiance
+1. **La bilingualité** — l'arabe à parité, dans le même dessin de caractère que le latin
+2. **Les couleurs de la marque** — bordeaux et corail viennent du logo, pas d'un cliché
+3. **Le registre institutionnel** — la sobriété d'un document officiel
+4. **La lumière** — contraste dur du détroit dans le traitement photo (§13)
 
 **Interdits absolus** : zellige, arabesque, moucharabieh, main de Fatma, calligraphie
 décorative, motif géométrique « oriental », dégradé « couchant marocain », palmier,
@@ -231,22 +251,26 @@ babouche, théière.
 
 ## 9. Typographie
 
-> Si le comité fournit une charte avec des polices imposées, elles remplacent ce tableau.
-> Les rôles et l'échelle restent valables.
+Le logotype est géométrique, monolinéaire, à contreformes généreuses, et bilingue dans un
+même dessin. Le système typographique prolonge cette logique **sans imiter le logo**.
 
 | Rôle | Famille | Usage |
 |---|---|---|
-| **Affiche** | `Archivo` (variable, axes width + weight) | titres de hero et de page |
-| **Revue** | `Newsreader` | texte long, synopsis, biographies, titres de pièces en italique |
-| **Données / surtitres** | `IBM Plex Mono` | surtitres, chiffres, prix, métadonnées, crédits |
-| **Arabe** | `IBM Plex Sans Arabic` | tout contenu arabe |
+| **Affiche + interface** | `Readex Pro` (variable, latin **et** arabe dans une seule famille) | titres, navigation, texte courant, contenu arabe |
+| **Lecture longue** | `Literata` | synopsis, biographies, textes institutionnels |
+| **Données / surtitres** | `IBM Plex Mono` | surtitres, chiffres, intitulés de prix, métadonnées, crédits |
 
 ```css
---police-affiche: 'Archivo', system-ui, sans-serif;
---police-revue:   'Newsreader', Georgia, serif;
+--police-affiche: 'Readex Pro', system-ui, sans-serif;
+--police-revue:   'Literata', Georgia, serif;
 --police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
---police-arabe:   'IBM Plex Sans Arabic', 'Noto Naskh Arabic', serif;
+--police-arabe:   'Readex Pro', 'Noto Naskh Arabic', sans-serif;
 ```
+
+**Pourquoi Readex Pro.** C'est la décision structurelle du système : le latin et l'arabe
+partagent un même dessin, une même graisse, un même rythme. La parité bilingue exigée
+en §5 est résolue par la structure, pas par l'ajout d'une police arabe à côté. Les trois
+familles sont libres et hébergeables localement.
 
 **Échelle — ratio 1,333 (quarte juste), la proportion d'un format d'affiche 3:4.**
 
@@ -262,77 +286,95 @@ babouche, théière.
 ```
 
 **Règles de composition**
-- Titres d'affiche : `Archivo`, `letter-spacing: -0.03em`, `line-height: 0.95`
-- Texte de revue : `Newsreader`, `line-height: 1.65`, **68 caractères maximum** par ligne
+- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: 1.04`
+- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur, en `--corail`
+  sur fond sombre ou `--rideau` sur papier
+- Texte de revue : `Literata`, `line-height: 1.65`, **68 caractères maximum** par ligne
 - Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`
-- Titres de pièces : `Newsreader` italique, toujours
+- Titres de pièces : `Literata` italique, toujours
 - Lettrine autorisée uniquement sur le premier paragraphe d'un texte institutionnel long
 
 **Interdits** : Montserrat, Cormorant Garamond, Poppins, Inter, Lato, Open Sans, Playfair
-Display, Raleway. Ne jamais introduire une police hors de ce tableau sans validation.
+Display, Raleway, Archivo, Newsreader. Ne jamais introduire une police hors de ce tableau
+sans validation.
 
 ## 10. Couleurs
 
-> Palette proposée en attendant la charte du comité. Quand la charte arrive, **seules ces
-> valeurs changent** — aucune autre section de cette skill n'est affectée.
+> **La palette est dérivée du logo officiel.** Le bordeaux `#5B1327` et le corail `#FF5D38`
+> sont échantillonnés directement dans le logotype. Ce ne sont pas des propositions :
+> ce sont les couleurs de la marque.
 
 ```css
 :root {
-  /* La salle */
-  --noir-salle:     #0B0E12;
-  --noir-coulisse:  #151A20;
+  /* — Primaire : l'encre — */
+  --encre-nuit:     #0A1428;  /* base majoritaire du site */
+  --encre-coulisse: #101C33;  /* surfaces secondaires sur fond sombre */
 
-  /* La scène */
-  --chaux:          #EDEBE4;
-  --chaux-profond:  #DFDCD2;
+  /* — Secondaire : les surfaces — */
+  --rideau:         #5B1327;  /* bordeaux du logo — blocs d'interruption */
+  --rideau-profond: #3E0C1B;  /* variante pour aplats denses */
+  --papier:         #F6F1EA;  /* blanc chaud — registre de lecture */
+  --papier-ombre:   #E9E0D5;  /* aplats secondaires sur papier */
 
-  /* L'encre */
-  --encre:          #14181D;
-  --encre-tiers:    #5D666F;      /* réservé aux surtitres/crédits, voir §31 */
-  --encre-tiers-aa: #434B52;      /* texte secondaire courant, AAA garanti */
+  /* — Accent : le corail — */
+  --corail:         #FF5D38;  /* accent du logo — fond sombre UNIQUEMENT */
+  --corail-clair:   #FF8A63;  /* variante lisible sur --rideau */
 
-  /* Les signaux */
-  --bleu-detroit:   #16407F;      /* accent interactif — registre scène uniquement */
-  --rouge-officiel: #C1272D;      /* Haut Patronage, Grand Prix — registre scène */
-  --rouge-salle:    #E8695E;      /* signal rouge lisible — registre salle uniquement */
+  /* — Texte sur papier — */
+  --texte:          #1A1420;
+  --texte-tiers:    #584A4E;  /* AA — métadonnées, crédits */
 
-  /* Filets */
-  --filet-clair:    rgba(20, 24, 29, 0.14);
-  --filet-sombre:   rgba(237, 235, 228, 0.16);
+  /* — Filets — */
+  --filet-sombre:   rgba(246, 241, 234, 0.16);
+  --filet-clair:    rgba(26, 20, 32, 0.14);
 }
 ```
 
-**La couleur interactive dépend du registre — « le noir précède la lumière ».**
-Le bleu appartient à la scène (on lit, l'encre existe) ; sur la salle (on regarde,
-le noir précède), l'état interactif n'est pas une teinte mais un **éclaircissement** :
+### Les trois règles d'emploi
 
-| Registre | État repos | État survol/actif | Focus |
+**1. Le corail n'existe que sur fond sombre.**
+Sur `--papier` il tombe à 2,72:1 — échec total. Sur `--encre-nuit` il atteint 6,01:1.
+C'est l'accent des registres encre et rideau, jamais du registre papier. Sur papier,
+l'accent est `--rideau`.
+
+**2. Le bordeaux est une surface, jamais un texte sur fond sombre.**
+Sur `--encre-nuit` il tombe à 1,4:1 — invisible. Il n'est utilisable qu'en **fond de bloc**,
+ou en **couleur de texte sur `--papier`** (11,92:1, AAA).
+
+**3. La couleur interactive dépend du registre.**
+
+| Registre | Lien / survol / focus |
+|---|---|
+| **Encre** | `--corail` (6,01:1) |
+| **Rideau** | `--corail-clair` (5,79:1) — le corail plein n'y passe qu'en AA large |
+| **Papier** | `--rideau` (11,92:1) |
+
+Le focus est toujours un `outline` de 2 px, décalé de 3 px, dans la couleur du registre.
+
+### Contrastes vérifiés
+
+| Fond | Texte | Ratio | Niveau |
 |---|---|---|---|
-| **Scène** (fond `--chaux`) | `color: inherit` | `color`/`border-color: var(--bleu-detroit)` | `outline: 2px solid var(--bleu-detroit)` |
-| **Salle** (fond `--noir-salle`/`--noir-coulisse`) | `color: var(--chaux)` à l'opacité réduite ou `border-color: var(--filet-sombre)` | le texte passe à `--chaux` plein, le filet passe de `--filet-sombre` à `--chaux` | `outline: 2px solid var(--chaux)` |
+| `--encre-nuit` | `--papier` | 16,34:1 | AAA |
+| `--encre-nuit` | `--corail` | 6,01:1 | AA |
+| `--rideau` | `--papier` | 11,92:1 | AAA |
+| `--rideau` | `--corail-clair` | 5,79:1 | AA |
+| `--papier` | `--texte` | 16,04:1 | AAA |
+| `--papier` | `--rideau` | 11,92:1 | AAA |
+| `--papier` | `--texte-tiers` | 7,54:1 | AAA |
 
-`--bleu-detroit` ne s'applique **jamais** sur un fond `--noir-salle` ou `--noir-coulisse`
-(1,91:1 — échoue même le seuil UI 3:1, voir §31). C'est un axe verrouillé au même titre
-que la palette elle-même : ne pas réintroduire de bleu en registre salle sans revalider
-cette section.
+`--texte-tiers` est réservé aux surtitres, crédits et métadonnées. Interdit pour du texte
+courant long.
 
-**Règles d'emploi**
-- `--bleu-detroit` : liens, focus, accent principal — **registre scène uniquement**.
-- `--rouge-officiel` : **rare**, registre scène. Réservé au Haut Patronage, au Grand Prix,
-  à l'état « en cours ». Jamais en fond, jamais sur une grande surface.
-- `--rouge-salle` : équivalent de `--rouge-officiel` quand un signal rouge est requis en
-  registre salle (ex. état « en cours » sur une entrée de programme). Mêmes usages rares,
-  jamais en fond.
-- `--encre-tiers` : réservé aux surtitres et crédits (texte large ou non essentiel, AA
-  suffisant). **Interdit pour du texte courant** — utiliser `--encre-tiers-aa` (AAA).
-- **Toute couleur passe par une variable.** Aucune valeur hexadécimale en dur dans les
-  règles CSS ni dans un attribut `style`.
-- Aucune information n'est portée par la couleur seule : le rouge est toujours doublé
-  d'un libellé.
+**Règles générales**
+- **Toute couleur passe par une variable.** Aucune valeur hexadécimale en dur.
+- Aucune information portée par la couleur seule : le corail est toujours doublé d'un
+  libellé ou d'une position.
+- **Ne jamais appliquer `opacity` à du texte** — l'opacité réduit le contraste réel, pas
+  seulement l'apparence. Utiliser une couleur explicite.
 
-**Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs
-d'accent multiples dans un même écran, transparences empilées (glassmorphism), bleu
-interactif sur fond salle.
+**Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs d'accent
+multiples dans un même écran, transparences empilées (glassmorphism), crème + or.
 
 ## 11. Grilles
 
@@ -367,7 +409,7 @@ Base 8, avec des sauts francs — le rythme d'un programme imprimé, pas d'une i
 --esp-1: 8px;    --esp-5: 64px;
 --esp-2: 16px;   --esp-6: 96px;
 --esp-3: 24px;   --esp-7: 144px;  /* entre sections */
---esp-4: 40px;   --esp-8: 216px;  /* bascule salle ↔ scène */
+--esp-4: 40px;   --esp-8: 216px;  /* bascule encre ↔ rideau ↔ papier */
 ```
 
 **Règle : plus la bascule de registre est forte, plus l'espace qui la précède est grand.**
@@ -443,37 +485,23 @@ Aucun n'utilise d'arrondi, d'ombre ni de fond coloré.
 | Composant | Registre | Structure | Typographie |
 |---|---|---|---|
 | `.surtitre` | les deux | ligne unique en marge de régie, ou au-dessus sur mobile | `--police-donnees`, `--pas-xs`, caps, `0.18em` |
-| `.distribution` | salle | `dl` — `dt` intitulé, `dd` lauréat, filet de conduite entre les deux ≥ 1024 px | `dt` mono caps, `dd` revue, titres d'œuvre en italique |
-| `.entree-programme` | salle | titre original, titre traduit, troupe, université, pays, langue, durée, lieu, horaire — les métadonnées sur une ligne séparée par `·` | titre en affiche, traduction en revue italique, métadonnées en mono |
-| `.fiche-archive` | salle | année en marge de régie à `--pas-2xl`, affiche + résumé en contenu | année en affiche, corps en revue |
+| `.distribution` | encre | `dl` — `dt` intitulé, `dd` lauréat, filet de conduite entre les deux ≥ 1024 px | `dt` mono caps, `dd` revue, titres d'œuvre en italique |
+| `.entree-programme` | encre | titre original, titre traduit, troupe, université, pays, langue, durée, lieu, horaire — les métadonnées sur une ligne séparée par `·` | titre en affiche, traduction en revue italique, métadonnées en mono |
+| `.fiche-archive` | encre | année en marge de régie à `--pas-2xl`, affiche + résumé en contenu | année en affiche, corps en revue |
 | `.citation` | les deux | texte en revue italique, attribution en mono sur la ligne suivante, filet vertical 1 px à gauche | revue italique `--pas-m` |
 | `.filet-section` | les deux | `1px` de `--filet-clair` ou `--filet-sombre`, largeur du conteneur | — |
 | `.bouton` | les deux | rectangle, hauteur min 48 px, padding `--esp-2` / `--esp-4` | mono caps `--pas-s`, `0.12em` |
-| `.fiche-adresse` | scène | nom, adresse, capacité, plan statique — en liste de définition | nom en revue, données en mono |
+| `.fiche-adresse` | papier | nom, adresse, capacité, plan statique — en liste de définition | nom en revue, données en mono |
 
-**États d'interaction — la structure est identique pour tous les composants
-cliquables, la couleur dépend du registre (§10 : « la couleur interactive dépend
-du registre ») :**
+**États d'interaction — identiques pour tous les composants cliquables :**
 
 ```css
-/* Registre scène (fond --chaux) */
 /* repos    */ color: inherit; border-color: var(--filet-clair);
-/* survol   */ border-color: var(--bleu-detroit); color: var(--bleu-detroit);
-/* focus    */ outline: 2px solid var(--bleu-detroit); outline-offset: 3px;
-/* actif    */ opacity: 0.7;
-/* désactivé*/ opacity: 0.4; cursor: not-allowed;
-
-/* Registre salle (fond --noir-salle / --noir-coulisse) */
-/* repos    */ color: var(--chaux); border-color: var(--filet-sombre);
-/* survol   */ border-color: var(--chaux); color: var(--chaux);
-/* focus    */ outline: 2px solid var(--chaux); outline-offset: 3px;
+/* survol   */ border-color: var(--corail); color: var(--corail);
+/* focus    */ outline: 2px solid var(--corail); outline-offset: 3px;
 /* actif    */ opacity: 0.7;
 /* désactivé*/ opacity: 0.4; cursor: not-allowed;
 ```
-
-Aucun état n'utilise `transform`, `box-shadow` ni changement de fond. `--bleu-detroit`
-ne doit jamais apparaître dans la variante salle : voir §10 et §31 pour la raison
-(1,91:1, échoue le seuil de contraste UI).
 
 ### Exemple — la distribution
 
@@ -486,15 +514,15 @@ ne doit jamais apparaître dans la variante salle : voir §10 et §31 pour la ra
 </dl>
 ```
 
-Intitulé en `Plex Mono` capitales, lauréat en `Newsreader` avec le titre de pièce en
+Intitulé en `Plex Mono` capitales, lauréat en `Literata` avec le titre de pièce en
 italique, filet de conduite pointillé entre les deux sur écran large.
 
 ## 16. Hero sections
 
 **Le hero est une thèse, pas un carrousel.** Le carrousel est l'aveu qu'on n'a pas choisi.
 
-**Structure canonique — l'affiche et la distribution.** Fond `--noir-salle` plein écran.
-Marge de régie portant le surtitre. Titre en `Archivo` à `--pas-3xl`. L'affiche officielle
+**Structure canonique — l'affiche et la distribution.** Fond `--encre-nuit` plein écran.
+Marge de régie portant le surtitre. Titre en `Readex Pro` à `--pas-3xl`. L'affiche officielle
 entière, non recadrée, cernée d'un filet de 1 px. Sous le titre, la distribution de
 l'édition : dates, lieu, pays, patronage. **Deux actions maximum, une seule primaire.**
 
@@ -524,14 +552,14 @@ plus de deux actions.
 
 ## 17. Navigation
 
-Barre haute fine, fond `--chaux`, filet de 1 px en bas, **sans ombre portée**.
+Barre haute fine, fond `--papier`, filet de 1 px en bas, **sans ombre portée**.
 Elle ne change **pas** d'apparence au défilement : elle est stable, comme la signalétique
 d'un lieu.
 
 Cinq entrées plus l'action de candidature en bouton plein. La page active est signalée
 par un **filet sous le libellé**, jamais par une couleur seule.
 
-Sur mobile, le menu s'ouvre en **plein écran, fond `--noir-salle`**, entrées à l'échelle
+Sur mobile, le menu s'ouvre en **plein écran, fond `--encre-nuit`**, entrées à l'échelle
 de l'affiche. Le menu est lui-même un moment de design.
 
 **Pas de numérotation des entrées** : un menu n'est pas une séquence, un numéro n'y porte
@@ -548,7 +576,7 @@ dur dans une page.
 Chaque section commence par un **surtitre en marge** et un **titre aligné à gauche**.
 **Jamais de titre de section centré.**
 
-Les textes longs passent en `Newsreader`, colonne de 680 px, avec lettrine sur le premier
+Les textes longs passent en `Literata`, colonne de 680 px, avec lettrine sur le premier
 paragraphe des textes institutionnels. La lettrine est justifiée ici : c'est le code de la
 revue, elle signale un changement de mode de lecture.
 
@@ -570,7 +598,7 @@ langue · durée · lieu · horaire**.
 
 Le titre original s'affiche dans sa langue et son sens de lecture. Un titre arabe se
 compose en arabe, en RTL, dans `--police-arabe`. Le titre traduit vient dessous, en
-`Newsreader` italique.
+`Literata` italique.
 
 Le synopsis est un texte de revue, pas un texte de carte : il a droit à sa colonne.
 
@@ -632,14 +660,14 @@ passe par la fonction `esc()`.
 - **par prix** — « tous les Grands Prix depuis 2007 », une histoire que le site actuel
   ne permet pas de lire
 
-Intitulés de prix en `Plex Mono`, titres de pièces en `Newsreader` italique. Le Grand Prix
-est le **seul** élément à porter `--rouge-officiel`.
+Intitulés de prix en `Plex Mono`, titres de pièces en `Literata` italique. Le Grand Prix
+est le **seul** élément à porter `--rideau`.
 
 Le palmarès reste **du texte indexable**, jamais une image.
 
 ## 27. Actualités
 
-Format éditorial : date en surtitre, titre en `Archivo`, chapeau en `Newsreader`.
+Format éditorial : date en surtitre, titre en `Readex Pro`, chapeau en `Literata`.
 
 **À ne créer que si le comité s'engage sur un rythme de publication.** Une section
 d'actualités vide nuit davantage qu'elle n'aide. Le signaler à l'utilisateur avant de la
@@ -647,8 +675,8 @@ construire.
 
 ## 28. Pages institutionnelles
 
-ASAU, patronage, partenaires, dossier de partenariat. **Registre scène intégralement** :
-`--chaux`, `Newsreader`, colonne de lecture de 680 px, aucune image décorative.
+ASAU, patronage, partenaires, dossier de partenariat. **Registre papier intégralement** :
+`--papier`, `Literata`, colonne de lecture de 680 px, aucune image décorative.
 
 La page Partenaires manque aujourd'hui alors que le dossier de sponsoring existe. Logos
 en grille sobre, par niveau de partenariat, **sans défilement ni animation**.
@@ -686,20 +714,12 @@ quasi exclusivement mobile pendant les cinq jours du festival.
 
 ## 31. Accessibilité
 
-- **Contrastes vérifiés par calcul** (formule WCAG, pas à l'estime) :
-  - **AAA (7:1) pour le texte courant** — `--encre`/`--chaux` (14,94:1), `--encre`/
-    `--chaux-profond` (12,99:1), `--chaux`/`--noir-salle` (16,21:1), `--chaux`/
-    `--noir-coulisse` (14,66:1), `--bleu-detroit`/`--chaux` (8,49:1), `--encre-tiers-aa`/
-    `--chaux` (7,4:1)
-  - **AA large / signaux non essentiels (3:1 à 4,5:1)** — `--encre-tiers`/`--chaux`
-    (4,90:1, surtitres/crédits uniquement), `--rouge-officiel`/`--chaux` (4,90:1),
-    `--rouge-salle`/`--noir-salle` (6,09:1, AAA en fait), `--rouge-salle`/`--noir-coulisse`
-    (5,51:1)
-  - **Interdit** : `--bleu-detroit` sur `--noir-salle`/`--noir-coulisse` (1,91:1, échoue
-    même le seuil UI 3:1) — voir §10, la couleur interactive dépend du registre
+- **Contrastes** : AAA pour tout texte courant ; le corail et le corail-clair sont en AA
+  (6,01:1 et 5,79:1), acceptable pour titres, accents et libellés. Vérifier tout nouveau
+  couple par calcul WCAG, jamais à l'estime.
+- **Ne jamais appliquer `opacity` à du texte** : l'opacité réduit le contraste réel.
 - `lang` et `dir` corrects sur tout contenu non français, police adaptée
-- Focus visible, **2 px, décalage 3 px, jamais supprimé** — `--bleu-detroit` en registre
-  scène, `--chaux` en registre salle (voir §10)
+- Focus visible : `--corail`, 2 px, décalage 3 px, jamais supprimé
 - Hiérarchie de titres stricte, **un seul `h1` par page**
 - `prefers-reduced-motion` : le lever de rideau devient une apparition instantanée
 - Filtres utilisables au clavier, changements annoncés en `aria-live`
@@ -758,7 +778,7 @@ Partout ailleurs :
 
 Une seule courbe par type de mouvement. Ne pas introduire de ressort ni de rebond.
 
-Le mouvement le plus fort du site reste la bascule salle ↔ scène au défilement.
+Le mouvement le plus fort du site reste la bascule encre ↔ rideau ↔ papier au défilement.
 
 **Interdits** : parallaxe, compteurs animés, machine à écrire, rebond, `transform: scale`
 au survol, apparitions en cascade, curseur personnalisé, défilement détourné,
@@ -822,8 +842,13 @@ dans la conversation en cours.**
 
 - ❌ Ne pas produire une esthétique SaaS, startup, agence ou landing page commerciale
 - ❌ Ne pas utiliser de crème `#f7f3ec` + or `#b8922a` + serif à fort contraste — c'est
-  l'esthétique générative par défaut
-- ❌ Ne pas utiliser Montserrat, Cormorant Garamond, Poppins, Inter, Playfair Display
+  l'esthétique générative par défaut, et c'est l'ancienne palette du site
+- ❌ Ne pas utiliser `--corail` sur `--papier` (2,72:1) ni `--rideau` en texte sur fond
+  sombre (1,4:1) — voir §10
+- ❌ Ne pas faire une page entièrement sombre : le registre papier occupe au minimum 30 %
+- ❌ Ne pas enchaîner deux blocs `--rideau` consécutifs
+- ❌ Ne pas utiliser Montserrat, Cormorant Garamond, Poppins, Inter, Playfair Display,
+  Archivo ni Newsreader
 - ❌ Ne pas utiliser de dégradé décoratif, de glassmorphism, de neumorphisme
 - ❌ Ne pas utiliser de dégradé violet/bleu générique
 - ❌ Ne pas arrondir les angles au-delà de 2 px
@@ -887,7 +912,7 @@ Vérifier ces onze points avant d'annoncer qu'un travail visuel est terminé.
 - [ ] Aucun chiffre inventé ; les manques sont marqués `[à confirmer]`
 - [ ] **Rendu vérifié visuellement** — capture d'écran à 375 px et à 1440 px si
       l'environnement le permet, sinon relecture du HTML produit bloc par bloc
-- [ ] **Test du défaut ③** — sans le surtitrage et sans la bascule salle/scène, la page
+- [ ] **Test du défaut ③** — sans le surtitrage et sans la bascule de registres, la page
       garderait-elle une identité FITUT ? Si non, elle n'est pas terminée.
 
 Si un point échoue, corriger avant de livrer. Si un point ne peut pas être respecté,
