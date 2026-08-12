@@ -55,9 +55,6 @@ const HEADER_HTML = `
         <li><a href="nos-editions.html" data-page="nos-editions.html">Nos \u00c9ditions</a></li>
         <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" class="btn-apply" target="_blank" rel="noopener">Postuler Ici</a></li>
       </ul>
-        </li>
-        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" class="btn-apply" target="_blank">Postuler Ici</a></li>
-      </ul>
     </div>
   </nav>
 `;
