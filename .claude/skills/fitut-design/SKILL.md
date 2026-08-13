@@ -282,25 +282,12 @@ familles sont libres et hébergeables localement.
 --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
 ```
 
-**Interlignage — trois valeurs, jamais d'héritage.** Un composant qui ne fixe pas son
-`line-height` hérite silencieusement de celui de la page (encore `1.7` tant que l'ancien
-système coexiste, LOT 6) — trouvé sur plusieurs composants du LOT 3/4, corrigé après coup.
-**Tout élément de texte des 8 composants fixe l'une des trois valeurs ci-dessous — aucun
-ne doit hériter.**
-
-```css
---interligne-serre:   1.05;   /* titres d'affiche — échelle d'affiche, composition compacte */
---interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
---interligne-lecture: 1.65;   /* texte de revue */
-```
-
 **Règles de composition**
-- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: var(--interligne-serre)`
-- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur,
-  `line-height: var(--interligne-serre)`, en `--corail` sur fond sombre ou `--rideau` sur papier
-- Texte de revue : `Literata`, `line-height: var(--interligne-lecture)`, **68 caractères
-  maximum** par ligne
-- Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`, `line-height: var(--interligne-donnees)`
+- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: 1.04`
+- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur, en `--corail`
+  sur fond sombre ou `--rideau` sur papier
+- Texte de revue : `Literata`, `line-height: 1.65`, **68 caractères maximum** par ligne
+- Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`
 - Titres de pièces : `Literata` italique, toujours
 - Lettrine autorisée uniquement sur le premier paragraphe d'un texte institutionnel long
 **Interdits** : Montserrat, Cormorant Garamond, Poppins, Inter, Lato, Open Sans, Playfair
@@ -569,36 +556,91 @@ italique, filet de conduite pointillé entre les deux sur écran large.
 
 ## 16. Hero sections
 
-**Le hero est une thèse, pas un carrousel.** Le carrousel est l'aveu qu'on n'a pas choisi.
+Le hero est un **fil d'annonces** : 3 à 4 vues, chacune portant une actualité réelle et
+distincte du festival, avec sa propre image, son propre titre et son propre lien.
 
-**Structure canonique — l'affiche et la distribution.** Fond `--encre-nuit` plein écran.
-Marge de régie portant le surtitre. Titre en `Readex Pro` à `--pas-3xl`. L'affiche officielle
-entière, non recadrée, cernée d'un filet de 1 px. Sous le titre, la distribution de
-l'édition : dates, lieu, pays, patronage. **Deux actions maximum, une seule primaire.**
+**Ce n'est pas un carrousel décoratif.** La distinction est stricte :
+
+| Interdit | Requis |
+|---|---|
+| Le même message décliné en 3 visuels | 3 actualités **différentes** |
+| Des slides « ambiance » sans information | Une information datée par slide |
+| Un slide sans lien ni destination | Chaque slide mène quelque part |
+| Des slides ajoutés pour remplir | Moins d'annonces = moins de slides |
+
+S'il n'existe qu'une seule annonce réelle, **le hero n'a qu'une vue** et le diaporama ne
+s'active pas. Ne jamais inventer une annonce pour atteindre trois.
+
+### Structure d'une vue
+
+Registre encre. Quatre éléments, pas davantage :
+
+1. **Surtitre** — la date ou la nature de l'annonce, en `Plex Mono` (§6)
+2. **Titre court et frappant** — 4 à 8 mots, `--pas-2xl`, jamais une phrase complète
+3. **Description brève** — 1 à 2 phrases, 30 mots maximum
+4. **Un seul lien** — « En savoir plus », « Télécharger le communiqué », « Postuler »
+L'**affiche ou le visuel de l'annonce** occupe la droite sur desktop, le dessus sur mobile.
+Entière, jamais recadrée, cernée d'un filet 1 px (§13).
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ É                                                       │
-│ D  LE THÉÂTRE                          ┌──────────────┐ │
-│ .  UNIVERSITAIRE                       │              │ │
-│ 1  RASSEMBLE                           │   AFFICHE    │ │
-│ 9  LE MONDE                            │    2026      │ │
+│ 0  15 JUIN 2026                        ┌──────────────┐ │
+│ 1                                      │              │ │
+│    Appel à                             │   VISUEL     │ │
+│    candidatures                        │  DE L'ANNONCE│ │
+│    ouvert                              │              │ │
 │                                        │              │ │
-│ T  26.10 › 30.10.2026 · Tanger, Maroc  │              │ │
-│ A  9 pays · 12 spectacles · 5 jours    └──────────────┘ │
-│ N  Sous le Haut Patronage de SM le Roi Mohammed VI      │
-│ G                                                       │
-│ E  [ Déposer une candidature ]  Voir le programme →     │
-│ R                                                       │
+│    Les troupes universitaires du monde └──────────────┘ │
+│    entier peuvent déposer leur dossier                  │
+│    jusqu'au 31 juillet.                                 │
+│                                                         │
+│    En savoir plus →                                     │
+│                                              ──  ─  ─   │
 └─────────────────────────────────────────────────────────┘
 ```
 
-Sur mobile : l'affiche passe au-dessus, le surtitre redevient horizontal, **le titre
-conserve son échelle maximale** — c'est lui qui tient l'écran.
+**Interdit dans un hero** : plus d'un lien par vue, texte sur image sans voile suffisant,
+chevron animé, vidéo de fond sans propos, listes de faits, distribution complète.
+Les faits pratiques du festival appartiennent aux sections suivantes, pas au hero.
 
-**Interdits dans un hero** : diaporama, texte sur image sans voile suffisant, bouton
-« Découvrir » qui fait défiler d'un écran, chevron animé, vidéo de fond sans propos,
-plus de deux actions.
+### Source des annonces
+
+Les annonces vivent dans **`data/annonces.json`**, jamais en dur dans le HTML :
+
+```json
+{
+  "annonces": [
+    {
+      "surtitre": "15 juin 2026",
+      "titre": "Appel à candidatures ouvert",
+      "description": "Les troupes universitaires du monde entier peuvent déposer leur dossier jusqu'au 31 juillet.",
+      "visuel": "media/annonces/appel-2026.jpg",
+      "alt": "",
+      "lien": "https://…",
+      "libelleLien": "En savoir plus",
+      "actif": true
+    }
+  ]
+}
+```
+
+`actif: false` retire une annonce sans la supprimer. Le comité ajoute et retire des
+annonces en éditant ce seul fichier, sans toucher au code.
+
+### Transition et navigation
+
+**Fondu-croisé uniquement.** Jamais de glissement horizontal, jamais de rebond.
+
+- Le visuel entre en fondu avec un très léger zoom arrière (1,04 → 1), 1200 ms
+- Le texte suit avec 200 ms de retard, en fondu et légère montée (12 px maximum)
+- Défilement automatique toutes les 7 secondes, **suspendu au survol**, au focus clavier
+  et quand l'onglet passe en arrière-plan
+- Navigation par **filets horizontaux**, un par annonce, le filet actif se remplissant
+  progressivement pour indiquer le temps restant — pas de puces rondes, pas de flèches
+- Flèches gauche/droite au clavier, `aria-live="polite"` sur la zone de texte
+- `prefers-reduced-motion` : aucune transition, aucun défilement automatique, les annonces
+  s'empilent verticalement
+Le nombre de vues est **lu depuis les données**, jamais codé en dur dans le JavaScript.
 
 ## 17. Navigation
 
@@ -900,6 +942,7 @@ dans la conversation en cours.**
   Archivo ni Newsreader
 - ❌ Ne pas utiliser de dégradé décoratif, de glassmorphism, de neumorphisme
 - ❌ Ne pas utiliser de dégradé violet/bleu générique
+- ❌ Ne pas mettre dans le hero une annonce inventée, ni plus d'un lien par vue
 - ❌ Ne pas arrondir les angles au-delà de 2 px
 - ❌ Ne pas ajouter d'ombre portée d'élévation
 - ❌ Ne pas centrer un titre de section
