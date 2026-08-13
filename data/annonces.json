@@ -1,6 +1,7 @@
 {
   "annonces": [
     {
+      "date": "26 – 30 octobre 2026",
       "surtitre": "26 – 30 octobre 2026",
       "titre": "La 19e édition arrive à Tanger",
       "description": "Durant une semaine, des troupes universitaires venues du monde entier se réunissent à Tanger pour offrir des performances devant un jury du théâtre marocain et arabe.",
@@ -11,6 +12,7 @@
       "actif": true
     },
     {
+      "date": "26 – 30 octobre 2026",
       "surtitre": "Candidature de troupe",
       "titre": "Appel à candidatures ouvert",
       "description": "Le FITUT invite les troupes de théâtre universitaire à déposer leur candidature pour la 19e édition, du 26 au 30 octobre 2026 à Tanger.",
@@ -21,6 +23,7 @@
       "actif": true
     },
     {
+      "date": "3 – 7 novembre 2025",
       "surtitre": "Palmarès [à confirmer]",
       "titre": "Palmarès de la 18e édition",
       "description": "Les résultats de la 18e édition, tenue en novembre 2025 à Tanger, seront publiés ici dès leur confirmation par le comité d'organisation.",

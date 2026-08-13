@@ -1515,13 +1515,14 @@ button:focus-visible {
   .hero-grille > .hero-visuel  { grid-column: 3; grid-row: 1; }
 }
 
-/* « 01 / 02 » dans la marge de régie : un fait réel (position dans la
-   séquence des annonces actives), pas une numérotation décorative
-   (§36) — change avec l'état réel du diaporama. Vertical dès que la
-   marge de régie existe, horizontal sur mobile comme .surtitre. */
-.hero-position { margin: 0; }
+/* Date de l'annonce dans la marge de régie : un fait, pas une
+   numérotation (§36 interdit « 01 / 02 » — l'information de position
+   est déjà portée par les filets de navigation). Change avec l'état
+   réel du diaporama. Vertical dès que la marge de régie existe,
+   horizontal sur mobile comme .surtitre. */
+.hero-date { margin: 0; }
 @media (min-width: 600px) {
-  .hero-position {
+  .hero-date {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     justify-self: center;

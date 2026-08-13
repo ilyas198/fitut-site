@@ -49,7 +49,7 @@ function construireSquelette(mount, total) {
   mount.innerHTML = `
     <div class="hero-grille">
       <div class="marge-regie">
-        ${total > 1 ? '<p class="hero-position surtitre" id="heroPosition" aria-hidden="true"></p>' : ''}
+        ${total > 1 ? '<p class="hero-date surtitre" id="heroDate"></p>' : ''}
       </div>
       <div class="hero-visuel" id="heroVisuel"></div>
       <div class="hero-contenu">
@@ -130,7 +130,7 @@ function rendreCoucheVisuel(a, index, actif) {
   let restant = DUREE;
   let enPause = false;
 
-  const positionEl = document.getElementById('heroPosition');
+  const dateEl = document.getElementById('heroDate');
   const nav = document.getElementById('heroNav');
 
   const filets = annonces.map((_, i) => {
@@ -147,7 +147,7 @@ function rendreCoucheVisuel(a, index, actif) {
   });
 
   function maj(i) {
-    positionEl.textContent = `${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    dateEl.textContent = annonces[i].date || '';
     filets.forEach((f, fi) => {
       const actif = fi === i;
       f.bouton.classList.toggle('is-active', actif);
