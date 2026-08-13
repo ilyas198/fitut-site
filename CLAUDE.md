@@ -232,6 +232,15 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
     n'est pas vérifiable sans navigateur. Le logo est retiré en attendant ; son
     emplacement est marqué en commentaire dans le HTML, prêt à recevoir la version
     blanche dès qu'elle existe.
+12. **Un des 4 lieux du festival est contradictoire selon la source** (`le-festival.html`
+    §6) : ce fichier liste « Centre Culturel Ahmed Boukmakh » (contenu déjà en ligne),
+    tandis que le §6 ci-dessus (Guide 2025 / dossier de sponsoring) liste « ENCG
+    Tanger » à la place. Le contenu actuel de `le-festival.html` est conservé tel quel
+    en attendant — ne pas trancher seul entre les deux.
+13. **Adresses exactes et capacités des 4 lieux du festival** (`le-festival.html`,
+    `.fiche-adresse`) : absentes de nos sources, affichées `[à confirmer]`. Un plan
+    statique par lieu est prévu (`.fiche-adresse-plan`) mais aucun fichier réel
+    n'existe encore.
 
 Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements en attente.
 

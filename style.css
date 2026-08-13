@@ -531,146 +531,7 @@ section { padding: 6rem 0; }
   }
 }
 
-/* ---- VENUES / FESTIVAL LOCATIONS ----
-   Fusion des deux blocs dupliqués depuis le commit initial (37ace43, avant
-   tout nettoyage) — "VENUES / FESTIVAL LOCATIONS" et "VENUES GRID"
-   définissaient .venue-card en double. Ce bloc unique reproduit exactement
-   le rendu résultant de la cascade des deux (propriété par propriété, la
-   déclaration la plus tardive dans le fichier gagnait à spécificité égale) :
-   aucune valeur n'a été changée pour "nettoyer". À convertir en
-   .fiche-adresse au LOT 6 (fitut-design §15). */
-.venues-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-}
-.venue-card {
-  display: block;
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: 0;
-  overflow: hidden;
-  transition: transform var(--transition);
-}
-.venue-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(184, 146, 42, 0.22);
-}
-.venue-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-.venue-card-body {
-  padding: 1.2rem;
-}
-.venue-card-body h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: var(--charcoal);
-}
-.venue-card-body p {
-  font-size: 0.88rem;
-  margin-bottom: 1.25rem;
-  color: var(--warm-grey);
-  line-height: 1.85;
-}
-.venue-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.venue-card-link::after {
-  content: '→';
-  transition: transform var(--transition);
-}
-.venue-card:hover .venue-card-link::after {
-  transform: translateX(4px);
-}
-
-/* ---- PRIX LIST — hiérarchie en 4 lignes ---- */
-.prix-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: stretch;
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-}
-@media (max-width: 640px) {
-  .prix-list {
-    gap: 1rem;
-  }
-}
-.prix-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  width: 100%;
-}
-@media (max-width: 640px) {
-  .prix-row {
-    gap: 0.75rem;
-  }
-}
-@media (max-width: 480px) {
-  .prix-row {
-    gap: 0.6rem;
-  }
-}
-.prix-item {
-  border: 1px solid var(--gold);
-  padding: 0.6rem 1.2rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-  font-family: 'Montserrat', sans-serif;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.3;
-}
-@media (max-width: 480px) {
-  .prix-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-  }
-}
-.prix-item-medium {
-  font-size: 0.95rem;
-  padding: 0.85rem 1.6rem;
-  letter-spacing: 0.1em;
-}
-@media (max-width: 480px) {
-  .prix-item-medium {
-    font-size: 0.85rem;
-    padding: 0.65rem 1.2rem;
-  }
-}
-.prix-item-grand {
-  font-size: 1.4rem;
-  font-weight: 700;
-  padding: 1.1rem 2.5rem;
-  border-width: 2px;
-  letter-spacing: 0.12em;
-}
-@media (max-width: 480px) {
-  .prix-item-grand {
-    font-size: 1.1rem;
-    padding: 0.9rem 1.8rem;
-  }
-}
-
-/* ---- PHOTO GRID ---- */
+/* ---- PHOTO GRID (encore utilisé par le-carnaval.html, non migré — LOT 6c) ---- */
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -780,29 +641,6 @@ section { padding: 6rem 0; }
 
 .stat-label--sombre { color: rgba(247, 243, 236, 0.5); }
 
-.texte-emphase { color: var(--charcoal); }
-
-.texte-lead {
-  font-size: 1.05rem;
-  line-height: 1.9;
-  color: var(--warm-grey);
-}
-.texte-lead--espace { margin-top: 1.5rem; /* = --esp-3 au LOT 6, ne pas migrer avant */ }
-/* Les 3 variantes ci-dessous se ressemblent mais ne sont PAS interchangeables :
-   --intro n'est pas centré (les 2 autres le sont) ; --impact et --competition
-   centrés tous les deux mais diffèrent aussi par la marge basse (0 / 3rem),
-   pas seulement par la largeur. Fusion à revalider — voir LOT 2c. */
-.texte-lead--intro { max-width: 780px; }
-.texte-lead--impact { max-width: 750px; margin: 0 auto; text-align: center; }
-.texte-lead--competition { max-width: 720px; margin: 0 auto 3rem; text-align: center; }
-.texte-lead-sombre {
-  max-width: 720px;
-  margin: 0 auto 3rem;
-  text-align: center;
-  color: rgba(247, 243, 236, 0.7);
-  line-height: 1.9;
-}
-
 .section-encadree {
   background: rgba(184, 146, 42, 0.05);
   border-top: 1px solid var(--line);
@@ -818,23 +656,6 @@ section { padding: 6rem 0; }
 .route-etape-contenu { direction: ltr; text-align: left; }
 .route-etape-image { direction: ltr; }
 
-.bloc-intro-centre { max-width: 800px; margin: 0 auto; text-align: center; }
-.logo-asau-intro {
-  height: 60px;
-  width: auto;
-  margin: 0 auto 2.5rem; /* = --esp-4 au LOT 6, ne pas migrer avant */
-}
-.section-claire-bordee { background: var(--cream); border-top: 1px solid var(--line); }
-
-.image-hero-page { margin-top: var(--nav-h); height: 55vh; overflow: hidden; }
-.image-couvrante { width: 100%; height: 100%; object-fit: cover; }
-.titre-intro-page {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  margin-bottom: 2rem;
-}
-.photo-grid--espace { margin-top: 3rem; }
 .chargement-page { padding: 8rem 0; text-align: center; }
 
 /* Seul cas où une valeur reste inline : --img porte le CONTENU (quelle
@@ -922,25 +743,6 @@ section { padding: 6rem 0; }
   .section-sombre { padding: 2.5rem 0 !important; }
 }
 
-@media (max-width: 768px) {
-  .texte-lead { font-size: 1rem !important; }
-}
-@media (max-width: 480px) {
-  .texte-lead { font-size: 0.95rem !important; }
-}
-
-@media (max-width: 900px) {
-  .image-hero-page { height: 45vh !important; }
-}
-@media (max-width: 768px) {
-  .image-hero-page { height: 40vh !important; }
-}
-@media (max-width: 640px) {
-  .image-hero-page { height: 35vh !important; }
-}
-@media (max-width: 480px) {
-  .image-hero-page { height: 32vh !important; }
-}
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -959,10 +761,6 @@ section { padding: 6rem 0; }
 /* ---- RESPONSIVE ---- */
 @media (max-width: 900px) {
   .carnaval-route { grid-template-columns: 1fr; }
-
-  /* Liste des prix : taille un peu réduite pour tenir sur mobile */
-  .prix-item-medium { font-size: 0.85rem; padding: 0.7rem 1.2rem; }
-  .prix-item-grand { font-size: 1.15rem; padding: 0.9rem 1.6rem; }
 }
 
 @media (max-width: 1100px) {
@@ -1359,55 +1157,6 @@ button:focus-visible {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-}
-
-/* ---- ATELIERS ---- */
-.ateliers-intro {
-  max-width: 740px;
-  margin: 0 auto 3rem;
-  text-align: center;
-  font-size: 1.02rem;
-  line-height: 1.9;
-  color: var(--warm-grey);
-}
-.ateliers-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-@media (min-width: 700px) { .ateliers-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
-
-.atelier-card {
-  border: 1px solid var(--line);
-  padding: 1.5rem 1.4rem;
-  background: #fff;
-}
-.atelier-type {
-  display: inline-block;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--gold);
-  padding: 0.25rem 0.6rem;
-  margin-bottom: 0.85rem;
-}
-.atelier-card h3 { font-size: 1.3rem; margin-bottom: 0.9rem; line-height: 1.25; }
-.atelier-meta { list-style: none; }
-.atelier-meta li {
-  padding: 0.35rem 0;
-  font-size: 0.86rem;
-  color: var(--warm-grey);
-  border-bottom: 1px solid var(--line);
-}
-.atelier-meta li:last-child { border-bottom: none; }
-.atelier-meta strong {
-  display: block;
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
 }
 
 /* ==========================================================
@@ -2253,5 +2002,91 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
+}
+
+/* ==========================================================
+   LE FESTIVAL (LOT 6b) — 7 sections, registre du TYPE de contenu
+   (§6), pas un choix par page : encre, encre, papier, papier, encre,
+   papier, encre. 4 bascules sur une page longue (« sers-t'en pour la
+   rythmer ») ; pas de rideau forcé — aucune section n'est une vraie
+   interruption (chiffres clés / hommage / candidature / Grand Prix,
+   §6), en inventer un aurait été le contraire de « sa force vient de
+   sa rareté ». --esp-8 précède chaque bascule, --esp-7 sinon (§12).
+   ========================================================== */
+.festival-intro        { padding: var(--esp-6) 0 var(--esp-4); } /* première section */
+.festival-participants { padding: var(--esp-7) 0 var(--esp-4); } /* encre → encre, pas de bascule */
+.festival-impact       { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 1 : encre → papier */
+.festival-lieux        { padding: var(--esp-7) 0 var(--esp-4); } /* papier → papier, pas de bascule */
+.festival-competition  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 2 : papier → encre */
+.festival-prix         { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 3 : encre → papier */
+.festival-ateliers     { padding: var(--esp-8) 0 var(--esp-6); } /* bascule 4 : papier → encre, dernière section */
+
+/* ---- Lieux — .fiche-adresse (§15, §29, registre papier), 4 entrées
+   en grille plutôt qu'empilées (§18 : 4 à 6 éléments courts). ---- */
+.lieux-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 600px) { .lieux-grille { grid-template-columns: repeat(2, 1fr); } }
+.fiche-adresse .bouton { margin-top: var(--esp-3); }
+
+/* ---- Prix — .distribution (§15), registre papier. Compte réel de
+   décernements par prix (data/editions.json, palmarès archivés,
+   éditions 1 à 17), pas un lauréat : ce n'est pas le palmarès d'une
+   édition (§26) mais le catalogue des prix du festival. ---- */
+.festival-prix-note {
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  color: var(--texte-tiers);
+}
+
+/* ---- Ateliers — gabarits à crochets, registre encre. Cas justifié de
+   carte (§15) : trois créneaux réellement interchangeables tant que le
+   programme officiel n'est pas reçu. Filet en haut, pas de
+   border-radius (§36), comme .valeur. ---- */
+.ateliers-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 700px) { .ateliers-grille { grid-template-columns: repeat(3, 1fr); } }
+.atelier {
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--filet-sombre);
+}
+.atelier-type {
+  display: block;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit, AAA */
+}
+.atelier-titre {
+  margin-top: var(--esp-1);
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.atelier-meta { margin-top: var(--esp-2); }
+.atelier-meta dt {
+  margin-top: var(--esp-1);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--papier-tiers);
+}
+.atelier-meta dt:first-child { margin-top: 0; }
+.atelier-meta dd {
+  margin: 2px 0 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
 }
 
