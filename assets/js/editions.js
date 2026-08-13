@@ -86,37 +86,46 @@ async function loadEditions() {
   return data.editions || [];
 }
 
-/* ---------- Vue : frise verticale (nos-editions.html, §24) ----------
-   « On descend dans le temps, de 2026 à 2007 » : tri explicite par
-   numéro décroissant, sans dépendre de l'ordre du JSON. */
-function renderFrise(editions, mount) {
+/* ---------- Vue : bande horizontale d'affiches (nos-editions.html, §24) ----------
+   Plus de 6 entrées : bande horizontale plutôt qu'une frise verticale,
+   qui enterrait les éditions anciennes sous le défilement. « La bande
+   commence sur l'édition la plus récente » : tri explicite par numéro
+   décroissant, sans dépendre de l'ordre du JSON. Aucun panneau ni
+   modale : chaque entrée est un lien entier vers sa fiche complète
+   (edition.html), déjà indexable — la dupliquer ici la rendrait
+   invisible aux moteurs. */
+function renderBande(editions, mount) {
   const triees = [...editions].sort((a, b) => b.numero - a.numero);
 
   const entrees = triees.map(e => {
     const aVenir = e.statut === 'a_venir';
+    /* Remplacement typographique tant qu'aucune affiche réelle n'existe
+       (vérifié sur les 19 éditions) — aria-hidden : la légende sous
+       l'affiche répète déjà année et numéro, un second rôle "img"
+       ferait entendre deux fois la même information. */
     const visuel = has(e.affiche)
-      ? `<img class="fiche-archive-affiche" src="${esc(e.affiche)}" alt="" loading="lazy" width="600" height="850">`
-      : `<div class="fiche-archive-affiche-cadre" role="img" aria-label="Affiche de la ${ordinalTxt(e.numero)} édition à confirmer">[affiche à confirmer]</div>`;
-
-    const meta = [
-      has(e.palmares) ? `${e.palmares.length} prix` : '',
-      has(e.selection) ? `${e.selection.length} spectacles` : '',
-      has(e.hommages) ? `${e.hommages.length} hommage${e.hommages.length > 1 ? 's' : ''}` : ''
-    ].filter(Boolean).join(' · ');
+      ? `<img src="${esc(e.affiche)}" alt="" loading="lazy" width="600" height="850">`
+      : `<div class="affiche-entree-cadre-vide" aria-hidden="true">
+           <span class="affiche-entree-cadre-annee">${e.annee}</span>
+           <span class="affiche-entree-cadre-numero">Éd. ${e.numero}</span>
+         </div>`;
 
     return `
-      <a class="fiche-archive fiche-archive-lien${aVenir ? ' fiche-archive--a-venir' : ''}" href="edition.html?n=${e.numero}">
-        <h2 class="fiche-archive-annee">${e.annee}</h2>
-        <div class="fiche-archive-corps">
-          <p class="surtitre">${esc(e.dates)}${aVenir ? ' · Prochaine édition' : ''}</p>
-          ${visuel}
-          ${has(e.resume) ? `<p>${marquerArabe(e.resume)}</p>` : ''}
-          ${meta ? `<p class="fiche-archive-meta">${meta}</p>` : ''}
-        </div>
+      <a class="affiche-entree" href="edition.html?n=${e.numero}">
+        <div class="affiche-entree-cadre">${visuel}</div>
+        <p class="affiche-entree-legende">
+          ${aVenir ? '<span class="surtitre affiche-entree-prochaine">Prochaine édition</span>' : ''}
+          <span class="affiche-entree-ordinal">${ordinal(e.numero)} édition</span>
+          <span class="affiche-entree-annee">${e.annee}</span>
+        </p>
       </a>`;
   }).join('');
 
-  mount.innerHTML = `<div class="frise-liste">${entrees}</div>`;
+  mount.innerHTML = `
+    <div class="bande-defilement" id="bandeDefilement" aria-label="Chronologie des éditions, défilement horizontal">${entrees}</div>
+    <div class="bande-progression"><span class="bande-progression-remplissage" id="bandeProgression"></span></div>`;
+
+  initBandeProgression();
 
   injectJsonLd({
     '@context': 'https://schema.org',
@@ -130,6 +139,43 @@ function renderFrise(editions, mount) {
       url: `${SITE_URL}/edition.html?n=${e.numero}`
     }))
   });
+}
+
+/* ---------- Filet de progression sous la bande ----------
+   Lit la position de défilement (scrollLeft/scrollWidth), ne la pilote
+   jamais : la bande reste un overflow-x natif, y compris au clavier
+   (le focus sur un lien fait défiler le conteneur — comportement natif
+   du navigateur, rien à coder). requestAnimationFrame évite d'empiler
+   des mises à jour pendant un défilement rapide. */
+function initBandeProgression() {
+  const bande = document.getElementById('bandeDefilement');
+  const remplissage = document.getElementById('bandeProgression');
+  if (!bande || !remplissage) return;
+
+  let planifie = false;
+  function majProgression() {
+    planifie = false;
+    const { scrollLeft, scrollWidth, clientWidth } = bande;
+    if (scrollWidth <= clientWidth) {
+      remplissage.style.setProperty('--rp-largeur', '100%');
+      remplissage.style.setProperty('--rp-gauche', '0%');
+      return;
+    }
+    const largeur = clientWidth / scrollWidth;
+    const espaceDefilable = scrollWidth - clientWidth;
+    const gauche = (scrollLeft / espaceDefilable) * (1 - largeur);
+    remplissage.style.setProperty('--rp-largeur', (largeur * 100) + '%');
+    remplissage.style.setProperty('--rp-gauche', (gauche * 100) + '%');
+  }
+
+  bande.addEventListener('scroll', () => {
+    if (planifie) return;
+    planifie = true;
+    requestAnimationFrame(majProgression);
+  }, { passive: true });
+
+  window.addEventListener('resize', majProgression);
+  majProgression();
 }
 
 /* ---------- Vue : fiche d'une édition ---------- */
@@ -343,7 +389,7 @@ function renderDetail(e, mount) {
     const editions = await loadEditions();
 
     if (gridMount) {
-      renderFrise(editions, gridMount);
+      renderBande(editions, gridMount);
     } else {
       const params = new URLSearchParams(location.search);
       const n = parseInt(params.get('n'), 10);

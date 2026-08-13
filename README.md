@@ -36,7 +36,7 @@ fitut/
 ├── qui-sommes-nous.html    L'ASAU, valeurs, équipe
 ├── le-festival.html        Participants, lieux, prix, ateliers
 ├── le-carnaval.html        Parcours, galerie, chiffres
-├── nos-editions.html       Frise verticale de toutes les éditions
+├── nos-editions.html       Bande horizontale d'affiches, les 19 éditions
 ├── edition.html            Fiche d'une édition (edition.html?n=18)
 │
 ├── style.css               Feuille de style unique

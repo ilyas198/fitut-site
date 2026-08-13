@@ -1672,9 +1672,11 @@ a.entree-programme-lien { display: block; }
 }
 .fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
 .fiche-archive-corps p { max-width: var(--largeur-revue); line-height: var(--interligne-lecture); }
-/* Affiche : jamais recadrée (§13), comme le visuel du hero — aucune
-   édition n'a encore de fichier réel (LOT 5), donc en pratique c'est
-   toujours le cadre-espace réservé qui s'affiche pour l'instant. */
+/* Frise verticale (archives ≤ 6 entrées, §24) — au-delà, voir la bande
+   horizontale plus bas (.bande-editions). Affiche : jamais recadrée
+   (§13), comme le visuel du hero. Aucune édition n'a encore de fichier
+   affiche réel (vérifié sur les 19), donc en pratique c'est toujours le
+   cadre-espace réservé qui s'affiche pour l'instant. */
 .fiche-archive-affiche,
 .fiche-archive-affiche-cadre {
   display: block;
@@ -1821,7 +1823,9 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 }
 
 /* ==========================================================
-   NOS ÉDITIONS — frise verticale (LOT 5a, §24)
+   NOS ÉDITIONS — intro + bande horizontale d'affiches (LOT 5 révisé, §24)
+   Au-delà de 6 entrées, la frise verticale enterre le contenu ancien
+   sous le défilement — bande horizontale à la place, registre encre.
    ========================================================== */
 .editions-intro { padding: var(--esp-6) 0 var(--esp-4); }
 .editions-intro-texte {
@@ -1831,14 +1835,112 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   font-size: var(--pas-base);
   line-height: var(--interligne-lecture);
 }
-.frise { padding: 0 0 var(--esp-6); }
-.frise-liste {
-  max-width: var(--largeur-archive);
-  margin: 0 auto;
-  padding: 0 var(--esp-2);
+
+/* --affiche-largeur : calculée pour ~2,5 vignettes visibles sur mobile
+   à 375px (la moitié coupée signale le défilement, §24) et ~6 dès
+   1024px à 1440px — 375 et 1440 vérifiés au calcul (voir le commit),
+   pas devinés. */
+:root { --affiche-largeur: 128px; }
+@media (min-width: 600px)  { :root { --affiche-largeur: 168px; } }
+@media (min-width: 1024px) { :root { --affiche-largeur: 210px; } }
+
+.bande-editions { padding: 0 0 var(--esp-6); }
+.bande-defilement {
+  display: flex;
+  gap: var(--esp-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--esp-2) var(--esp-3);
 }
-@media (min-width: 600px)  { .frise-liste { padding: 0 var(--esp-3); } }
-@media (min-width: 1024px) { .frise-liste { padding: 0 var(--esp-4); } }
+@media (min-width: 600px) {
+  .bande-defilement { gap: var(--esp-3); padding: 0 var(--esp-3) var(--esp-3); }
+}
+@media (min-width: 1024px) {
+  .bande-defilement { padding: 0 var(--esp-4) var(--esp-3); }
+}
+
+.affiche-entree {
+  flex: 0 0 var(--affiche-largeur);
+  width: var(--affiche-largeur);
+  scroll-snap-align: start;
+}
+.affiche-entree-cadre {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--filet-sombre);
+}
+.affiche-entree-cadre img { width: 100%; height: 100%; object-fit: contain; display: block; }
+/* Remplacement typographique tant qu'aucune affiche réelle n'existe
+   (vérifié sur les 19 éditions) — même ratio 3:4 qu'une vraie affiche :
+   rien à changer dans la mise en page le jour où les fichiers arrivent. */
+.affiche-entree-cadre-vide {
+  width: 100%;
+  height: 100%;
+  background: var(--encre-coulisse);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  text-align: center;
+}
+.affiche-entree-cadre-annee {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-2xl);
+  line-height: 0.9; /* en dur, comme .fiche-archive-annee : un chiffre
+    d'affiche n'est pas un rôle de lecture */
+  color: var(--papier); /* 15,12:1 sur --encre-coulisse, AAA — vérifié */
+}
+.affiche-entree-cadre-numero {
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--papier-tiers); /* 9,24:1 sur --encre-coulisse, AAA — vérifié */
+}
+.affiche-entree-legende { margin-top: var(--esp-2); }
+.affiche-entree-prochaine { margin-bottom: var(--esp-1); } /* .surtitre : corail, 6,01:1 */
+.affiche-entree-ordinal {
+  display: block;
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-s);
+  line-height: var(--interligne-serre);
+}
+.affiche-entree-annee {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit, AAA — déjà vérifié (§9) */
+}
+
+/* Filet de progression — même esprit que la navigation du hero (§16) :
+   lecture continue, pas de flèches ni de pastilles. Largeur et position
+   reflètent le ratio visible/total (assets/js/editions.js), jamais un
+   scroll détourné : la bande reste un overflow-x natif. */
+.bande-progression {
+  position: relative;
+  height: 2px;
+  margin: 0 var(--esp-2) 0;
+  background: var(--filet-sombre);
+}
+@media (min-width: 600px)  { .bande-progression { margin: 0 var(--esp-3) 0; } }
+@media (min-width: 1024px) { .bande-progression { margin: 0 var(--esp-4) 0; } }
+.bande-progression-remplissage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--rp-gauche, 0%);
+  width: var(--rp-largeur, 20%);
+  background: var(--corail);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bande-progression-remplissage { transition: left 100ms linear, width 100ms linear; }
+}
 
 /* ==========================================================
    FICHE D'ÉDITION (LOT 5b, §24 : ordre d'un programme imprimé)

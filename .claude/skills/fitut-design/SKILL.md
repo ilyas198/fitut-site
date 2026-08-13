@@ -730,9 +730,24 @@ performance de croissance.
 
 ## 24. Éditions précédentes
 
-**Frise verticale**, pas une grille de cartes. L'année occupe la marge de régie en très
-grande échelle ; l'affiche et le résumé occupent le contenu. On descend dans le temps,
-de 2026 à 2007. Le passage du présent au passé est un mouvement, pas une pagination.
+Jamais une grille de cartes. La forme dépend du nombre d'entrées :
+
+- **6 entrées ou moins** — frise verticale. L'année occupe la marge de régie en très
+  grande échelle ; l'affiche et le résumé occupent le contenu. On descend dans le temps,
+  du présent au passé. Le passage est un mouvement, pas une pagination.
+- **Plus de 6 entrées** — bande horizontale d'affiches (§30, `nos-editions.html`, LOT 5
+  révisé). Une frise verticale uniforme, appliquée sans limite, enterre le contenu
+  ancien sous le défilement : au-delà de 6 entrées, la profondeur du site doit rester
+  parcourable d'un geste, pas d'un défilement sans fin. Chaque entrée : affiche en 3:4,
+  ordinal et année en dessous, lien entier vers la fiche complète (jamais un panneau ni
+  une modale — dupliquer la fiche la rendrait invisible aux moteurs). `scroll-snap-type:
+  x mandatory`, jamais de scroll détourné en JavaScript. Un filet de progression sous la
+  bande plutôt que des flèches ou des pastilles — même esprit que la navigation du hero
+  (§16), lecture continue plutôt que pagination.
+  Affiches manquantes : remplacement typographique (fond `--encre-coulisse`, année à
+  `--pas-2xl`, numéro d'édition en `--police-donnees`), au même ratio 3:4 qu'une vraie
+  affiche — pas un cadre vide répété, et rien à changer dans la mise en page le jour où
+  les vraies affiches arrivent.
 
 Sur la fiche d'une édition, l'ordre suit celui d'un programme imprimé :
 **affiche → dates → thème → chiffres → sélection → palmarès → hommages → galerie →

@@ -44,10 +44,15 @@
     </div>
   </section>
 
-  <!-- ============ FRISE (LOT 5a, §24) ============
-       Rendu entièrement par assets/js/editions.js (renderFrise) depuis
-       data/editions.json : rien de codé en dur ici. -->
-  <section class="frise registre-encre" aria-label="Chronologie des éditions">
+  <!-- ============ BANDE HORIZONTALE D'AFFICHES (LOT 5 révisé, §24) ============
+       Plus de 6 entrées : bande horizontale plutôt qu'une frise
+       verticale, qui enterrerait les éditions anciennes sous le
+       défilement. Rendu entièrement par assets/js/editions.js
+       (renderBande) depuis data/editions.json : rien de codé en dur
+       ici, y compris le filet de progression sous la bande. Chaque
+       entrée est un lien entier vers edition.html — pas de panneau ni
+       de modale, qui dupliquerait une page déjà indexable. -->
+  <section class="bande-editions registre-encre" aria-label="Chronologie des éditions">
     <div id="editions-grid" aria-live="polite">
       <p class="loading-msg">Chargement des éditions…</p>
     </div>
