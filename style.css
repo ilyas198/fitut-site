@@ -1461,16 +1461,15 @@ button:focus-visible {
 .skip-link:focus { left: 0; }
 
 /* ==========================================================
-   HERO (LOT 4 phase A) — « l'affiche et la distribution », fitut-design
-   §16. Système nouveau exclusivement. Remplace intégralement l'ancien
-   hero-slider (panneau fixe + bande de visuels) : plus de diaporama,
-   plus de main.js dédié.
+   HERO (LOT 4 phase A, repris) — fil d'annonces, fitut-design §16.
+   Système nouveau exclusivement. Remplace intégralement la structure
+   « l'affiche et la distribution » : rendu entièrement par
+   assets/js/annonces.js depuis data/annonces.json, rien de codé en dur.
 
-   Hauteur exacte de la fenêtre, sans scroll : le hero commence juste
-   sous la navbar + le bandeau Haut Patronage (margin-top) et occupe
-   très exactement le reste du viewport (height, pas min-height) —
-   les deux se compensent pour totaliser 100svh pile. svh plutôt que vh
-   pour éviter le saut causé par la barre d'adresse mobile.
+   Hauteur exacte de la fenêtre, sans scroll (conservé du travail
+   précédent) : le hero commence juste sous la navbar + le bandeau Haut
+   Patronage (margin-top) et occupe très exactement le reste du
+   viewport (height, pas min-height). svh plutôt que vh.
    ========================================================== */
 .hero {
   position: relative;
@@ -1480,6 +1479,7 @@ button:focus-visible {
   align-items: center;
   overflow: hidden;
 }
+.hero-fil { width: 100%; height: 100%; }
 
 .hero-grille {
   display: grid;
@@ -1490,8 +1490,8 @@ button:focus-visible {
   padding: var(--esp-2);
 }
 .hero-grille > .marge-regie,
-.hero-grille > .hero-affiche,
-.hero-grille > .hero-contenu { grid-column: 1; }
+.hero-grille > .hero-contenu,
+.hero-grille > .hero-visuel { grid-column: 1; }
 
 @media (min-width: 600px) {
   .hero-grille {
@@ -1500,14 +1500,11 @@ button:focus-visible {
     padding: var(--esp-3);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
-  .hero-grille > .hero-affiche { grid-column: 2; grid-row: 1; }
+  .hero-grille > .hero-visuel  { grid-column: 2; grid-row: 1; }
   .hero-grille > .hero-contenu { grid-column: 2; grid-row: 2; }
 }
 @media (min-width: 1024px) {
   .hero-grille {
-    /* Affiche ~1/3 de la largeur de contenu (colonnes 2+3 combinées) :
-       2fr / (2fr+1fr) = 1/3. Le titre cède de l'échelle avant l'affiche
-       en cas de conflit, jamais l'inverse. */
     grid-template-columns: var(--marge-regie-desktop) minmax(0, 2fr) minmax(240px, 1fr);
     align-items: center;
     gap: var(--esp-4);
@@ -1515,13 +1512,16 @@ button:focus-visible {
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
-  .hero-grille > .hero-affiche { grid-column: 3; grid-row: 1; }
+  .hero-grille > .hero-visuel  { grid-column: 3; grid-row: 1; }
 }
 
-/* Surtitre : horizontal sur mobile (comportement par défaut de .surtitre),
-   vertical dans la marge de régie dès que celle-ci existe (§11, §16). */
+/* « 01 / 02 » dans la marge de régie : un fait réel (position dans la
+   séquence des annonces actives), pas une numérotation décorative
+   (§36) — change avec l'état réel du diaporama. Vertical dès que la
+   marge de régie existe, horizontal sur mobile comme .surtitre. */
+.hero-position { margin: 0; }
 @media (min-width: 600px) {
-  .hero-surtitre {
+  .hero-position {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     justify-self: center;
@@ -1529,52 +1529,60 @@ button:focus-visible {
   }
 }
 
-.hero-titre { margin-bottom: var(--esp-3); }
-.hero-titre [lang="fr"] { font-size: var(--pas-3xl); }
-.hero-titre [lang="ar"] { font-size: var(--pas-2xl); } /* pas immédiatement inférieur, §9 */
-
-/* Palier le plus contraint (téléphone court, ex. 375×640) : --pas-3xl a
-   un plancher de 4rem qui ne descend jamais, quelle que soit la hauteur
-   disponible. Réduit explicitement le titre et resserre la distribution
-   ici plutôt que de laisser le contenu déborder de .hero (overflow:hidden)
-   ou de faire défiler la section.
-   Le français est fixé à 2 lignes par un <br> dans le HTML (« Le théâtre
-   universitaire / rassemble le monde ») — la taille ci-dessous est
-   plafonnée pour que la ligne la plus longue (25 car.) tienne sur une
-   seule ligne dans les 343px de contenu à 375px de large (estimation de
-   largeur de caractère, pas une mesure de rendu réel, marge prise en
-   conséquence). */
+/* ---- Texte : surtitre + titre + description + lien, un seul bloc dont
+   le CONTENU change — jamais plusieurs <h1> simultanés (§31). Le texte
+   suit le visuel avec 200ms de retard, fondu + légère montée (12px). ---- */
+.hero-texte {
+  transition: opacity var(--duree-contenu) var(--courbe-sortie),
+              transform var(--duree-contenu) var(--courbe-sortie);
+}
+.hero-texte.est-sortant { opacity: 0; transform: translateY(12px); }
+.hero-titre {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  /* --pas-2xl (échelle affiche), pas --pas-3xl : --pas-3xl visait le
+     titre-bilingue de l'ancien hero (un nom propre très court). Ici le
+     titre est une phrase de 4 à 8 mots (§16) — à --pas-3xl (179,5px à
+     1440px), un seul mot comme « édition » dépasse déjà la colonne de
+     contenu. Vérifié au calcul, pas supposé. */
+  font-size: var(--pas-2xl);
+  letter-spacing: -0.03em;
+  line-height: var(--interligne-serre);
+  margin: var(--esp-2) 0 var(--esp-3);
+}
+.hero-description {
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  margin-bottom: var(--esp-4);
+}
 @media (max-width: 599px) {
-  .hero-titre [lang="fr"] { font-size: clamp(1.375rem, 6.5vw, 1.65rem); }
-  .hero-titre [lang="ar"] { font-size: clamp(1.375rem, 7vw, 1.777rem); }
-}
-/* Le resserrement de .distribution sous 600px vit désormais dans le
-   composant lui-même (voir plus bas) : plus besoin d'un correctif
-   propre au hero, il profite à tous les usages de .distribution. */
-
-.hero-distribution { max-width: var(--largeur-archive); }
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--esp-3);
-  margin-top: var(--esp-4);
-}
-.hero-lien {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px; /* cible tactile — texte seul, pas de fond, zone de clic élargie */
-  font-family: var(--police-donnees);
-  font-size: var(--pas-s);
-  letter-spacing: 0.05em;
+  .hero-titre { font-size: clamp(1.75rem, 8vw, 2.5rem); }
 }
 
-.hero-affiche-cadre {
+/* ---- Visuel : pile de couches en fondu-croisé + léger zoom arrière —
+   jamais de glissement (§16). object-fit:contain : le visuel n'est
+   jamais recadré (§13), quel que soit son ratio d'origine. ---- */
+.hero-visuel { position: relative; }
+.hero-visuel-couche {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duree-hero) var(--courbe-sortie);
+}
+.hero-visuel-couche.is-active { position: relative; opacity: 1; }
+.hero-visuel-couche img,
+.hero-visuel-cadre { width: 100%; height: 100%; object-fit: contain; }
+.hero-visuel-couche img { animation: hero-visuel-zoom var(--duree-hero) var(--courbe-sortie); }
+@keyframes hero-visuel-zoom {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1); }
+}
+.hero-visuel-cadre {
   aspect-ratio: 3 / 4;
   width: auto;
-  max-height: 16svh; /* mobile : vignette d'annonce, pas l'objet — desktop (>=600px, inchangé
-    ci-dessous) reste l'échelle où l'affiche doit être un objet à part entière */
+  max-height: 16svh; /* mobile : vignette, pas l'objet */
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -1582,18 +1590,56 @@ button:focus-visible {
   border: 1px solid var(--filet-sombre);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
   color: var(--papier-tiers);
   text-align: center;
   padding: var(--esp-2);
+  overflow-wrap: break-word; /* la vignette mobile (16svh) est trop étroite
+    pour « [visuel » (~50px) en un seul mot ; sans coupure il déborde de
+    la boîte au lieu de passer à la ligne — vérifié au calcul, pas supposé */
 }
 @media (min-width: 600px) {
-  .hero-affiche-cadre { max-height: 38svh; }
+  .hero-visuel-cadre { max-height: 38svh; }
 }
 @media (min-width: 1024px) {
-  /* La largeur (1/3 de la grille, ci-dessus) pilote la taille ; ce plafond
-     n'est qu'un filet de sécurité sur les fenêtres très hautes et étroites. */
-  .hero-affiche-cadre { width: 100%; max-height: 70svh; margin: 0; }
+  .hero-visuel-cadre { width: 100%; max-height: 70svh; margin: 0; }
 }
+
+/* ---- Navigation : filets horizontaux qui se remplissent — pas de
+   puces rondes, pas de flèches (§16). Rendue seulement si 2+ annonces
+   actives (annonces.js). ---- */
+.hero-nav { display: flex; gap: var(--esp-1); margin-top: var(--esp-2); }
+.hero-filet {
+  flex: 1 1 0;
+  max-width: 64px;
+  height: 2px;
+  padding: 0;
+  border: none;
+  background: var(--filet-sombre);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.hero-filet::before { content: ''; position: absolute; inset: -14px -2px; } /* zone de clic élargie */
+.hero-filet-remplissage { position: absolute; inset: 0; width: 0%; background: var(--corail); }
+.hero-filet-remplissage.is-filling { transition: width linear; }
+.hero-filet:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+
+/* ---- prefers-reduced-motion : annonces.js construit un empilement
+   statique séparé (pas de diaporama à désactiver après coup). La
+   hauteur stricte n'a plus lieu d'être — plusieurs annonces complètes
+   empilées ont besoin de leur place, la page défile normalement. ---- */
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: auto; min-height: 100svh; overflow: visible; }
+}
+.hero-grille.hero-grille--empilee {
+  grid-template-columns: 1fr;
+  padding: var(--esp-3) var(--esp-2);
+}
+.hero-vue-empilee { padding: var(--esp-4) 0; border-bottom: 1px solid var(--filet-sombre); }
+.hero-vue-empilee:last-child { border-bottom: none; }
+.hero-vue-empilee .hero-visuel { position: static; margin-bottom: var(--esp-3); }
+.hero-vue-empilee .hero-titre { font-size: var(--pas-xl); }
 
 /* ---- COMPTE À REBOURS ---- */
 .countdown-section {

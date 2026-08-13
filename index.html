@@ -72,52 +72,11 @@
     </div>
   </div>
 
-  <!-- ============ HERO (LOT 4 phase A) — l'affiche et la distribution, fitut-design §16 ============ -->
-  <section class="hero registre-encre" id="hero" aria-label="Présentation du festival">
-    <div class="hero-grille">
-      <div class="marge-regie">
-        <p class="surtitre hero-surtitre">Éd. 19 — Tanger</p>
-      </div>
-
-      <div class="hero-affiche">
-        <div class="hero-affiche-cadre" role="img" aria-label="Affiche officielle de la 19e édition, à venir">
-          [affiche à confirmer]
-        </div>
-      </div>
-
-      <div class="hero-contenu">
-        <h1 class="titre-bilingue hero-titre">
-          <span lang="fr">Le théâtre universitaire<br>rassemble le monde</span>
-          <span lang="ar" dir="rtl">المسرح الجامعي يجمع العالم</span>
-        </h1>
-
-        <dl class="distribution hero-distribution">
-          <div class="distribution-ligne">
-            <dt>Dates</dt>
-            <dd>26 – 30 octobre 2026</dd>
-          </div>
-          <div class="distribution-ligne">
-            <dt>Lieu</dt>
-            <dd>Tanger, Maroc</dd>
-          </div>
-          <div class="distribution-ligne">
-            <dt>Pays représentés</dt>
-            <dd>[à confirmer]</dd>
-          </div>
-          <div class="distribution-ligne">
-            <dt>Spectacles</dt>
-            <dd>[à confirmer]</dd>
-          </div>
-        </dl>
-        <!-- Lieux du festival : direction .fiche-adresse sur la page Festival (§15, §29), pas ici.
-             Patronage : déjà affiché en permanence dans le bandeau au-dessus du hero, non répété. -->
-
-        <div class="hero-actions">
-          <a class="bouton" href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" target="_blank" rel="noopener">Déposer une candidature</a>
-          <a class="hero-lien" href="le-festival.html">Voir le programme →</a>
-        </div>
-      </div>
-    </div>
+  <!-- ============ HERO (LOT 4 phase A, repris) — fil d'annonces, fitut-design §16 ============
+       Rendu entièrement par assets/js/annonces.js depuis data/annonces.json : rien de codé
+       en dur ici, le nombre de vues vient des données. -->
+  <section class="hero registre-encre" id="hero" aria-label="Actualités du festival">
+    <div class="hero-fil" id="heroFil"></div>
   </section>
 
   <main id="contenu">
@@ -211,6 +170,7 @@
   <footer id="site-footer" class="site-footer"></footer>
 
   <script src="partials.js"></script>
+  <script src="assets/js/annonces.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
