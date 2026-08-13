@@ -27,8 +27,9 @@
 
   <main id="contenu">
 
-  <!-- ============ ASAU (LOT 6a, §28 : registre papier intégralement) ============ -->
-  <section class="asau-intro registre-papier">
+  <!-- ============ ASAU (registre encre : récit d'ouverture, ça se regarde
+       avant de se lire — la page n'est plus monorégistre, §6). ============ -->
+  <section class="asau-intro registre-encre">
     <div class="grille-regie">
       <div class="marge-regie"><p class="surtitre">Fondée en 2005</p></div>
       <div class="contenu-regie">
@@ -39,7 +40,10 @@
           <span lang="fr">Qui sommes-nous ?</span>
           <span lang="ar" dir="rtl">من نحن؟</span><!-- [traduction à valider] -->
         </h1>
-        <img class="asau-logo" src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-1-1024x215.png" alt="Logotype de l'Association de l'Action Universitaire (ASAU)" loading="lazy" width="1024" height="215">
+        <!-- Logo ASAU retiré au passage en registre encre : le fichier
+             hotlinké (fond clair présumé, non vérifiable sans navigateur)
+             risquait de devenir illisible sur --encre-nuit. À réintroduire
+             avec une version adaptée au fond sombre plutôt que deviner. -->
         <p class="texte-revue">
           Créée en 2005 par <strong>Tahar Elqour</strong> en compagnie des jeunes étudiants de l'École Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action Universitaire est portée par sa diversification culturelle et artistique, et surtout par la jeunesse qui l'anime.
         </p>
@@ -53,34 +57,40 @@
     </div>
   </section>
 
-  <!-- ============ PHILOSOPHIE & VALEURS ============ -->
+  <!-- ============ PHILOSOPHIE & VALEURS (registre papier — grille asymétrique,
+       jamais un empilement pour 4 à 6 éléments courts, §18) ============ -->
   <section class="asau-valeurs registre-papier">
     <div class="grille-regie">
       <div class="marge-regie"><p class="surtitre">5 valeurs</p></div>
       <div class="contenu-regie">
         <h2 class="titre-section">Philosophie &amp; valeurs</h2>
-        <dl class="valeurs-liste">
-          <div class="valeurs-ligne">
-            <dt>Partage</dt>
-            <dd>Car partager c'est aussi recevoir.</dd>
-          </div>
-          <div class="valeurs-ligne">
-            <dt>Persévérance</dt>
-            <dd>Plus de 20 ans d'existence.</dd>
-          </div>
-          <div class="valeurs-ligne">
-            <dt>Épanouissement</dt>
-            <dd>Toujours plus haut, toujours plus loin.</dd>
-          </div>
-          <div class="valeurs-ligne">
-            <dt>Tolérance</dt>
-            <dd>Nos différences nous rendent uniques.</dd>
-          </div>
-          <div class="valeurs-ligne">
-            <dt>Créativité</dt>
-            <dd>Le moyen de rendre le rêve réalité.</dd>
-          </div>
-        </dl>
+        <div class="valeurs-grille">
+          <article class="valeur valeur--principale">
+            <span class="valeur-numero">01</span>
+            <h3 class="valeur-titre">Partage</h3>
+            <p class="valeur-texte">Car partager c'est aussi recevoir.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">02</span>
+            <h3 class="valeur-titre">Persévérance</h3>
+            <p class="valeur-texte">Plus de 20 ans d'existence.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">03</span>
+            <h3 class="valeur-titre">Épanouissement</h3>
+            <p class="valeur-texte">Toujours plus haut, toujours plus loin.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">04</span>
+            <h3 class="valeur-titre">Tolérance</h3>
+            <p class="valeur-texte">Nos différences nous rendent uniques.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">05</span>
+            <h3 class="valeur-titre">Créativité</h3>
+            <p class="valeur-texte">Le moyen de rendre le rêve réalité.</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>

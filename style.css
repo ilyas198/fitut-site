@@ -2142,14 +2142,14 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 .liste-documents-fleche { font-family: var(--police-donnees); }
 
 /* ==========================================================
-   QUI SOMMES NOUS (LOT 6a, §28) — registre papier intégralement,
-   aucune bascule sur cette page : rythme ordinaire --esp-7 entre
-   sections, jamais --esp-8 (réservé aux bascules de registre, §6/§12).
+   QUI SOMMES NOUS (LOT 6a) — deux registres, pas un seul (§6 : aucune
+   page n'est monorégistre). ASAU = encre (récit d'ouverture, ça se
+   regarde avant de se lire) → bascule --esp-8 → Valeurs = papier →
+   pas de bascule (papier → papier) → Équipe = papier, --esp-7.
    ========================================================== */
-.asau-intro,
-.asau-valeurs,
-.asau-equipe { padding: var(--esp-7) 0 var(--esp-4); }
-.asau-intro { padding-top: var(--esp-6); } /* première section de page : pas de bascule à annoncer */
+.asau-intro   { padding: var(--esp-6) 0 var(--esp-4); } /* première section : pas de bascule à annoncer */
+.asau-valeurs { padding: var(--esp-8) 0 var(--esp-4); } /* bascule encre → papier */
+.asau-equipe  { padding: var(--esp-7) 0 var(--esp-4); } /* pas de bascule, papier → papier */
 
 /* Paragraphe de lecture réutilisable — colonne à 680px (§28). */
 .texte-revue {
@@ -2160,38 +2160,52 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 }
 .texte-revue + .texte-revue { margin-top: var(--esp-3); }
 
-.asau-logo {
+/* ---- Philosophie & valeurs — grille asymétrique, jamais un
+   empilement pour 4 à 6 éléments courts (§18). Pas un des 8
+   composants : filet-numéro-titre-texte à partir des tokens existants.
+   Valeur 1 (Partage) pleine largeur dès 600px, valeurs 2 à 5 en 2×2 —
+   un seul grid-template-columns:2, la valeur 1 en grid-column:1/-1
+   suffit à produire les deux sans grille séparée. ---- */
+.valeurs-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 600px) {
+  .valeurs-grille { grid-template-columns: repeat(2, 1fr); }
+}
+.valeur {
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--filet-clair); /* filet en haut seulement — pas de border-radius (§36) */
+}
+@media (min-width: 600px) {
+  .valeur--principale { grid-column: 1 / -1; }
+}
+.valeur-numero {
   display: block;
-  width: 100%;
-  max-width: 240px;
-  height: auto;
-  margin: var(--esp-3) 0 var(--esp-4);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA (§10) */
 }
-
-/* ---- Philosophie & valeurs — pas un des 8 composants : dt/dd proches
-   dans l'esprit de .distribution (§15), rejoués avec les mêmes tokens
-   plutôt que la classe elle-même (.distribution reste réservée au
-   registre encre, §26). ---- */
-.valeurs-liste { margin: var(--esp-3) 0 0; }
-.valeurs-ligne {
-  padding: var(--esp-2) 0;
-  border-bottom: 1px solid var(--filet-clair);
-}
-.valeurs-ligne:last-child { border-bottom: none; }
-.valeurs-ligne dt {
+.valeur-titre {
+  margin-top: var(--esp-1);
   font-family: var(--police-affiche);
   font-weight: 500;
   font-size: var(--pas-m);
   line-height: var(--interligne-serre);
 }
-.valeurs-ligne dd {
-  margin: var(--esp-1) 0 0;
+.valeur--principale .valeur-titre { font-size: var(--pas-l); }
+.valeur-texte {
+  margin-top: var(--esp-2);
   max-width: var(--largeur-revue);
   font-family: var(--police-revue);
   font-size: var(--pas-base);
   line-height: var(--interligne-lecture);
-  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA (§10) */
+  color: var(--texte-tiers);
 }
+.valeur--principale .valeur-texte { font-size: var(--pas-m); } /* texte « plus généreux » : échelle, pas plus de mots */
 
 /* ---- Équipe — « ligne de générique » (§15) : portrait carré, nom,
    fonction, en ligne plutôt qu'en grille de cartes (§15 : sortir de la

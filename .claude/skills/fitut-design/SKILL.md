@@ -160,6 +160,8 @@ une posture de lecture.
 remplace le centrage et les séparateurs décoratifs. Elle ne coûte aucune animation.
 
 Règles de rythme :
+- **Aucune page n'est composée d'un seul registre.** Toute page comporte au minimum une
+  bascule. Une page monorégistre n'a pas de rythme : elle empile.
 - L'encre est **majoritaire**. Le rideau est **rare** : au maximum deux blocs par page,
   jamais deux consécutifs. Sa force vient de sa rareté.
 - Le papier occupe au minimum **30 %** de la hauteur de chaque page. Une page entièrement
@@ -675,6 +677,13 @@ Chaque section commence par un **surtitre en marge** et un **titre aligné à ga
 Les textes longs passent en `Literata`, colonne de 680 px, avec lettrine sur le premier
 paragraphe des textes institutionnels. La lettrine est justifiée ici : c'est le code de la
 revue, elle signale un changement de mode de lecture.
+
+**Une énumération de 4 à 6 éléments courts se compose en grille, jamais en empilement
+vertical.** L'empilement convient au texte qui se lit dans l'ordre ; une énumération se
+parcourt, elle a besoin d'une surface. Asymétrie possible et bienvenue — un élément plus
+large ou plus haut que les autres (le premier, le plus important) casse la monotonie
+d'une grille régulière sans retomber dans la carte : filet, échelle et numérotation réelle
+(jamais décorative, §36) suffisent à porter la hiérarchie.
 
 ## 19. Programme du festival
 
