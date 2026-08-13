@@ -1,54 +1,5 @@
 /* main.js — FITUT */
 
-/* ---- COMPTE À REBOURS vers la prochaine édition ---- */
-(function initCountdown() {
-  const bloc = document.getElementById('countdown');
-  if (!bloc) return;
-
-  const cible = new Date(bloc.dataset.target).getTime();
-  if (isNaN(cible)) return;
-
-  const champs = {
-    jours: bloc.querySelector('[data-unit="jours"]'),
-    heures: bloc.querySelector('[data-unit="heures"]'),
-    minutes: bloc.querySelector('[data-unit="minutes"]'),
-    secondes: bloc.querySelector('[data-unit="secondes"]')
-  };
-
-  const pad = (n) => String(n).padStart(2, '0');
-
-  function tick() {
-    const reste = cible - Date.now();
-    if (reste <= 0) {
-      bloc.classList.add('is-live');
-      Object.values(champs).forEach(el => { if (el) el.textContent = '00'; });
-      const note = document.querySelector('.countdown-note');
-      if (note) note.textContent = 'Le festival est en cours \u2014 rendez-vous \u00e0 Tanger !';
-      clearInterval(intervalle);
-      return;
-    }
-    const j = Math.floor(reste / 86400000);
-    const h = Math.floor((reste % 86400000) / 3600000);
-    const m = Math.floor((reste % 3600000) / 60000);
-    const sec = Math.floor((reste % 60000) / 1000);
-    if (champs.jours) champs.jours.textContent = j;
-    if (champs.heures) champs.heures.textContent = pad(h);
-    if (champs.minutes) champs.minutes.textContent = pad(m);
-    if (champs.secondes) champs.secondes.textContent = pad(sec);
-  }
-
-  tick();
-  const intervalle = setInterval(tick, 1000);
-})();
-
-/* ---- BANDEAU PRESSE : duplication du contenu pour un défilement continu ---- */
-(function initPressMarquee() {
-  const piste = document.getElementById('pressTrack');
-  if (!piste) return;
-  piste.innerHTML += piste.innerHTML;
-  piste.setAttribute('aria-hidden', 'false');
-})();
-
 // Burger menu (breakpoint aligné sur style.css @media max-width: 1100px)
 const NAV_MOBILE_MQ = window.matchMedia('(max-width: 1100px)');
 
@@ -76,18 +27,21 @@ if (burger && navLinks) {
   });
 }
 
-// Scroll reveal (ré-applicable au contenu injecté dynamiquement)
+// Scroll reveal (ré-applicable au contenu injecté dynamiquement).
+// .reveal (ancien système, translateY) et .apparition (système à trois
+// registres, opacité seule — §34) coexistent le temps de la migration ;
+// chacun reçoit son propre nom d'état plutôt que d'unifier prématurément.
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.classList.add('visible');
+      e.target.classList.add(e.target.classList.contains('apparition') ? 'est-visible' : 'visible');
       revealObserver.unobserve(e.target);
     }
   });
 }, { threshold: 0.1 });
 
 function observeReveals(root = document) {
-  root.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+  root.querySelectorAll('.reveal:not(.visible), .apparition:not(.est-visible)').forEach(el => revealObserver.observe(el));
 }
 observeReveals();
 

@@ -47,7 +47,7 @@ via `fetch()`, ce que le protocole `file://` bloque.
 ## 2. Architecture
 
 ```
-index.html            Accueil : hero, compte à rebours, chiffres, presse
+index.html            Accueil : hero (fil d'annonces), chiffres, explorer, presse
 qui-sommes-nous.html  ASAU, valeurs, équipe
 le-festival.html      Participants, lieux, prix, ateliers
 le-carnaval.html      Parcours, galerie, chiffres
@@ -55,10 +55,12 @@ nos-editions.html     Grille de toutes les éditions
 edition.html          Fiche d'une édition — edition.html?n=18
 
 style.css             Feuille de style unique de tout le site
-main.js               Hero, compte à rebours, menu burger, animations, compteurs
+main.js               Menu burger, animations au défilement, compteurs (pages non migrées)
 partials.js           Header + footer + barre sociale (source unique)
 assets/js/editions.js Moteur de rendu de « Nos Éditions »
+assets/js/annonces.js Moteur du fil d'annonces du hero (accueil)
 data/editions.json    ★ Toutes les données des éditions
+data/annonces.json    ★ Annonces du hero de l'accueil (fitut-design §16)
 ```
 
 ### Règles structurelles à respecter
@@ -82,7 +84,7 @@ Refonte demandée par le client, **déjà appliquée** — ne pas revenir en arr
 | Page « Espace Presse » supprimée | fait — logos migrés sur l'accueil, contact dans le footer |
 | Pages « Hommages » et « Palmarès » supprimées | fait — contenu absorbé dans les fiches d'édition |
 | Menu « Archives » remplacé par « Nos Éditions » | fait |
-| Citation de Fatima Ouchay retirée de l'accueil | fait — remplacée par un compte à rebours |
+| Citation de Fatima Ouchay retirée de l'accueil | fait — remplacée par un compte à rebours, lui-même retiré au LOT 4 phase B (§36 : vocabulaire de lancement de produit) |
 | Section « Vous voulez nous rejoindre » du Carnaval retirée | fait |
 | Photos et « Mot du Fondateur » retirés de Qui Sommes Nous | fait |
 | Slider à translation `-33.333%` remplacé | fait — fondu-croisé piloté par le DOM |
@@ -203,6 +205,14 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
 5. **Contenu des ateliers** : cartes de gabarit avec crochets dans `le-festival.html`.
 6. **Images** : encore chargées depuis l'ancien WordPress `fitut.ma`. Les dossiers
    `media/` sont prêts à recevoir les fichiers haute définition.
+7. **Titres et dates des 12 parutions presse** (accueil, section « Presse ») : seuls le
+   nom du média et le lien sont confirmés. `fitut-design` §27 attend média + titre +
+   date + lien ; en l'absence de titre et de date vérifiés, la section n'affiche que
+   média + lien (LOT 4 phase B) plutôt que d'inventer les deux champs manquants (§35).
+8. **Traduction arabe du titre bilingue de la section « Chiffres »** (accueil) :
+   candidate proposée par l'IA, non relue par un locuteur natif — marquée
+   `[traduction à valider]` dans `index.html`. À faire valider par le comité avant
+   toute mise en production.
 
 Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements en attente.
 

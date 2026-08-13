@@ -486,6 +486,10 @@ interchangeables — ce n'est presque jamais le cas ici.
 Avant de créer un neuvième composant, vérifier qu'aucun des huit ne convient, et le
 justifier à l'utilisateur.
 
+**Relevé de chiffres** (page d'accueil, LOT 4 phase B) : pas un neuvième composant —
+réutilise le format déjà prescrit au §23 (ligne mono à séparateurs `·`, sans balisage
+dédié) plutôt que d'en créer un.
+
 ### Spécification des huit composants
 
 Chaque composant est décrit par : registre autorisé, structure, typographie, séparation.
