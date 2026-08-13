@@ -674,9 +674,10 @@ dur dans une page.
 Chaque section commence par un **surtitre en marge** et un **titre aligné à gauche**.
 **Jamais de titre de section centré.**
 
-Les textes longs passent en `Literata`, colonne de 680 px, avec lettrine sur le premier
-paragraphe des textes institutionnels. La lettrine est justifiée ici : c'est le code de la
-revue, elle signale un changement de mode de lecture.
+Les textes longs passent en `Literata`, colonne de 680 px. Pas de lettrine : ce serait un
+troisième geste signature là où le §6 n'en autorise que deux (surtitre, ligne bilingue) —
+le texte institutionnel se distingue déjà par son registre et sa colonne de lecture, il
+n'a pas besoin d'un troisième signal.
 
 **Une énumération de 4 à 6 éléments courts se compose en grille, jamais en empilement
 vertical.** L'empilement convient au texte qui se lit dans l'ordre ; une énumération se

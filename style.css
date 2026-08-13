@@ -2160,6 +2160,17 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 }
 .texte-revue + .texte-revue { margin-top: var(--esp-3); }
 
+/* Logo ASAU — prête à recevoir la version blanche (CLAUDE.md §7) sans
+   rien décider de nouveau à ce moment-là ; inutilisée tant que le
+   fichier réel n'existe pas (voir le commentaire dans le HTML). */
+.asau-logo {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  margin: var(--esp-3) 0 var(--esp-4);
+}
+
 /* ---- Philosophie & valeurs — grille asymétrique, jamais un
    empilement pour 4 à 6 éléments courts (§18). Pas un des 8
    composants : filet-numéro-titre-texte à partir des tokens existants.

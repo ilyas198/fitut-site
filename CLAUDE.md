@@ -225,6 +225,13 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
 10. **Portraits d'hommages** (édition 18, et toute édition future) : `hommages[].portrait`
     est vide dans `data/editions.json` — `edition.html` affiche `[portrait à confirmer]`
     en attendant les fichiers réels.
+11. **Logo ASAU en version blanche pour fond sombre** (`qui-sommes-nous.html`) : la
+    section d'ouverture est passée en registre encre (§6 : la page ne peut plus être
+    monorégistre), mais le seul fichier logo disponible est hotlinké depuis l'ancien
+    WordPress, probablement conçu pour un fond clair — son rendu sur `--encre-nuit`
+    n'est pas vérifiable sans navigateur. Le logo est retiré en attendant ; son
+    emplacement est marqué en commentaire dans le HTML, prêt à recevoir la version
+    blanche dès qu'elle existe.
 
 Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements en attente.
 
