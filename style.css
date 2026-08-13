@@ -1847,6 +1847,10 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 .bande-editions { padding: 0 0 var(--esp-6); }
 .bande-defilement {
   display: flex;
+  list-style: none; /* <ul> : la remise à zéro margin/padding est déjà
+    globale (*), mais pas list-style — sans ceci, des puces s'ajoutent
+    à un défilement horizontal où elles n'ont pas de sens */
+  margin: 0;
   gap: var(--esp-2);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -1865,6 +1869,8 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   width: var(--affiche-largeur);
   scroll-snap-align: start;
 }
+.affiche-entree-lien { display: block; } /* le <li> est l'item flex,
+  le <a> à l'intérieur remplit tout l'espace cliquable (§15) */
 .affiche-entree-cadre {
   position: relative;
   width: 100%;

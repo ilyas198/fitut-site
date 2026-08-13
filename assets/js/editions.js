@@ -111,18 +111,23 @@ function renderBande(editions, mount) {
          </div>`;
 
     return `
-      <a class="affiche-entree" href="edition.html?n=${e.numero}">
-        <div class="affiche-entree-cadre">${visuel}</div>
-        <p class="affiche-entree-legende">
-          ${aVenir ? '<span class="surtitre affiche-entree-prochaine">Prochaine édition</span>' : ''}
-          <span class="affiche-entree-ordinal">${ordinal(e.numero)} édition</span>
-          <span class="affiche-entree-annee">${e.annee}</span>
-        </p>
-      </a>`;
+      <li class="affiche-entree">
+        <a class="affiche-entree-lien" href="edition.html?n=${e.numero}">
+          <div class="affiche-entree-cadre">${visuel}</div>
+          <p class="affiche-entree-legende">
+            ${aVenir ? '<span class="surtitre affiche-entree-prochaine">Prochaine édition</span>' : ''}
+            <span class="affiche-entree-ordinal">${ordinal(e.numero)} édition</span>
+            <span class="affiche-entree-annee">${e.annee}</span>
+          </p>
+        </a>
+      </li>`;
   }).join('');
 
+  /* <ul>/<li> plutôt que des <div> : un lecteur d'écran annonce
+     « liste de 19 éléments », l'information réelle ici (nombre
+     d'éditions), pas seulement une suite de liens sans relation. */
   mount.innerHTML = `
-    <div class="bande-defilement" id="bandeDefilement" aria-label="Chronologie des éditions, défilement horizontal">${entrees}</div>
+    <ul class="bande-defilement" id="bandeDefilement" role="list" aria-label="Chronologie des éditions, défilement horizontal">${entrees}</ul>
     <div class="bande-progression"><span class="bande-progression-remplissage" id="bandeProgression"></span></div>`;
 
   initBandeProgression();
