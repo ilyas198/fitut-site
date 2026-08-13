@@ -2141,3 +2141,92 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 }
 .liste-documents-fleche { font-family: var(--police-donnees); }
 
+/* ==========================================================
+   QUI SOMMES NOUS (LOT 6a, §28) — registre papier intégralement,
+   aucune bascule sur cette page : rythme ordinaire --esp-7 entre
+   sections, jamais --esp-8 (réservé aux bascules de registre, §6/§12).
+   ========================================================== */
+.asau-intro,
+.asau-valeurs,
+.asau-equipe { padding: var(--esp-7) 0 var(--esp-4); }
+.asau-intro { padding-top: var(--esp-6); } /* première section de page : pas de bascule à annoncer */
+
+/* Paragraphe de lecture réutilisable — colonne à 680px (§28). */
+.texte-revue {
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+.texte-revue + .texte-revue { margin-top: var(--esp-3); }
+
+.asau-logo {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  margin: var(--esp-3) 0 var(--esp-4);
+}
+
+/* ---- Philosophie & valeurs — pas un des 8 composants : dt/dd proches
+   dans l'esprit de .distribution (§15), rejoués avec les mêmes tokens
+   plutôt que la classe elle-même (.distribution reste réservée au
+   registre encre, §26). ---- */
+.valeurs-liste { margin: var(--esp-3) 0 0; }
+.valeurs-ligne {
+  padding: var(--esp-2) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.valeurs-ligne:last-child { border-bottom: none; }
+.valeurs-ligne dt {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.valeurs-ligne dd {
+  margin: var(--esp-1) 0 0;
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA (§10) */
+}
+
+/* ---- Équipe — « ligne de générique » (§15) : portrait carré, nom,
+   fonction, en ligne plutôt qu'en grille de cartes (§15 : sortir de la
+   carte). Pas un des 8 composants — structure minimale à partir des
+   tokens existants. ---- */
+.generique-liste { margin-top: var(--esp-3); }
+.generique {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.generique:last-child { border-bottom: none; }
+@media (min-width: 600px) {
+  .generique { grid-template-columns: 96px 1fr; align-items: center; gap: var(--esp-3); }
+}
+.generique-portrait {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: cover; /* portrait réel, cadrage carré assumé — jamais rond (§36) */
+}
+.generique-nom {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.generique-fonction {
+  margin-top: 2px;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
+}
+

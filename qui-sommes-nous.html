@@ -17,7 +17,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,97 +25,110 @@
   <!-- HEADER (injecté par partials.js) -->
   <div id="site-header"></div>
 
-  <div class="page-hero">
-    <h1>Qui Sommes Nous?</h1>
-    <div class="gold-line"></div>
-  </div>
+  <main id="contenu">
 
-  <!-- ASAU Intro -->
-  <section>
-    <div class="container">
-      <div class="reveal bloc-intro-centre">
-        <img src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-1-1024x215.png" alt="ASAU" class="logo-asau-intro">
-        <p class="texte-lead">
-          Créée en 2005 par <strong class="texte-emphase">Tahar Elqour</strong> en compagnie des jeunes étudiants de l'École Nationale de Commerce et de Gestion de Tanger, l'<strong class="texte-emphase">Association de l'Action Universitaire</strong> est chérie pour sa diversification culturelle et artistique mais surtout par sa jeunesse qui la porte.
+  <!-- ============ ASAU (LOT 6a, §28 : registre papier intégralement) ============ -->
+  <section class="asau-intro registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">Fondée en 2005</p></div>
+      <div class="contenu-regie">
+        <!-- Traduction arabe candidate, non validée par un locuteur natif —
+             à faire relire par le comité avant mise en ligne (CLAUDE.md §7).
+             Ne pas considérer comme acquise. -->
+        <h1 class="titre-bilingue">
+          <span lang="fr">Qui sommes-nous ?</span>
+          <span lang="ar" dir="rtl">من نحن؟</span><!-- [traduction à valider] -->
+        </h1>
+        <img class="asau-logo" src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-1-1024x215.png" alt="Logotype de l'Association de l'Action Universitaire (ASAU)" loading="lazy" width="1024" height="215">
+        <p class="texte-revue">
+          Créée en 2005 par <strong>Tahar Elqour</strong> en compagnie des jeunes étudiants de l'École Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action Universitaire est portée par sa diversification culturelle et artistique, et surtout par la jeunesse qui l'anime.
         </p>
-        <p class="texte-lead texte-lead--espace">
-          L'association œuvre assidûment à garder une fusion et une conciliation entre le volet culturel, événementiel et professionnel au niveau du royaume et à l'international. Son succès s'est bâti au fil des années grâce à l'engagement de son comité et son travail laborieux.
+        <p class="texte-revue">
+          L'association œuvre à concilier le volet culturel, événementiel et professionnel, au niveau du royaume comme à l'international. Son travail s'est construit au fil des années grâce à l'engagement de son comité.
         </p>
-        <p class="texte-lead texte-lead--espace">
-          Plus de 20 ans d'existence et de don à la région nord, et plus précisément à la perle du détroit « Tanger » — on ne peut nier l'importance du chemin parcouru tout au long de ces années passées.
+        <p class="texte-revue">
+          Plus de 20 ans d'existence et de travail dans la région nord, et plus précisément à Tanger — un chemin dont l'importance ne se dément pas.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- PHILOSOPHIE -->
-  <section class="section-sombre">
-    <div class="container">
-      <h2 class="section-title titre-clair">Philosophie &amp; Valeurs</h2>
-      <div class="values-grid reveal">
-        <div class="value-card value-card--sombre">
-          <h3>Partage</h3>
-          <p>Car partager c'est aussi recevoir.</p>
-        </div>
-        <div class="value-card value-card--sombre">
-          <h3>Persévérance</h3>
-          <p>Avec plus de 20 ans d'existence !</p>
-        </div>
-        <div class="value-card value-card--sombre">
-          <h3>Épanouissement</h3>
-          <p>Toujours plus haut, toujours plus loin!</p>
-        </div>
-        <div class="value-card value-card--sombre">
-          <h3>Tolérance</h3>
-          <p>Car nos différences nous rendent uniques.</p>
-        </div>
-        <div class="value-card value-card--sombre">
-          <h3>Créativité</h3>
-          <p>Notre petit secret pour rendre le rêve une réalité.</p>
+  <!-- ============ PHILOSOPHIE & VALEURS ============ -->
+  <section class="asau-valeurs registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">5 valeurs</p></div>
+      <div class="contenu-regie">
+        <h2 class="titre-section">Philosophie &amp; valeurs</h2>
+        <dl class="valeurs-liste">
+          <div class="valeurs-ligne">
+            <dt>Partage</dt>
+            <dd>Car partager c'est aussi recevoir.</dd>
+          </div>
+          <div class="valeurs-ligne">
+            <dt>Persévérance</dt>
+            <dd>Plus de 20 ans d'existence.</dd>
+          </div>
+          <div class="valeurs-ligne">
+            <dt>Épanouissement</dt>
+            <dd>Toujours plus haut, toujours plus loin.</dd>
+          </div>
+          <div class="valeurs-ligne">
+            <dt>Tolérance</dt>
+            <dd>Nos différences nous rendent uniques.</dd>
+          </div>
+          <div class="valeurs-ligne">
+            <dt>Créativité</dt>
+            <dd>Le moyen de rendre le rêve réalité.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ L'ÉQUIPE (§15 : ligne de générique, portraits carrés) ============ -->
+  <section class="asau-equipe registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">100&nbsp;% étudiants</p></div>
+      <div class="contenu-regie">
+        <h2 class="titre-section">L'équipe</h2>
+        <p class="texte-revue">Le FITUT est porté par un comité composé à 100&nbsp;% d'étudiants, encadré par l'Association de l'Action Universitaire.</p>
+        <div class="generique-liste">
+          <!-- Chaque membre : photo carrée, nom, fonction.
+               Ajouter un membre = dupliquer un bloc .generique. -->
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/eee-orm3c0tte0ljf98p5ey82spppq7uc9nc5dzh8ep8qw.jpg" alt="Portrait de Tahar Elqour" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Tahar Elqour</p>
+              <p class="generique-fonction">Fondateur</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.19.09-orm3by0atihogfcslvqcdbfbxklqp6c55010sktf9k.jpeg" alt="Portrait d'Aimane Mezdioui" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Aimane Mezdioui</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/PLPLPLP-1-orm3c3nbyipee34loy63sa03hvtxzcyj5rxxo8l288.png" alt="Portrait de Fatima Zohra Guedira" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Fatima Zohra Guedira</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.52.55RRR-orm3bzvz76k93na2awjliay94cch4kjlt9bzr4qmx4.jpeg" alt="Portrait de Nizar Zahour" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Nizar Zahour</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- L'ÉQUIPE -->
-  <section class="section-claire-bordee">
-    <div class="container">
-      <h2 class="section-title reveal">L'Équipe</h2>
-      <p class="team-intro reveal">Le FITUT est porté par un comité composé à 100&nbsp;% d'étudiants, encadré par l'Association de l'Action Universitaire.</p>
-      <div class="team-grid reveal" id="team-grid">
-        <!-- Chaque membre : photo carrée, nom, fonction.
-             Ajouter un membre = dupliquer un bloc .team-member. -->
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/eee-orm3c0tte0ljf98p5ey82spppq7uc9nc5dzh8ep8qw.jpg" alt="Portrait de Tahar Elqour" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Tahar Elqour</span>
-            <span class="team-role">Fondateur</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.19.09-orm3by0atihogfcslvqcdbfbxklqp6c55010sktf9k.jpeg" alt="Portrait d'Aimane Mezdioui" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Aimane Mezdioui</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/PLPLPLP-1-orm3c3nbyipee34loy63sa03hvtxzcyj5rxxo8l288.png" alt="Portrait de Fatima Zohra Guedira" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Fatima Zohra Guedira</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.52.55RRR-orm3bzvz76k93na2awjliay94cch4kjlt9bzr4qmx4.jpeg" alt="Portrait de Nizar Zahour" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Nizar Zahour</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
+  </main>
 
   <!-- FOOTER (injecté par partials.js) -->
   <footer id="site-footer" class="site-footer"></footer>
