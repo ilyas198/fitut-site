@@ -51,7 +51,7 @@ index.html            Accueil : hero (fil d'annonces), chiffres, explorer, press
 qui-sommes-nous.html  ASAU, valeurs, équipe
 le-festival.html      Participants, lieux, prix, ateliers
 le-carnaval.html      Parcours, galerie, chiffres
-nos-editions.html     Grille de toutes les éditions
+nos-editions.html     Frise verticale de toutes les éditions
 edition.html          Fiche d'une édition — edition.html?n=18
 
 style.css             Feuille de style unique de tout le site
@@ -209,10 +209,22 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
    nom du média et le lien sont confirmés. `fitut-design` §27 attend média + titre +
    date + lien ; en l'absence de titre et de date vérifiés, la section n'affiche que
    média + lien (LOT 4 phase B) plutôt que d'inventer les deux champs manquants (§35).
-8. **Traduction arabe du titre bilingue de la section « Chiffres »** (accueil) :
-   candidate proposée par l'IA, non relue par un locuteur natif — marquée
-   `[traduction à valider]` dans `index.html`. À faire valider par le comité avant
-   toute mise en production.
+8. **Traductions arabes candidates non validées** : titre bilingue de la section
+   « Chiffres » sur l'accueil (`index.html`) et titre bilingue « Nos Éditions »
+   (`nos-editions.html`). Proposées par l'IA, non relues par un locuteur natif —
+   marquées `[traduction à valider]` dans le code. À faire valider par le comité
+   avant toute mise en production. Les éditions individuelles (`edition.html`)
+   n'ont volontairement **pas** de titre bilingue : générer 19 traductions arabes
+   d'ordinaux (« 19ᵉ édition », « 18ᵉ édition »…) sans relecture aurait été fabriquer
+   19 données non vérifiées plutôt qu'une seule — voir LOT 5.
+9. **Champs manquants dans `selection`** (édition, spectacles) : `fitut-design` §15/§20
+   prévoit langue, durée, lieu et horaire pour `.entree-programme` ; `data/editions.json`
+   ne fournit que `piece`, `troupe`, `universite`, `pays`, `synopsis`. Les métadonnées
+   absentes sont masquées, jamais inventées (LOT 5) — à compléter dans le JSON si le
+   comité fournit ces informations.
+10. **Portraits d'hommages** (édition 18, et toute édition future) : `hommages[].portrait`
+    est vide dans `data/editions.json` — `edition.html` affiche `[portrait à confirmer]`
+    en attendant les fichiers réels.
 
 Rechercher `[à confirmer]` dans le projet pour retrouver tous les emplacements en attente.
 
