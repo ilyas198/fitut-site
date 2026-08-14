@@ -1,5 +1,25 @@
 /* main.js — FITUT */
 
+/* ---------- Densité des barres fixes au défilement (§17) ----------
+   Seul changement autorisé pendant le défilement : opacité et flou des
+   deux barres (#navbar, .fixed-banner), pilotés en CSS via .est-defile
+   sur <body> (var(--voile-barre) → var(--voile-barre-dense), 14px →
+   20px de flou). Un seuil (--esp-1, 8px) plutôt qu'un déclenchement au
+   premier pixel : évite un aller-retour de classe sur un rebond de
+   défilement élastique en haut de page. rAF pour ne pas empiler des
+   lectures de scrollY plus vite que le navigateur ne peut peindre. */
+let densifiePlanifie = false;
+function majDensite() {
+  densifiePlanifie = false;
+  document.body.classList.toggle('est-defile', window.scrollY > 8);
+}
+window.addEventListener('scroll', () => {
+  if (densifiePlanifie) return;
+  densifiePlanifie = true;
+  requestAnimationFrame(majDensite);
+}, { passive: true });
+majDensite();
+
 // Burger menu (breakpoint aligné sur style.css @media min-width: 1024px —
 // corrigé : le seuil est passé de 1100 à 1024px au commit « Navigation »,
 // cette constante était restée à l'ancienne valeur)

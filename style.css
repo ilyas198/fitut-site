@@ -50,6 +50,15 @@
   --filet-sombre:   rgba(246, 241, 234, 0.16); /* sur fond --encre-nuit/--rideau */
   --filet-clair:    rgba(26, 20, 32, 0.14);    /* sur fond --papier */
 
+  /* Voile des barres fixes (§17) — --encre-nuit translucide, exception unique
+     à l'interdit général de transparence empilée (§10). 82 % est un plancher
+     calculé, pas un réglage esthétique : composé sur du blanc pur (le pire
+     cas), --papier y garde 9,5:1 — vérifié par calcul, pas supposé. Se
+     densifie légèrement au défilement (0,82 → 0,92), jamais en dessous de 0,80. */
+  --voile-barre:        rgba(10, 20, 40, 0.82);
+  --voile-barre-dense:  rgba(10, 20, 40, 0.92);
+  --voile-barre-repli:  rgba(10, 20, 40, 0.94); /* @supports sans backdrop-filter */
+
   /* ---------- Typographie — familles (§9) ---------- */
   --police-affiche: 'Readex Pro', system-ui, sans-serif;
   --police-revue:   'Literata', Georgia, serif;
@@ -158,10 +167,12 @@ section { padding: 6rem 0; }
 
 /* ==========================================================
    NAVIGATION — migrée vers le système à trois registres (fitut-design
-   §17). Registre encre fixe : elle ne change PAS d'apparence au
-   défilement (aucune classe ni logique liée au scroll ci-dessous ou
-   dans main.js — c'est ce qui la rend « stable comme une signalétique »,
-   pas une absence accidentelle de traitement). Mobile-first : la
+   §17). Registre encre, barre translucide superposée au hero (motif
+   mawazine.ma, corrections urgentes) : elle ne pousse plus le contenu
+   vers le bas, elle se superpose à lui. Se densifie légèrement au
+   défilement (voir .est-defile plus bas, posé sur <body> par main.js) —
+   c'est le seul changement autorisé, jamais d'ombre, jamais de
+   réduction de hauteur, jamais de disparition. Mobile-first : la
    version plein écran est la valeur par défaut, la barre horizontale
    n'apparaît qu'à partir de 1024px (§30, aucun @media max-width).
    ========================================================== */
@@ -169,9 +180,24 @@ section { padding: 6rem 0; }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--nav-h);
-  background: var(--encre-nuit);
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
   border-bottom: 1px solid var(--filet-sombre);
+  box-shadow: none;
   z-index: 1001;
+  transition: background var(--duree-ui) var(--courbe-sortie),
+              backdrop-filter var(--duree-ui) var(--courbe-sortie),
+              -webkit-backdrop-filter var(--duree-ui) var(--courbe-sortie);
+}
+body.est-defile #navbar {
+  background: var(--voile-barre-dense);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  #navbar { background: var(--voile-barre-repli); }
+  body.est-defile #navbar { background: var(--voile-barre-repli); }
 }
 
 .nav-inner {
@@ -341,28 +367,46 @@ section { padding: 6rem 0; }
   .nav-links .btn-apply { margin-top: 0; }
 }
 
-/* ---- FIXED BANNER ----
+/* ---- FIXED BANNER — Haut Patronage (index.html uniquement) ----
    --banner-h : hauteur réelle du bandeau à chaque palier, calculée
    (padding*2 + line-height héritée de body{line-height:1.7} + bordure
-   1px), pas devinée — sert au calcul de hauteur du hero (LOT 4). */
+   1px), pas devinée — sert au calcul de hauteur du hero. Même barre
+   translucide superposée que #navbar (§17, corrections urgentes) —
+   retokenisée au passage : 'Montserrat' et le rgba(255,255,255,0.1) en
+   dur étaient un reliquat de l'ancien système, jamais migrés faute
+   d'être dans le périmètre d'un LOT précédent. */
 :root { --banner-h: 50px; }
 .fixed-banner {
   position: fixed;
   top: var(--nav-h);
   left: 0;
   right: 0;
-  background: var(--encre-nuit);
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
   color: var(--papier);
   text-align: center;
   padding: 0.75rem 1rem;
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--police-affiche);
   font-weight: 500;
   z-index: 1000;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--filet-sombre);
+  box-shadow: none;
+  transition: background var(--duree-ui) var(--courbe-sortie),
+              backdrop-filter var(--duree-ui) var(--courbe-sortie),
+              -webkit-backdrop-filter var(--duree-ui) var(--courbe-sortie);
+}
+body.est-defile .fixed-banner {
+  background: var(--voile-barre-dense);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .fixed-banner { background: var(--voile-barre-repli); }
+  body.est-defile .fixed-banner { background: var(--voile-barre-repli); }
 }
 @media (max-width: 768px) {
   :root { --banner-h: 41px; }
@@ -736,15 +780,16 @@ button:focus-visible {
    « l'affiche et la distribution » : rendu entièrement par
    assets/js/annonces.js depuis data/annonces.json, rien de codé en dur.
 
-   Hauteur exacte de la fenêtre, sans scroll (conservé du travail
-   précédent) : le hero commence juste sous la navbar + le bandeau Haut
-   Patronage (margin-top) et occupe très exactement le reste du
-   viewport (height, pas min-height). svh plutôt que vh.
+   Hauteur exacte de la fenêtre, sans scroll : le hero commence en haut
+   de l'écran, plein 100svh — la navbar et le bandeau Haut Patronage se
+   superposent à lui en translucide (§17, corrections urgentes) plutôt
+   que de le pousser vers le bas. svh plutôt que vh. Le CONTENU (pas le
+   visuel, qui passe sous les barres) réserve un espace libre en haut
+   via le padding-top de .hero-grille, ci-dessous.
    ========================================================== */
 .hero {
   position: relative;
-  margin-top: calc(var(--nav-h) + var(--banner-h));
-  height: calc(100svh - var(--nav-h) - var(--banner-h));
+  height: 100svh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -757,7 +802,7 @@ button:focus-visible {
   gap: var(--esp-2);
   width: 100%;
   max-height: 100%;
-  padding: var(--esp-2);
+  padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-2)) var(--esp-2) var(--esp-2);
 }
 .hero-grille > .marge-regie,
 .hero-grille > .hero-contenu,
@@ -767,7 +812,7 @@ button:focus-visible {
   .hero-grille {
     grid-template-columns: var(--marge-regie-tablette) 1fr;
     gap: var(--esp-3);
-    padding: var(--esp-3);
+    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-3)) var(--esp-3) var(--esp-3);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-visuel  { grid-column: 2; grid-row: 1; }
@@ -778,7 +823,7 @@ button:focus-visible {
     grid-template-columns: var(--marge-regie-desktop) minmax(0, 2fr) minmax(240px, 1fr);
     align-items: center;
     gap: var(--esp-4);
-    padding: var(--esp-4);
+    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-4)) var(--esp-4) var(--esp-4);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
@@ -905,7 +950,7 @@ button:focus-visible {
 }
 .hero-grille.hero-grille--empilee {
   grid-template-columns: 1fr;
-  padding: var(--esp-3) var(--esp-2);
+  padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-3)) var(--esp-2) var(--esp-3);
 }
 .hero-vue-empilee { padding: var(--esp-4) 0; border-bottom: 1px solid var(--filet-sombre); }
 .hero-vue-empilee:last-child { border-bottom: none; }
