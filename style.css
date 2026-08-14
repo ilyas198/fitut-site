@@ -1,35 +1,20 @@
 /* =========================================
    FITUT — Feuille de style globale
 
-   REFONTE EN COURS (voir .claude/skills/fitut-design/SKILL.md — source de
-   vérité de toute décision visuelle). Deux systèmes de tokens coexistent
-   le temps de la migration, lot par lot :
-
-   - Ancien système (crème / charbon / or, Cormorant + Montserrat) :
-     encore utilisé par les 6 pages actuelles. Conservé tel quel pour que
-     le site reste affichable pendant la refonte. À retirer une fois
-     toutes les pages migrées.
-   - Nouveau système à trois registres (encre / rideau / papier), palette
-     dérivée du logo officiel : posé ici en fondation. Remplace
-     intégralement la version « la salle et la scène » du LOT 1 suite à
-     la révision de la skill — aucun code n'utilisait encore ces tokens
-     hors composants.html (LOT 3), reconstruit au même mouvement.
+   Système à trois registres (encre / rideau / papier), palette dérivée
+   du logo officiel (voir .claude/skills/fitut-design/SKILL.md — source
+   de vérité de toute décision visuelle). Les 7 pages du site et
+   composants.html s'y conforment intégralement depuis la migration de
+   le-carnaval.html (LOT 6c) : l'ancien système (crème / charbon / or,
+   Cormorant + Montserrat) a disparu avec la dernière page qui en
+   dépendait, tokens compris.
    ========================================= */
 
 :root {
-  /* ---------- ANCIEN SYSTÈME (conservé le temps de la refonte) ---------- */
-  --cream: #f7f3ec;
-  --charcoal: #1c1c1c;
-  --gold: #b8922a;
-  --gold-light: #d4a843;
-  --warm-grey: #6b6558;
-  --line: rgba(28,28,28,0.12);
-  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  /* --nav-h n'est plus un token de l'ancien système : la navigation est
-     migrée (LOT « corrections urgentes », commit 1). Valeur mobile par
-     défaut (mobile-first, §30) ; relevée à 60px dès 1024px près du bloc
-     #navbar ci-dessous, plutôt que dans un @media (max-width) interdit
-     en code neuf. Sert aussi au calcul de hauteur du hero. */
+  /* --nav-h : valeur mobile par défaut (mobile-first, §30) ; relevée à
+     60px dès 1024px près du bloc #navbar ci-dessous, plutôt que dans un
+     @media (max-width) interdit en code neuf. Sert aussi au calcul de
+     hauteur du hero. */
   --nav-h: 54px;
 
   /* ==========================================================
@@ -131,61 +116,28 @@
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  background: var(--cream);
-  color: var(--charcoal);
-  font-family: 'Montserrat', sans-serif;
+  background: var(--encre-nuit);
+  color: var(--papier);
+  font-family: var(--police-affiche);
   font-weight: 300;
-  line-height: 1.7;
   overflow-x: hidden;
-}
-@media (max-width: 480px) {
-  body {
-    line-height: 1.75;
-  }
 }
 
 img { display: block; max-width: 100%; height: auto; aspect-ratio: auto; }
 a { color: inherit; text-decoration: none; }
 
-/* ---- TYPOGRAPHY ---- */
+/* ---- TYPOGRAPHY ----
+   Repli minimal : chaque titre réel du site fixe sa propre famille, sa
+   propre taille (.titre-bilingue, .titre-section, .edition-titre…) — ce
+   bloc n'est plus qu'un filet de sécurité depuis la migration complète
+   des 7 pages. Anciennement Cormorant Garamond avec des tailles en
+   clamp() propres à l'ancien système : c'est exactement le defaut qui
+   avait produit le bug du hero documenté en CLAUDE.md §3 bis (une règle
+   ancienne jamais retirée continuait de peser sur du contenu neuf) —
+   retiré pour de bon plutôt que laissé en embuscade. ---- */
 h1, h2, h3, h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 400;
-  line-height: 1.15;
-}
-h1 { font-size: clamp(2.4rem, 6vw, 5rem); }
-h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.3rem, 2.5vw, 2rem); }
-
-.section-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  padding-bottom: 1rem;
-}
-@media (max-width: 768px) {
-  .section-title {
-    margin-bottom: 2.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .section-title {
-    margin-bottom: 2rem;
-  }
-}
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 60px; height: 2px;
-  background: var(--gold);
-}
-@media (max-width: 480px) {
-  .section-title::after {
-    width: 45px;
-    height: 1.5px;
-  }
+  font-family: var(--police-affiche);
+  font-weight: 500;
 }
 
 /* ---- LAYOUT ---- */
@@ -399,8 +351,8 @@ section { padding: 6rem 0; }
   top: var(--nav-h);
   left: 0;
   right: 0;
-  background: var(--charcoal);
-  color: #fff;
+  background: var(--encre-nuit);
+  color: var(--papier);
   text-align: center;
   padding: 0.75rem 1rem;
   font-size: 0.9rem;
@@ -433,59 +385,6 @@ section { padding: 6rem 0; }
   margin: 0 auto;
 }
 
-/* ---- STATS (encore utilisé par le-carnaval.html, non migré — LOT 7) ---- */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 3rem;
-  text-align: center;
-}
-@media (max-width: 900px) {
-  .stats-grid {
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  }
-}
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-}
-.stat-number {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3rem, 7vw, 5rem);
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-@media (max-width: 480px) {
-  .stat-number {
-    font-size: clamp(2rem, 5vw, 3rem);
-  }
-}
-.stat-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-}
-@media (max-width: 480px) {
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-  }
-}
-
-
 /* ---- SOCIAL — liens sociaux dans le footer (barre latérale flottante
    retirée, §17). Système nouveau exclusivement : le footer est
    .registre-encre sur les 6 pages qui l'utilisent (commit « footer »,
@@ -510,238 +409,7 @@ section { padding: 6rem 0; }
 }
 .social-icon-footer:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
 
-/* ---- PAGE HERO (inner pages) ---- */
-.page-hero {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 8rem 0 4rem;
-  text-align: center;
-}
-@media (max-width: 900px) {
-  .page-hero {
-    padding: 6rem 0 3rem;
-  }
-}
-@media (max-width: 640px) {
-  .page-hero {
-    padding: 4rem 0 2.5rem;
-  }
-}
-.page-hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: var(--cream);
-}
-.page-hero .gold-line {
-  width: 60px; height: 2px;
-  background: var(--gold);
-  margin: 1.5rem auto 0;
-}
-
-/* ---- VALUES GRID ---- */
-.values-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 465px));
-  gap: 2rem;
-}
-@media (max-width: 900px) {
-  .values-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .values-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-.value-card {
-  padding: 2rem;
-  border: 1px solid var(--line);
-  text-align: center;
-  transition: border-color var(--transition), transform var(--transition);
-}
-@media (max-width: 640px) {
-  .value-card {
-    padding: 1.5rem;
-  }
-}
-.value-card:hover { border-color: var(--gold); transform: translateY(-4px); }
-.value-card:nth-child(5) { grid-column: 1 / -1; justify-self: center; max-width: 300px; }
-@media (max-width: 640px) {
-  .value-card:nth-child(5) {
-    max-width: 100%;
-  }
-}
-.value-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.75rem;
-  color: var(--gold);
-}
-@media (max-width: 480px) {
-  .value-card h3 {
-    font-size: 1.2rem;
-  }
-}
-.value-card p { font-size: 0.9rem; font-style: italic; color: var(--warm-grey); }
-@media (max-width: 480px) {
-  .value-card p {
-    font-size: 0.85rem;
-  }
-}
-
-/* ---- PHOTO GRID (encore utilisé par le-carnaval.html, non migré — LOT 6c) ---- */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
-@media (max-width: 900px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.9rem;
-  }
-}
-@media (max-width: 640px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-}
-@media (max-width: 480px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-}
-.photo-grid img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  display: block;
-}
-@media (max-width: 640px) {
-  .photo-grid img {
-    height: 200px;
-  }
-}
-@media (max-width: 480px) {
-  .photo-grid img {
-    height: 180px;
-  }
-}
-.photo-grid img:hover { transform: scale(1.03); }
-
-/* ---- CARNAVAL ---- */
-.carnaval-route {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  margin-bottom: 5rem;
-}
-@media (max-width: 900px) {
-  .carnaval-route {
-    gap: 2rem;
-    margin-bottom: 3.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .carnaval-route {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-}
-.carnaval-route img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-@media (max-width: 640px) {
-  .carnaval-route img {
-    height: 220px;
-  }
-}
-.route-step-number {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 5rem;
-  font-weight: 300;
-  color: var(--gold);
-  opacity: 0.3;
-  line-height: 1;
-}
-@media (max-width: 640px) {
-  .route-step-number {
-    font-size: 3.5rem;
-  }
-}
-
-/* ==========================================================
-   MIGRATION LOT 2c — classes issues des 54 attributs style= en ligne
-   de qui-sommes-nous.html, le-festival.html, le-carnaval.html et
-   edition.html. Migration à rendu strictement identique : aucune valeur
-   corrigée (les rgba(247,243,236,X)/rgba(28,28,28,X) sans token exact
-   restent littérales, anti-patterns non retirés — voir LOT 2d). Ces
-   classes appliquent l'ancien système et disparaîtront à la refonte de
-   ces 4 pages au LOT 6.
-   ========================================================== */
-
-.section-sombre {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 6rem 0; /* = --esp-6 au LOT 6, ne pas migrer avant (voir LOT 2c) */
-}
-.titre-clair { color: var(--cream); }
-
-.value-card--sombre { border-color: rgba(247, 243, 236, 0.15); }
-.value-card--sombre p { color: rgba(247, 243, 236, 0.6); }
-
-.stat-label--sombre { color: rgba(247, 243, 236, 0.5); }
-
-.section-encadree {
-  background: rgba(184, 146, 42, 0.05);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.container--centre { text-align: center; }
-
-.route-titre { margin: 0.5rem 0 1rem; }
-.route-texte { color: var(--warm-grey); line-height: 1.9; }
-/* Inversion visuelle du second temps du parcours — n'a aucun rapport avec
-   le lang="ar"/dir="rtl" d'un vrai contenu arabe (fitut-design §5). */
-.route-etape--inverse { direction: rtl; text-align: right; }
-.route-etape-contenu { direction: ltr; text-align: left; }
-.route-etape-image { direction: ltr; }
-
 .chargement-page { padding: 8rem 0; text-align: center; }
-
-/* Seul cas où une valeur reste inline : --img porte le CONTENU (quelle
-   image), pas la mise en forme. Image à rapatrier en local plus tard —
-   le point de modification doit rester unique et visible. */
-.page-hero--image {
-  background-image: var(--img);
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
-.voile-sombre { position: absolute; inset: 0; background: rgba(28, 28, 28, 0.55); }
-.contenu-superpose { position: relative; z-index: 1; }
-.titre-sur-image { color: #fff; }
-.texte-intro-italique {
-  max-width: 700px;
-  margin: 0 auto;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  font-style: italic;
-  line-height: 1.7;
-  color: var(--charcoal);
-}
-.section-sans-haut { padding: 0 0 6rem; /* = --esp-6 au LOT 6, ne pas migrer avant */ }
 
 /* ==========================================================
    FOOTER — deux colonnes, registre encre (§17, corrections urgentes
@@ -819,36 +487,13 @@ section { padding: 6rem 0; }
   color: var(--papier-tiers);
 }
 
-/* Paliers responsives des classes issues de la migration LOT 2c —
-   anciennement des sélecteurs d'attribut [style*="..."] ciblant les
-   inline styles, retargetés vers les classes qui les remplacent.
-   Comportement conservé à l'identique (mêmes paliers, même !important,
-   qui n'est plus nécessaire mais ne change rien au rendu). */
-@media (max-width: 900px) {
-  .section-sombre { padding: 4.5rem 0 !important; }
-}
-@media (max-width: 768px) {
-  .section-sombre { padding: 4rem 0 !important; }
-}
-@media (max-width: 640px) {
-  .section-sombre { padding: 3rem 0 !important; }
-}
-@media (max-width: 480px) {
-  .section-sombre { padding: 2.5rem 0 !important; }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
 /* ---- Apparition au défilement, système à trois registres (§34) —
-   opacité seule, aucune translation, contrairement à .reveal ci-dessus
-   (ancien système, non touché : encore utilisé par des pages non
-   migrées). prefers-reduced-motion : --duree-contenu passe déjà à 0ms
-   (voir :root), inutile de dupliquer la règle ici. ---- */
+   opacité seule, aucune translation. .reveal (ancien système, à base de
+   translateY) a disparu avec la dernière page qui en dépendait
+   (le-carnaval.html, LOT 6c) : .apparition est désormais le seul
+   mécanisme de révélation au défilement du site. prefers-reduced-motion :
+   --duree-contenu passe déjà à 0ms (voir :root), inutile de dupliquer la
+   règle ici. ---- */
 .apparition { opacity: 0; transition: opacity var(--duree-contenu) var(--courbe-sortie); }
 .apparition.est-visible { opacity: 1; }
 
@@ -876,7 +521,8 @@ section { padding: 6rem 0; }
 .liste-documents > li,
 .distribution > .distribution-ligne,
 .edition-selection .entree-programme,
-.edition-hommages .hommage {
+.edition-hommages .hommage,
+.parcours-liste > .route-etape {
   opacity: 0;
   transition: opacity var(--duree-contenu) var(--courbe-sortie);
 }
@@ -891,7 +537,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ).est-visible { opacity: 1; }
 :is(
   .galerie-grille > img,
@@ -904,7 +551,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ):nth-of-type(1) { transition-delay: 0ms; }
 :is(
   .galerie-grille > img,
@@ -917,7 +565,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ):nth-of-type(2) { transition-delay: 60ms; }
 :is(
   .galerie-grille > img,
@@ -930,7 +579,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ):nth-of-type(3) { transition-delay: 120ms; }
 :is(
   .galerie-grille > img,
@@ -943,7 +593,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ):nth-of-type(4) { transition-delay: 180ms; }
 :is(
   .galerie-grille > img,
@@ -956,7 +607,8 @@ section { padding: 6rem 0; }
   .liste-documents > li,
   .distribution > .distribution-ligne,
   .edition-selection .entree-programme,
-  .edition-hommages .hommage
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
 ):nth-of-type(n+5) { transition-delay: 240ms; }
 
 /* ---- 2. Survol des éléments cliquables — filet + texte vers l'accent
@@ -1030,11 +682,6 @@ section { padding: 6rem 0; }
   width: 100%;
 }
 
-/* ---- RESPONSIVE ---- */
-@media (max-width: 900px) {
-  .carnaval-route { grid-template-columns: 1fr; }
-}
-
 /* =========================================
    NOS ÉDITIONS — grille + fiche détaillée
    Mobile first, breakpoints 480 / 768 / 1024
@@ -1042,24 +689,19 @@ section { padding: 6rem 0; }
 
 .loading-msg {
   text-align: center;
-  color: var(--warm-grey);
+  color: var(--papier-tiers);
   font-style: italic;
   padding: 3rem 0;
 }
 
-.page-hero-sub {
-  max-width: 640px;
-  margin: 1.5rem auto 0;
-  color: var(--warm-grey);
-  font-size: 0.95rem;
-  line-height: 1.8;
-  padding: 0 1rem;
-}
-
-/* ---- Accessibilité & confort tactile ---- */
+/* ---- Accessibilité & confort tactile — repli générique pour tout
+   élément interactif hors d'un .registre-* (l'état de chargement/erreur
+   d'edition.html n'en porte pas). Partout ailleurs, la règle par
+   registre (.registre-encre a:focus-visible, etc.) l'emporte déjà par
+   spécificité. ---- */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--corail);
   outline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1078,8 +720,8 @@ button:focus-visible {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--charcoal);
-  color: var(--cream);
+  background: var(--encre-nuit);
+  color: var(--papier);
   padding: 0.75rem 1.25rem;
   z-index: 2000;
   font-size: 0.8rem;
@@ -1338,48 +980,6 @@ button:focus-visible {
   font-size: var(--pas-base);
 }
 .liste-presse-fleche { font-family: var(--police-donnees); }
-
-/* ---- ÉQUIPE (grille uniforme) ---- */
-.team-intro {
-  max-width: 620px;
-  margin: 0 auto 2.5rem;
-  text-align: center;
-  color: var(--warm-grey);
-  line-height: 1.85;
-}
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-@media (min-width: 700px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
-@media (min-width: 1000px) { .team-grid { grid-template-columns: repeat(4, 1fr); } }
-
-.team-member { margin: 0; text-align: center; }
-.team-member img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 0;
-  margin-bottom: 0.9rem;
-  filter: grayscale(20%);
-  transition: filter var(--transition);
-}
-.team-member:hover img { filter: grayscale(0%); }
-.team-name {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
-  color: var(--charcoal);
-}
-.team-role {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.66rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
 
 /* ==========================================================
    LOT 3 (repris) — LES 8 COMPOSANTS, système à trois registres
@@ -2315,4 +1915,60 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   font-family: var(--police-revue);
   font-size: var(--pas-base);
   line-height: var(--interligne-lecture);
+}
+
+/* ==========================================================
+   LE CARNAVAL (LOT 6c) — 4 sections, registre du TYPE de contenu (§6) :
+   encre, papier, rideau, encre. 3 bascules, rideau en bloc unique
+   (chiffres clés). Le parcours en deux étapes est le seul contenu du
+   site avec une vraie logique spatiale, traité en papier
+   (informations pratiques, même famille que .fiche-adresse) plutôt
+   qu'en encre : ce sont deux lieux réels et un ordre de passage, pas
+   une scène à regarder — les photos qui l'illustrent restent
+   secondaires au texte, pas l'inverse.
+   ========================================================== */
+.carnaval-intro     { padding: var(--esp-6) 0 var(--esp-4); } /* première section */
+.carnaval-parcours  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 1 : encre → papier */
+.carnaval-chiffres  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 2 : papier → rideau */
+.carnaval-galerie   { padding: var(--esp-8) 0 var(--esp-6); } /* bascule 3 : rideau → encre, dernière section */
+
+/* ---- Le parcours — pas un des 8 composants : numéro réel (premier
+   arrêt, second arrêt — pas décoratif, §36) dans la position de marge
+   qu'occupe l'année d'une .fiche-archive, réutilisée ici pour une
+   séquence spatiale plutôt que temporelle. Les deux étapes partagent
+   la même composition — aucune raison réelle de les distinguer
+   visuellement (voir le-carnaval.html pour le hack retiré). ---- */
+.parcours-liste { margin-top: var(--esp-3); }
+.route-etape {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  padding: var(--esp-4) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.route-etape:last-child { border-bottom: none; }
+@media (min-width: 600px) {
+  .route-etape { grid-template-columns: 80px 1fr; align-items: start; gap: var(--esp-4); }
+}
+.route-etape-numero {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-xl);
+  line-height: 0.9; /* chiffre d'affiche, pas un rôle de lecture — comme .fiche-archive-annee */
+}
+.route-etape-titre {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+  margin-bottom: var(--esp-2);
+}
+.route-etape-image {
+  display: block;
+  margin-top: var(--esp-3);
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 3 / 2; /* traitement scène, §13 */
+  object-fit: cover;
+  filter: saturate(0.75) contrast(1.08); /* §13, repos — pas d'entrée cliquable ici, pas de survol */
 }

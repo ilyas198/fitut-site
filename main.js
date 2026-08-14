@@ -30,18 +30,14 @@ if (burger && navLinks) {
 }
 
 // Scroll reveal (ré-applicable au contenu injecté dynamiquement).
-// .reveal (ancien système, translateY) et .apparition + le groupe
-// ci-dessous (système à trois registres, opacité seule — §34) coexistent
-// le temps de la migration ; chacun reçoit son propre nom d'état plutôt
-// que d'unifier prématurément. .reveal est le seul cas qui reçoit
-// « visible » — tout le reste (marqué .apparition ou membre du groupe)
-// reçoit « est-visible », d'où le test sur .reveal plutôt que sur
-// .apparition : un élément du groupe n'a pas la classe .apparition mais
-// doit tout de même recevoir « est-visible ».
+// .reveal (ancien système, translateY) a disparu avec le-carnaval.html,
+// la dernière page qui en dépendait (LOT 6c) — .apparition et le groupe
+// ci-dessous sont désormais le seul mécanisme, tous deux marqués
+// « est-visible ».
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.classList.add(e.target.classList.contains('reveal') ? 'visible' : 'est-visible');
+      e.target.classList.add('est-visible');
       revealObserver.unobserve(e.target);
     }
   });
@@ -64,11 +60,12 @@ const SELECTEUR_APPARITION_GROUPE = [
   '.liste-documents > li',
   '.distribution > .distribution-ligne',
   '.edition-selection .entree-programme',
-  '.edition-hommages .hommage'
+  '.edition-hommages .hommage',
+  '.parcours-liste > .route-etape'
 ].join(', ');
 
 function observeReveals(root = document) {
-  root.querySelectorAll('.reveal:not(.visible), .apparition:not(.est-visible)').forEach(el => revealObserver.observe(el));
+  root.querySelectorAll('.apparition:not(.est-visible)').forEach(el => revealObserver.observe(el));
   root.querySelectorAll(SELECTEUR_APPARITION_GROUPE).forEach(el => {
     if (!el.classList.contains('est-visible')) revealObserver.observe(el);
   });
