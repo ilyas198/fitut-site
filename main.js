@@ -1,202 +1,29 @@
 /* main.js — FITUT */
 
-/* ---- HERO : panneau de texte fixe + bande de visuels en défilement vertical ----
-   Le nombre de visuels est lu depuis le DOM : ajouter ou retirer une
-   .hero-visual-slide dans le HTML suffit, aucune valeur codée en dur ici. */
-(function initHero() {
-  const hero = document.getElementById('hero');
-  const visual = document.getElementById('heroVisual');
-  const progress = document.getElementById('heroProgress');
-  const btnPrev = document.getElementById('heroPrev');
-  const btnNext = document.getElementById('heroNext');
-  if (!hero || !visual) return;
-
-  const slides = Array.from(visual.querySelectorAll('.hero-visual-slide'));
-  if (slides.length === 0) return;
-
-  const DUREE = 6000;
-  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const peutSurvoler = window.matchMedia('(hover: hover)').matches;
-  let index = 0;
-  let timer = null;
-  let depart = 0;
-  let restant = DUREE;
-  let enPause = false;
-
-  // Génère une puce de progression (minuteur) par visuel
-  const puces = slides.map((_, i) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'hero-dot';
-    b.setAttribute('aria-label', `Aller au visuel ${i + 1} sur ${slides.length}`);
-    const remplissage = document.createElement('span');
-    remplissage.className = 'hero-dot-fill';
-    b.appendChild(remplissage);
-    b.addEventListener('click', () => aller(i));
-    progress && progress.appendChild(b);
-    return { bouton: b, remplissage };
-  });
-
-  // Anime (ou fixe) la largeur du minuteur d'une puce.
-  function positionnerRemplissage(i, largeur, dureeMs) {
-    const { remplissage } = puces[i];
-    remplissage.classList.remove('is-filling');
-    remplissage.style.transitionDuration = '0s';
-    remplissage.style.width = largeur;
-    if (!dureeMs) return;
-    void remplissage.offsetWidth; // force le recalcul avant de relancer la transition
-    requestAnimationFrame(() => {
-      remplissage.style.transitionDuration = dureeMs + 'ms';
-      remplissage.classList.add('is-filling');
-      remplissage.style.width = '100%';
-    });
-  }
-
-  // Place chaque visuel au-dessus, à sa place ou en dessous de la fenêtre visible :
-  // un défilement vertical par translation franche, jamais un fondu.
-  function positionnerVisuels() {
-    slides.forEach((s, i) => {
-      const actif = i === index;
-      s.style.transform = `translateY(${(i - index) * 100}%)`;
-      s.classList.toggle('is-active', actif);
-      s.setAttribute('aria-hidden', actif ? 'false' : 'true');
-      s.toggleAttribute('inert', !actif);
-    });
-  }
-
-  function aller(n) {
-    clearTimeout(timer);
-    index = (n + slides.length) % slides.length;
-    positionnerVisuels();
-
-    puces.forEach((p, i) => {
-      const actif = i === index;
-      p.bouton.classList.toggle('is-active', actif);
-      p.bouton.setAttribute('aria-current', actif ? 'true' : 'false');
-      if (!actif) positionnerRemplissage(i, '0%', 0);
-    });
-
-    restant = DUREE;
-    if (reduit) positionnerRemplissage(index, '100%', 0);
-    else positionnerRemplissage(index, '0%', DUREE);
-    relancer();
-  }
-
-  function relancer() {
-    clearTimeout(timer);
-    if (reduit || slides.length < 2 || enPause) return;
-    depart = Date.now();
-    timer = setTimeout(() => aller(index + 1), restant);
-  }
-
-  // Pause au survol (desktop) et au focus clavier : le temps de lire ou de cliquer un lien.
-  function pauser() {
-    if (reduit || enPause || slides.length < 2) return;
-    enPause = true;
-    clearTimeout(timer);
-    restant = Math.max(DUREE - (Date.now() - depart), 200);
-    const largeurActuelle = getComputedStyle(puces[index].remplissage).width;
-    positionnerRemplissage(index, largeurActuelle, 0);
-  }
-
-  function reprendre() {
-    if (reduit || !enPause) return;
-    enPause = false;
-    const largeurActuelle = getComputedStyle(puces[index].remplissage).width;
-    positionnerRemplissage(index, largeurActuelle, restant);
-    relancer();
-  }
-
-  if (btnPrev) btnPrev.addEventListener('click', () => aller(index - 1));
-  if (btnNext) btnNext.addEventListener('click', () => aller(index + 1));
-
-  if (peutSurvoler) {
-    hero.addEventListener('mouseenter', pauser);
-    hero.addEventListener('mouseleave', reprendre);
-  }
-  hero.addEventListener('focusin', pauser);
-  hero.addEventListener('focusout', (e) => {
-    if (!hero.contains(e.relatedTarget)) reprendre();
-  });
-
-  // Balayage tactile vertical, cohérent avec le sens du défilement
-  let yDepart = null;
-  visual.addEventListener('touchstart', (e) => { yDepart = e.touches[0].clientY; }, { passive: true });
-  visual.addEventListener('touchend', (e) => {
-    if (yDepart === null) return;
-    const delta = e.changedTouches[0].clientY - yDepart;
-    if (Math.abs(delta) > 40) aller(index + (delta < 0 ? 1 : -1));
-    yDepart = null;
-  }, { passive: true });
-
-  // Met en pause quand l'onglet n'est pas visible (économie de batterie mobile)
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) clearTimeout(timer);
-    else if (!enPause) relancer();
-  });
-
-  aller(0);
-})();
-
-/* ---- COMPTE À REBOURS vers la prochaine édition ---- */
-(function initCountdown() {
-  const bloc = document.getElementById('countdown');
-  if (!bloc) return;
-
-  const cible = new Date(bloc.dataset.target).getTime();
-  if (isNaN(cible)) return;
-
-  const champs = {
-    jours: bloc.querySelector('[data-unit="jours"]'),
-    heures: bloc.querySelector('[data-unit="heures"]'),
-    minutes: bloc.querySelector('[data-unit="minutes"]'),
-    secondes: bloc.querySelector('[data-unit="secondes"]')
-  };
-
-  const pad = (n) => String(n).padStart(2, '0');
-
-  function tick() {
-    const reste = cible - Date.now();
-    if (reste <= 0) {
-      bloc.classList.add('is-live');
-      Object.values(champs).forEach(el => { if (el) el.textContent = '00'; });
-      const note = document.querySelector('.countdown-note');
-      if (note) note.textContent = 'Le festival est en cours \u2014 rendez-vous \u00e0 Tanger !';
-      clearInterval(intervalle);
-      return;
-    }
-    const j = Math.floor(reste / 86400000);
-    const h = Math.floor((reste % 86400000) / 3600000);
-    const m = Math.floor((reste % 3600000) / 60000);
-    const sec = Math.floor((reste % 60000) / 1000);
-    if (champs.jours) champs.jours.textContent = j;
-    if (champs.heures) champs.heures.textContent = pad(h);
-    if (champs.minutes) champs.minutes.textContent = pad(m);
-    if (champs.secondes) champs.secondes.textContent = pad(sec);
-  }
-
-  tick();
-  const intervalle = setInterval(tick, 1000);
-})();
-
-/* ---- BANDEAU PRESSE : duplication du contenu pour un défilement continu ---- */
-(function initPressMarquee() {
-  const piste = document.getElementById('pressTrack');
-  if (!piste) return;
-  piste.innerHTML += piste.innerHTML;
-  piste.setAttribute('aria-hidden', 'false');
-})();
-
-// Navbar scroll shadow
-const navbar = document.getElementById('navbar');
-if (navbar) {
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-  });
+/* ---------- Densité des barres fixes au défilement (§17) ----------
+   Seul changement autorisé pendant le défilement : opacité et flou des
+   deux barres (#navbar, .fixed-banner), pilotés en CSS via .est-defile
+   sur <body> (var(--voile-barre) → var(--voile-barre-dense), 14px →
+   20px de flou). Un seuil (--esp-1, 8px) plutôt qu'un déclenchement au
+   premier pixel : évite un aller-retour de classe sur un rebond de
+   défilement élastique en haut de page. rAF pour ne pas empiler des
+   lectures de scrollY plus vite que le navigateur ne peut peindre. */
+let densifiePlanifie = false;
+function majDensite() {
+  densifiePlanifie = false;
+  document.body.classList.toggle('est-defile', window.scrollY > 8);
 }
+window.addEventListener('scroll', () => {
+  if (densifiePlanifie) return;
+  densifiePlanifie = true;
+  requestAnimationFrame(majDensite);
+}, { passive: true });
+majDensite();
 
-// Burger menu (breakpoint aligné sur style.css @media max-width: 1100px)
-const NAV_MOBILE_MQ = window.matchMedia('(max-width: 1100px)');
+// Burger menu (breakpoint aligné sur style.css @media min-width: 1024px —
+// corrigé : le seuil est passé de 1100 à 1024px au commit « Navigation »,
+// cette constante était restée à l'ancienne valeur)
+const NAV_MOBILE_MQ = window.matchMedia('(max-width: 1023px)');
 
 const burger = document.getElementById('burger');
 const navLinks = document.getElementById('nav-links');
@@ -212,19 +39,9 @@ if (burger && navLinks) {
     setBurgerExpanded(open);
   });
 
-  document.querySelectorAll('.dropdown > a').forEach(a => {
-    a.addEventListener('click', e => {
-      if (NAV_MOBILE_MQ.matches) {
-        e.preventDefault();
-        a.parentElement.classList.toggle('open');
-      }
-    });
-  });
-
   const closeMobileNav = () => {
     navLinks.classList.remove('open');
     setBurgerExpanded(false);
-    document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
   };
 
   NAV_MOBILE_MQ.addEventListener('change', e => {
@@ -232,105 +49,141 @@ if (burger && navLinks) {
   });
 }
 
-// Barre sociale fixe : reste centrée entre la navbar (--nav-h) et le haut du footer
-const SOCIAL_SIDEBAR_HIDE_MQ = window.matchMedia('(max-width: 900px)');
-(function initSocialSidebarClamp() {
-  const sidebar = document.querySelector('.social-sidebar');
-  const footer = document.querySelector('.site-footer');
-  if (!sidebar || !footer) return;
-
-  let raf = 0;
-  const margin = 14;
-
-  function update() {
-    if (SOCIAL_SIDEBAR_HIDE_MQ.matches) {
-      sidebar.style.removeProperty('top');
-      sidebar.style.removeProperty('transform');
-      return;
-    }
-
-    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 60;
-    const vh = window.innerHeight;
-    const footerTop = footer.getBoundingClientRect().top;
-    const half = sidebar.offsetHeight / 2;
-
-    const ideal = vh * 0.5;
-    const maxCenter = footerTop - margin - half;
-    const minCenter = navH + margin + half;
-
-    let center = Math.min(ideal, maxCenter);
-    center = Math.max(center, minCenter);
-    if (minCenter > maxCenter) {
-      center = (minCenter + maxCenter) / 2;
-    }
-
-    sidebar.style.top = `${center}px`;
-    sidebar.style.transform = 'translateY(-50%)';
-  }
-
-  function requestUpdate() {
-    if (raf) return;
-    raf = requestAnimationFrame(() => {
-      raf = 0;
-      update();
-    });
-  }
-
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate);
-  SOCIAL_SIDEBAR_HIDE_MQ.addEventListener('change', requestUpdate);
-  if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(requestUpdate).observe(footer);
-  }
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(requestUpdate).catch(() => requestUpdate());
-  } else {
-    requestUpdate();
-  }
-})();
-
-// Scroll reveal (ré-applicable au contenu injecté dynamiquement)
+// Scroll reveal (ré-applicable au contenu injecté dynamiquement).
+// .reveal (ancien système, translateY) a disparu avec le-carnaval.html,
+// la dernière page qui en dépendait (LOT 6c) — .apparition et le groupe
+// ci-dessous sont désormais le seul mécanisme, tous deux marqués
+// « est-visible ».
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.classList.add('visible');
+      e.target.classList.add('est-visible');
       revealObserver.unobserve(e.target);
     }
   });
 }, { threshold: 0.1 });
 
+// Éléments répétés d'une grille ou d'une liste (§34, point 1) : ciblés par
+// sélecteur plutôt que par une classe posée à la main sur chaque élément —
+// certaines galeries comptent une douzaine d'images sans classe commune,
+// un marquage un par un serait fragile et facile à oublier sur un ajout
+// futur. Le décalage de 60 ms plafonné à 4 paliers est en CSS
+// (transition-delay, nth-of-type), rien à calculer ici.
+const SELECTEUR_APPARITION_GROUPE = [
+  '.galerie-grille > img',
+  '.valeurs-grille > .valeur',
+  '.lieux-grille > .fiche-adresse',
+  '.ateliers-grille > .atelier',
+  '.generique-liste > .generique',
+  '.index-liens > li',
+  '.liste-presse > li',
+  '.liste-documents > li',
+  '.distribution > .distribution-ligne',
+  '.edition-selection .entree-programme',
+  '.edition-hommages .hommage',
+  '.parcours-liste > .route-etape'
+].join(', ');
+
 function observeReveals(root = document) {
-  root.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+  root.querySelectorAll('.apparition:not(.est-visible)').forEach(el => revealObserver.observe(el));
+  root.querySelectorAll(SELECTEUR_APPARITION_GROUPE).forEach(el => {
+    if (!el.classList.contains('est-visible')) revealObserver.observe(el);
+  });
 }
 observeReveals();
 
-// Count-up for stats
-const countObserverInit = () => {
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.dataset.target, 10);
-        const suffixe = el.dataset.suffix || '';
-        let current = 0;
-        const step = Math.ceil(target / 60);
-        const timer = setInterval(() => {
-          current = Math.min(current + step, target);
-          el.textContent = current.toLocaleString('fr-FR') + (current >= target ? suffixe : '');
-          if (current >= target) clearInterval(timer);
-        }, 24);
-        countObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('.stat-number[data-target]').forEach(el => countObserver.observe(el));
-};
-countObserverInit();
+/* ---------- Compteurs animés (§23) ----------
+   La valeur finale est déjà le texte de l'élément (« 5 000+ », « 20+ »,
+   « 130 »…) — pas seulement une donnée en data-target : sans JavaScript,
+   ou si l'animation est court-circuitée, le chiffre exact reste dans le
+   HTML, lisible et indexable. Le nombre initial (les chiffres et
+   espaces en tête) fixe la cible ; le reste (« + », « M+ », « k+ »…)
+   est le suffixe, qui n'apparaît qu'à l'arrivée. */
+function analyserCompteur(texte) {
+  const m = texte.match(/^(\d[\d\s]*)(.*)$/s);
+  if (!m) return null;
+  const valeur = parseInt(m[1].replace(/\s/g, ''), 10);
+  if (Number.isNaN(valeur)) return null;
+  return { valeur, texteFinal: texte };
+}
+
+/* Solveur de cubic-bezier (méthode de Newton, la même technique que les
+   moteurs de rendu utilisent en interne) plutôt qu'une courbe approchée
+   à la main : les 4 points sont ceux de --courbe-sortie dans style.css,
+   à tenir synchronisés si le token change. */
+function cubicBezier(x1, y1, x2, y2) {
+  const a = (u, v) => 1 - 3 * v + 3 * u;
+  const b = (u, v) => 3 * v - 6 * u;
+  const c = (u) => 3 * u;
+  const bezierX = (t) => ((a(x1, x2) * t + b(x1, x2)) * t + c(x1)) * t;
+  const bezierY = (t) => ((a(y1, y2) * t + b(y1, y2)) * t + c(y1)) * t;
+  const derivativeX = (t) => 3 * a(x1, x2) * t * t + 2 * b(x1, x2) * t + c(x1);
+  function solveT(x) {
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const dx = bezierX(t) - x;
+      if (Math.abs(dx) < 1e-6) return t;
+      const d = derivativeX(t);
+      if (Math.abs(d) < 1e-6) break;
+      t -= dx / d;
+    }
+    return t;
+  }
+  return (x) => bezierY(solveT(x));
+}
+const COURBE_SORTIE = cubicBezier(0.22, 1, 0.36, 1);
+const DUREE_COMPTEUR = 900;
+
+const compteursDemarres = new WeakSet();
+
+function animerCompteur(el) {
+  if (compteursDemarres.has(el)) return; // une seule fois par session, jamais rejoué
+  compteursDemarres.add(el);
+
+  const info = analyserCompteur(el.textContent.trim());
+  if (!info) return; // texte non numérique : laissé tel quel
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = info.texteFinal; // déjà la valeur affichée, aucun décompte
+    return;
+  }
+
+  const { valeur, texteFinal } = info;
+  el.textContent = '0';
+  const depart = performance.now();
+
+  function image(t) {
+    const avance = Math.min((t - depart) / DUREE_COMPTEUR, 1);
+    const actuel = Math.round(COURBE_SORTIE(avance) * valeur);
+    if (avance < 1) {
+      el.textContent = String(actuel);
+      requestAnimationFrame(image);
+    } else {
+      el.textContent = texteFinal; // le suffixe n'apparaît qu'ici, à l'arrivée
+    }
+  }
+  requestAnimationFrame(image);
+}
+
+const compteurObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animerCompteur(entry.target);
+      compteurObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+
+function observeCompteurs(root = document) {
+  root.querySelectorAll('.compteur').forEach(el => {
+    if (!compteursDemarres.has(el)) compteurObserver.observe(el);
+  });
+}
+observeCompteurs();
 
 // Le contenu des pages « Nos Éditions » est injecté après le chargement :
 // on relance alors les animations sur les nouveaux éléments.
 document.addEventListener('fitut:content-ready', () => {
   observeReveals();
-  countObserverInit();
+  observeCompteurs();
 });

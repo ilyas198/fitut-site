@@ -17,7 +17,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,100 +25,103 @@
   <!-- HEADER (injecté par partials.js) -->
   <div id="site-header"></div>
 
-  <div class="page-hero" style="background-image:url('https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_6060-min-orm3iyuybnqdtbhufgspbit2yfrccxkxbt6h9oxvyo.jpg'); background-size:cover; background-position:center; position:relative;">
-    <div style="position:absolute; inset:0; background:rgba(28,28,28,0.55);"></div>
-    <div style="position:relative; z-index:1;">
-      <h1 style="color:#fff;">Le Carnaval</h1>
-      <div class="gold-line"></div>
-    </div>
-  </div>
+  <main id="contenu">
 
-  <!-- INTRO -->
-  <section>
-    <div class="container" style="text-align:center;">
-      <p style="max-width:700px; margin:0 auto; font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,2.5vw,1.8rem); font-style:italic; line-height:1.7; color:var(--charcoal);" class="reveal">
-        Le Carnaval du FITUT est sans doute l'un des moments forts et divertissants du Festival. Petits et grands se regroupent ensemble pour célébrer les cultures du monde au sein de la ville du détroit.
-      </p>
-    </div>
-  </section>
-
-  <!-- PHOTOS OPENING -->
-  <section style="padding:0 0 6rem;">
-    <div class="container">
-      <div class="photo-grid reveal">
-        <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_5793-min-orm3icb0gu1mv6izoec1fxyw6929u30t18b3a7pct0.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_6054-min-1-orm3hvdqcm8c9p36tzqdesrq095xdn876ds342kf80.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_6000-min-1-orm3guq7na0gmdw3o2s1jy8mffxm13pglwrrjbvadc.jpg" alt="Carnaval" loading="lazy">
+  <!-- ============ INTRO (registre encre) ============ -->
+  <section class="carnaval-intro registre-encre">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">Chaque année</p></div>
+      <div class="contenu-regie apparition">
+        <!-- Traduction arabe candidate, non validée par un locuteur natif —
+             à faire relire par le comité avant mise en ligne (CLAUDE.md §7).
+             Ne pas considérer comme acquise. -->
+        <h1 class="titre-bilingue">
+          <span lang="fr">Le Carnaval</span>
+          <span lang="ar" dir="rtl">الكرنفال</span><!-- [traduction à valider] -->
+        </h1>
+        <p class="texte-revue">
+          Le Carnaval du FITUT est l'un des moments forts du festival. Petits et grands se réunissent pour célébrer les cultures du monde dans la ville du détroit.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- PARCOURS -->
-  <section style="background:rgba(184,146,42,0.05); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-    <div class="container">
-      <h2 class="section-title reveal">Le Parcours</h2>
-
-      <div class="carnaval-route reveal">
-        <div>
-          <div class="route-step-number">01</div>
-          <h3 style="margin:0.5rem 0 1rem;">Place du 9 Avril</h3>
-          <p style="color:var(--warm-grey); line-height:1.9;">
-            Le Carnaval commence devant les portes du fameux Cinéma Rif, où se rassemblent les troupes, les associations et clubs.
-          </p>
-        </div>
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0056-min-1024x682.jpg" alt="Place du 9 Avril" loading="lazy">
-      </div>
-
-      <div class="carnaval-route reveal" style="direction:rtl; text-align:right;">
-        <div style="direction:ltr; text-align:left;">
-          <div class="route-step-number">02</div>
-          <h3 style="margin:0.5rem 0 1rem;">Place des Nations-Unies</h3>
-          <p style="color:var(--warm-grey); line-height:1.9;">
-            Arrivés à la fin du Carnaval, une flash-mob est organisée par les étudiants en coordination avec des membres des troupes participantes.
-          </p>
-        </div>
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5843-min-647x1024.jpg" alt="Place des Nations-Unies" loading="lazy" style="direction:ltr;">
-      </div>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section style="background:var(--charcoal); color:var(--cream); padding:6rem 0;">
-    <div class="container">
-      <div class="stats-grid reveal">
-        <div class="stat-item">
-          <span class="stat-number" data-target="5000" data-suffix="+">0</span>
-          <span class="stat-label" style="color:rgba(247,243,236,0.5);">Spectateurs</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="20">0</span>
-          <span class="stat-label" style="color:rgba(247,243,236,0.5);">Associations Réunies</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="15">0</span>
-          <span class="stat-label" style="color:rgba(247,243,236,0.5);">Shows Artistiques</span>
+  <!-- ============ LE PARCOURS (registre papier — informations pratiques, §6)
+       Seul contenu du site avec une vraie logique spatiale : le surtitre
+       porte le trajet lui-même plutôt qu'un chiffre, et chaque étape garde
+       un numéro réel (premier arrêt, second arrêt — pas une numérotation
+       décorative, §36) dans la même position que l'année d'une fiche
+       d'archive. L'ancienne alternance gauche/droite (route-etape--inverse,
+       un dir="rtl" détourné de son sens) ne racontait rien de réel sur le
+       trajet — retirée plutôt que reconstruite autrement : les deux étapes
+       partagent désormais la même composition. ============ -->
+  <section class="carnaval-parcours registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">Place du 9 Avril → Place des Nations-Unies</p></div>
+      <div class="contenu-regie apparition">
+        <h2 class="titre-section">Le parcours</h2>
+        <div class="parcours-liste">
+          <article class="route-etape">
+            <span class="route-etape-numero">01</span>
+            <div class="route-etape-corps">
+              <h3 class="route-etape-titre">Place du 9 Avril</h3>
+              <p class="texte-revue">
+                Le Carnaval commence devant le Cinéma Rif, où se rassemblent les troupes, associations et clubs.
+              </p>
+              <img class="route-etape-image" src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0056-min-1024x682.jpg" alt="Rassemblement Place du 9 Avril, devant le Cinéma Rif" loading="lazy" width="1024" height="682">
+            </div>
+          </article>
+          <article class="route-etape">
+            <span class="route-etape-numero">02</span>
+            <div class="route-etape-corps">
+              <h3 class="route-etape-titre">Place des Nations-Unies</h3>
+              <p class="texte-revue">
+                À l'arrivée, une flash-mob est organisée par les étudiants, en coordination avec des membres des troupes participantes.
+              </p>
+              <img class="route-etape-image" src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5843-min-647x1024.jpg" alt="Flash-mob Place des Nations-Unies, clôture du Carnaval" loading="lazy" width="647" height="1024">
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section>
-    <div class="container">
-      <h2 class="section-title reveal">Galerie</h2>
-      <div class="photo-grid reveal">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5854-min-1024x684.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5629-min-684x1024.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0241-min-1024x682.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5802-min-1024x684.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5793-min-1024x684.jpg" alt="Carnaval" loading="lazy">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0193-min-1024x682.jpg" alt="Carnaval" loading="lazy">
+  <!-- ============ EN CHIFFRES (registre rideau — chiffres clés, §6.
+       Bloc rideau unique de la page, compteurs animés §23.) ============ -->
+  <section class="carnaval-chiffres registre-rideau">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">En chiffres</p></div>
+      <div class="contenu-regie apparition">
+        <p class="releve-chiffres"><span class="compteur">5 000+</span> spectateurs · <span class="compteur">20</span> associations réunies · <span class="compteur">15</span> shows artistiques</p>
       </div>
     </div>
   </section>
+
+  <!-- ============ GALERIE (registre encre, §13) ============ -->
+  <section class="carnaval-galerie registre-encre">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">9 photos</p></div>
+      <div class="contenu-regie apparition">
+        <h2 class="titre-section">Galerie</h2>
+        <div class="galerie-grille">
+          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_5793-min-orm3icb0gu1mv6izoec1fxyw6929u30t18b3a7pct0.jpg" alt="Carnaval du FITUT" loading="lazy" width="800" height="600">
+          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_6054-min-1-orm3hvdqcm8c9p36tzqdesrq095xdn876ds342kf80.jpg" alt="Carnaval du FITUT" loading="lazy" width="800" height="600">
+          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/DSC_6000-min-1-orm3guq7na0gmdw3o2s1jy8mffxm13pglwrrjbvadc.jpg" alt="Carnaval du FITUT" loading="lazy" width="800" height="600">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5854-min-1024x684.jpg" alt="Carnaval du FITUT" loading="lazy" width="1024" height="684">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5629-min-684x1024.jpg" alt="Carnaval du FITUT" loading="lazy" width="684" height="1024">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0241-min-1024x682.jpg" alt="Carnaval du FITUT" loading="lazy" width="1024" height="682">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5802-min-1024x684.jpg" alt="Carnaval du FITUT" loading="lazy" width="1024" height="684">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5793-min-1024x684.jpg" alt="Carnaval du FITUT" loading="lazy" width="1024" height="684">
+          <img src="https://fitut.ma/wp-content/uploads/2020/06/IMG-20191022-WA0193-min-1024x682.jpg" alt="Carnaval du FITUT" loading="lazy" width="1024" height="682">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
 
   <!-- FOOTER (injecté par partials.js) -->
-  <footer id="site-footer" class="site-footer"></footer>
+  <footer id="site-footer" class="site-footer registre-rideau"></footer>
 
   <script src="partials.js"></script>
   <script src="main.js"></script>

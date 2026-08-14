@@ -20,7 +20,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Ancien système : encore utilisé par les sections du LOT 4 phase B, non migrées -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Nouveau système : hero (LOT 4 phase A). Coexistence temporaire, voir CLAUDE.md §9 -->
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
   <script type="application/ld+json">
@@ -69,137 +72,103 @@
     </div>
   </div>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="hero" aria-label="Présentation du festival" aria-roledescription="carrousel">
-    <div class="hero-text">
-      <p class="hero-kicker">19<sup>e</sup> édition &middot; Tanger</p>
-      <h1 class="hero-title">Le théâtre universitaire<br>rassemble le monde à Tanger</h1>
-      <p class="hero-dates">26 &mdash; 30 octobre 2026</p>
-      <p class="hero-lead">Pendant une semaine, des troupes universitaires venues des quatre coins du globe se retrouvent pour partager la scène, les cultures et une même passion.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" target="_blank" rel="noopener">Postuler à la 19<sup>e</sup> édition</a>
-        <a class="btn btn-ghost" href="le-festival.html">Découvrir le festival</a>
-      </div>
-    </div>
-
-    <div class="hero-visual" id="heroVisual">
-      <!-- Chaque .hero-visual-slide est un visuel de la bande défilante.
-           Le nombre de visuels est lu depuis le DOM par main.js : en ajouter
-           ou en retirer un ne demande aucune modification du JavaScript. -->
-      <figure class="hero-visual-slide is-active" role="group" aria-roledescription="diapositive" aria-label="1 sur 3">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_8448-1024x684.jpg" alt="Spectacle sur scène au FITUT" width="1024" height="684">
-      </figure>
-      <figure class="hero-visual-slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 3">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/KK-1024x684.jpg" alt="Troupe universitaire en représentation" width="1024" height="684" loading="lazy">
-      </figure>
-      <figure class="hero-visual-slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 3">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5793-min-1024x684.jpg" alt="Carnaval du FITUT dans les rues de Tanger" width="1024" height="684" loading="lazy">
-      </figure>
-
-      <div class="hero-visual-controls">
-        <button type="button" class="hero-arrow hero-arrow-prev" id="heroPrev" aria-label="Visuel précédent">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
-        </button>
-        <button type="button" class="hero-arrow hero-arrow-next" id="heroNext" aria-label="Visuel suivant">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-      </div>
-
-      <div class="hero-progress" id="heroProgress" aria-label="Visuels du festival"></div>
-    </div>
+  <!-- ============ HERO (LOT 4 phase A, repris) — fil d'annonces, fitut-design §16 ============
+       Rendu entièrement par assets/js/annonces.js depuis data/annonces.json : rien de codé
+       en dur ici, le nombre de vues vient des données. -->
+  <section class="hero registre-encre" id="hero" aria-label="Actualités du festival">
+    <div class="hero-fil" id="heroFil"></div>
   </section>
 
   <main id="contenu">
 
-  <!-- ============ COMPTE À REBOURS ============ -->
-  <section class="countdown-section" aria-labelledby="countdown-title">
-    <div class="container">
-      <h2 class="countdown-title" id="countdown-title">Prochaine édition</h2>
-      <div class="countdown" id="countdown" data-target="2026-10-26T09:00:00+01:00">
-        <div class="countdown-unit"><span class="countdown-num" data-unit="jours">&mdash;</span><span class="countdown-label">Jours</span></div>
-        <div class="countdown-unit"><span class="countdown-num" data-unit="heures">&mdash;</span><span class="countdown-label">Heures</span></div>
-        <div class="countdown-unit"><span class="countdown-num" data-unit="minutes">&mdash;</span><span class="countdown-label">Minutes</span></div>
-        <div class="countdown-unit"><span class="countdown-num" data-unit="secondes">&mdash;</span><span class="countdown-label">Secondes</span></div>
+  <!-- ============ CHIFFRES (LOT 4 phase B, composition B — §16/§23) ============
+       Registre rideau : seule interruption de la page, en position unique
+       (§6 — jamais deux blocs rideau consécutifs). Relevé cumulé du festival
+       (CLAUDE.md §6, « Historique »), pas les chiffres d'une seule édition —
+       5 000+ spectateurs (2025) volontairement exclu de ce relevé cumulé.
+       Réutilise le format §23 (ligne mono à séparateurs « · ») plutôt qu'un
+       9e composant — voir §15 de la skill. -->
+  <section class="chiffres-section registre-rideau">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Depuis 2007</p>
       </div>
-      <p class="countdown-note">Du 26 au 30 octobre 2026 &mdash; Tanger, Maroc</p>
-    </div>
-  </section>
-
-  <!-- ============ CHIFFRES ============ -->
-  <section class="stats-section">
-    <div class="container">
-      <h2 class="section-title reveal">Une Expérience Artistique Unique</h2>
-      <div class="stats-grid reveal">
-        <div class="stat-item">
-          <span class="stat-number" data-target="19">0</span>
-          <span class="stat-label">Éditions</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="20" data-suffix="+">0</span>
-          <span class="stat-label">Pays</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="200" data-suffix="+">0</span>
-          <span class="stat-label">Troupes Accueillies</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="10">0</span>
-          <span class="stat-label">Prix Décernés</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-target="5000" data-suffix="+">0</span>
-          <span class="stat-label">Spectateurs</span>
-        </div>
+      <div class="contenu-regie apparition">
+        <!-- Traduction arabe candidate, non validée par un locuteur natif —
+             à faire relire par le comité avant mise en ligne (voir échange
+             avec l'utilisateur, LOT 4 phase B). Ne pas considérer comme acquise. -->
+        <h2 class="titre-bilingue">
+          <span lang="fr">Le théâtre universitaire, depuis 2007</span>
+          <span lang="ar" dir="rtl">المسرح الجامعي منذ 2007</span><!-- [traduction à valider] -->
+        </h2>
+        <p class="releve-chiffres"><span class="compteur">19</span> éditions · <span class="compteur">20+</span> pays · <span class="compteur">200+</span> troupes · <span class="compteur">10</span> prix décernés</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ EXPLORER ============ -->
-  <section class="gallery-preview" aria-label="Explorer le festival">
-    <div class="gallery-grid">
-      <a href="le-festival.html" class="gallery-card">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/KK-1024x684.jpg" alt="Représentation théâtrale lors du FITUT" loading="lazy" width="1024" height="684">
-        <div class="gallery-card-overlay"><span>Le Festival</span></div>
-      </a>
-      <a href="le-carnaval.html" class="gallery-card">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_5793-min-1024x684.jpg" alt="Carnaval du FITUT dans les rues de Tanger" loading="lazy" width="1024" height="684">
-        <div class="gallery-card-overlay"><span>Le Carnaval</span></div>
-      </a>
-      <a href="nos-editions.html" class="gallery-card">
-        <img src="https://fitut.ma/wp-content/uploads/2020/06/DSC_9478-1024x684.jpg" alt="Archives des éditions passées du FITUT" loading="lazy" width="1024" height="684">
-        <div class="gallery-card-overlay"><span>Nos Éditions</span></div>
-      </a>
+  <!-- ============ EXPLORER ============
+       Registre papier : trois liens vers des pages à lire, pas des images à
+       regarder (§15 — sortir de la carte). Descriptifs tirés du contenu réel
+       de chaque page (CLAUDE.md §2), pas de superlatif (§35). -->
+  <section class="explorer-section registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">3 entrées</p>
+      </div>
+      <div class="contenu-regie apparition">
+        <ul class="index-liens">
+          <li>
+            <a href="le-festival.html">Le Festival</a>
+            <span class="index-liens-detail">Participants, lieux, prix et ateliers.</span>
+          </li>
+          <li>
+            <a href="le-carnaval.html">Le Carnaval</a>
+            <span class="index-liens-detail">Parcours, galerie et chiffres du défilé.</span>
+          </li>
+          <li>
+            <a href="nos-editions.html">Nos Éditions</a>
+            <span class="index-liens-detail">Dix-neuf éditions, de 2007 à 2026.</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <!-- ============ ILS ONT PARLÉ DE NOUS ============ -->
-  <section class="press-section" aria-labelledby="press-title">
-    <div class="container">
-      <h2 class="section-title reveal" id="press-title">Ils Ont Parlé de Nous</h2>
-    </div>
-    <div class="press-marquee">
-      <div class="press-track" id="pressTrack">
-        <a href="https://www.leconomiste.com/flash-infos/diapo-tanger-le-festival-de-theatre-universitaire-demarre-sa-12e-edition" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/unnamed.png" alt="L'Économiste" loading="lazy"></a>
-        <a href="https://fr.hespress.com/25436-12e-fitu-de-tanger-la-troupe-theatrale-universitaire-de-fes-sadjuge-le-grand-prix.html" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/hespress.jpg" alt="Hespress" loading="lazy"></a>
-        <a href="https://fr.le360.ma/culture/le-fitut-rend-hommage-a-nora-skalli-92713" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/le360-2016.jpg" alt="Le360" loading="lazy"></a>
-        <a href="https://2m.ma/fr/programme/pop-up-news-salwa-zarhane-un-talent-en-devenir-20191025/" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/1200px-2M_Logo.svg.png" alt="2M" loading="lazy"></a>
-        <a href="https://www.welovebuzz.com/fitut-levenement-culturel-qui-depoussiere-le-theatre-universitaire/" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/wlb.jpg" alt="WeLoveBuzz" loading="lazy"></a>
-        <a href="https://www.lereporter.ma/breves-culture/fitut-theatre-universitaire/" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/leReporter-1024x369.jpg" alt="Le Reporter" loading="lazy"></a>
-        <a href="http://aujourdhui.ma/culture/13eme-festival-international-du-theatre-universitaire-de-tanger-cest-parti" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2020/04/logo-Aujourdhui-le-maroc.png" alt="Aujourd'hui le Maroc" loading="lazy"></a>
-        <a href="https://www.lejournaldetanger.com/tombee-de-rideau-sur-la-14eme-edition-du-fitut-le-palmares/" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2022/07/le-journal-de-tanger.png" alt="Le Journal de Tanger" loading="lazy"></a>
-        <a href="https://femmesdumaroc.com/actualite/fitut-voici-le-palmares-71853" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2022/07/FDMlogo.png" alt="Femmes du Maroc" loading="lazy"></a>
-        <a href="https://lematin.ma/journal/2021/tanger-animee-festival-international-theatre-universitaire/366511.html" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2022/07/Le-Matin-1024x768.png" alt="Le Matin" loading="lazy"></a>
-        <a href="https://maroc-diplomatique.net/cloture-de-la-14eme-edition-du-festival-international/" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2022/07/téléchargement.png" alt="Maroc Diplomatique" loading="lazy"></a>
-        <a href="https://albayane.press.ma/grand-prix-pour-la-piece-cantico-negro.html" target="_blank" rel="noopener"><img src="https://fitut.ma/wp-content/uploads/2022/07/logo-bayane-bon-last-one.jpg" alt="Al Bayane" loading="lazy"></a>
+  <!-- ============ PRESSE ============
+       Registre papier : liste de références, pas de bandeau de logos
+       défilant (§36). Média + lien uniquement — aucun titre d'article ni
+       date reconstruits : cette donnée n'est pas confirmée (§35), voir
+       CLAUDE.md §7. -->
+  <section class="presse-section registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">12 parutions</p>
+      </div>
+      <div class="contenu-regie apparition">
+        <ul class="liste-presse">
+          <li><a href="https://www.leconomiste.com/flash-infos/diapo-tanger-le-festival-de-theatre-universitaire-demarre-sa-12e-edition" target="_blank" rel="noopener">L'Économiste <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://fr.hespress.com/25436-12e-fitu-de-tanger-la-troupe-theatrale-universitaire-de-fes-sadjuge-le-grand-prix.html" target="_blank" rel="noopener">Hespress <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://fr.le360.ma/culture/le-fitut-rend-hommage-a-nora-skalli-92713" target="_blank" rel="noopener">Le360 <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://2m.ma/fr/programme/pop-up-news-salwa-zarhane-un-talent-en-devenir-20191025/" target="_blank" rel="noopener">2M <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://www.welovebuzz.com/fitut-levenement-culturel-qui-depoussiere-le-theatre-universitaire/" target="_blank" rel="noopener">WeLoveBuzz <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://www.lereporter.ma/breves-culture/fitut-theatre-universitaire/" target="_blank" rel="noopener">Le Reporter <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="http://aujourdhui.ma/culture/13eme-festival-international-du-theatre-universitaire-de-tanger-cest-parti" target="_blank" rel="noopener">Aujourd'hui le Maroc <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://www.lejournaldetanger.com/tombee-de-rideau-sur-la-14eme-edition-du-fitut-le-palmares/" target="_blank" rel="noopener">Le Journal de Tanger <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://femmesdumaroc.com/actualite/fitut-voici-le-palmares-71853" target="_blank" rel="noopener">Femmes du Maroc <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://lematin.ma/journal/2021/tanger-animee-festival-international-theatre-universitaire/366511.html" target="_blank" rel="noopener">Le Matin <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://maroc-diplomatique.net/cloture-de-la-14eme-edition-du-festival-international/" target="_blank" rel="noopener">Maroc Diplomatique <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+          <li><a href="https://albayane.press.ma/grand-prix-pour-la-piece-cantico-negro.html" target="_blank" rel="noopener">Al Bayane <span class="liste-presse-fleche" aria-hidden="true">→</span></a></li>
+        </ul>
       </div>
     </div>
   </section>
 
   </main>
 
-  <footer id="site-footer" class="site-footer"></footer>
+  <footer id="site-footer" class="site-footer registre-rideau"></footer>
 
   <script src="partials.js"></script>
+  <script src="assets/js/annonces.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

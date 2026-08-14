@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Démonstration des 8 composants — LOT 3 (page temporaire)</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Polices : CDN Google Fonts pendant le développement, voir CLAUDE.md §9
+       (dette technique). Bascule vers du .woff2 auto-hébergé au LOT 8. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Styles propres à cette page de démonstration uniquement — jamais
+       dans style.css, qui ne doit contenir que le système partagé. */
+    body { font-family: var(--police-revue); }
+    .demo-entete {
+      padding: var(--esp-5) var(--esp-2) var(--esp-4);
+      border-bottom: 1px solid var(--filet-sombre);
+    }
+    .demo-entete .titre-bilingue { max-width: var(--largeur-archive); margin: var(--esp-2) auto 0; padding: 0 var(--esp-2); }
+    .demo-entete .titre-bilingue [lang="fr"] { font-size: var(--pas-xl); }
+    .demo-entete .titre-bilingue [lang="ar"] { font-size: var(--pas-l); }
+    .demo-entete p.demo-chapeau {
+      max-width: var(--largeur-revue);
+      margin: var(--esp-2) auto 0;
+      padding: 0 var(--esp-2);
+      font-size: var(--pas-base);
+      line-height: 1.65;
+    }
+    .demo-entete .surtitre { max-width: var(--largeur-archive); margin: 0 auto; padding: 0 var(--esp-2); }
+    .demo-titre-composant {
+      font-family: var(--police-affiche);
+      font-size: var(--pas-l);
+      letter-spacing: -0.01em;
+      margin-bottom: var(--esp-3);
+    }
+    .demo-bloc + .demo-bloc { margin-top: var(--esp-5); }
+    .demo-boutons { display: flex; flex-wrap: wrap; gap: var(--esp-2); align-items: center; }
+    .demo-etat-label {
+      display: block;
+      margin-top: var(--esp-1);
+      font-family: var(--police-donnees);
+      font-size: var(--pas-xs);
+    }
+    .registre-papier .demo-etat-label { color: var(--texte-tiers); } /* 7,46:1, AAA */
+    .registre-encre .demo-etat-label,
+    .registre-rideau .demo-etat-label { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
+    .demo-piece { display: flex; flex-direction: column; gap: var(--esp-1); }
+    /* .skip-link vient de l'ancien système (--charcoal/--cream) : réaligné
+       ici sur les tokens de cette page, pas dans style.css. */
+    .skip-link:focus { background: var(--encre-nuit); color: var(--papier); }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <!-- ============ EN-TÊTE DE LA DÉMONSTRATION (registre encre) ============ -->
+  <header class="demo-entete registre-encre">
+    <p class="surtitre">LOT 3 — page temporaire, non liée au menu, à supprimer au LOT 8</p>
+    <h1 class="titre-bilingue">
+      <span lang="fr">Le théâtre universitaire rassemble le monde</span>
+      <span lang="ar" dir="rtl">المسرح الجامعي يجمع العالم</span>
+    </h1>
+    <p class="demo-chapeau">Chaque composant cliquable (lien, <code>.bouton</code>) apparaît dans les
+      trois registres ci-dessous, pour prouver que ses états s'adaptent au contexte — survole ou
+      navigue au clavier pour les voir. Tout le contenu est réel, tiré de
+      <code>data/editions.json</code> et de <code>CLAUDE.md</code> : aucune donnée inventée. Le
+      titre bilingue ci-dessus reprend exactement la paire française/arabe de la skill §6, sans
+      en inventer une autre ailleurs sur cette page.</p>
+  </header>
+
+  <main id="contenu">
+
+  <!-- ============ REGISTRE ENCRE — majoritaire ============ -->
+  <section class="section-demo registre-encre">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre encre — majoritaire</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre</h2>
+          <p class="surtitre">18ᵉ édition — Tanger — 3.11 › 7.11.2025</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">2. .distribution — palmarès de la 17ᵉ édition (2024)</h2>
+          <dl class="distribution">
+            <div class="distribution-ligne distribution-ligne--grand-prix">
+              <dt>Grand Prix du Festival</dt>
+              <dd>« <span lang="ar" dir="rtl">مسرحية Zucco</span> » — Institut Supérieur d'Art Dramatique
+                et d'Animation Culturelle (ISADAC), Rabat</dd>
+            </div>
+            <div class="distribution-ligne">
+              <dt>Prix du Jury</dt>
+              <dd>Troupe de l'Université Ain Shams pour «
+                <span lang="ar" dir="rtl">حدث صدفة في مكان ما</span> », Égypte</dd>
+            </div>
+            <div class="distribution-ligne">
+              <dt>Prix des Droits de l'Homme</dt>
+              <dd>« <span lang="ar" dir="rtl">مسرحية الخادمتان</span> » — Université Abdelmalek
+                Essaâdi, Tanger</dd>
+            </div>
+          </dl>
+          <p class="demo-etat-label">Grand Prix : --rideau en fond de bloc, jamais en texte sur fond
+            sombre (§10 règle 2) — voir le message du commit.</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">3. .entree-programme — sélection de la 18ᵉ édition (2025)</h2>
+          <a class="entree-programme entree-programme-lien" href="edition.html?n=18">
+            <p class="entree-programme-titre">Ficções do Interlúdio</p>
+            <p class="entree-programme-traduction">TeatrUBI</p>
+            <p class="entree-programme-meta">
+              <span>Universidade da Beira Interior</span>
+              <span>Portugal</span>
+              <span>langue [à confirmer]</span>
+              <span>durée [à confirmer]</span>
+              <span>lieu [à confirmer]</span>
+            </p>
+          </a>
+          <p class="demo-etat-label">Champs langue/durée/lieu absents de data/editions.json aujourd'hui — signalé au bilan.</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">4. .fiche-archive — 1ʳᵉ édition (2007)</h2>
+          <div class="fiche-archive">
+            <p class="fiche-archive-annee">2007</p>
+            <div class="fiche-archive-corps">
+              <p>La toute première édition du Festival International du Théâtre Universitaire
+                de Tanger, organisée par l'Association de l'Action Universitaire (ASAU).</p>
+            </div>
+          </div>
+          <p class="demo-etat-label">.credit-photo (§13, --papier-tiers en registre sombre) est posé
+            dans style.css mais pas démontré ici : aucune image ni crédit photographique réel dans
+            les données actuelles pour l'illustrer sans en inventer un.</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre encre (--corail, 6,01:1)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → --corail</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --corail</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --papier-tiers, filet en pointillé</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTRE RIDEAU — rare, interruption ============ -->
+  <section class="section-demo registre-rideau">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre rideau — rare</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre — registre rideau</h2>
+          <p class="surtitre">141 prix archivés — éditions 1 à 17</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">5. .citation</h2>
+          <blockquote class="citation">
+            <p>Créée en 2005 par Tahar Elqour en compagnie des jeunes étudiants de l'École
+              Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action
+              Universitaire est chérie pour sa diversification culturelle et artistique
+              mais surtout par sa jeunesse qui la porte.</p>
+            <cite>qui-sommes-nous.html, ASAU</cite>
+          </blockquote>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre rideau (--corail-clair, 5,79:1 — AA large)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → --corail-clair (le corail plein échoue ici, 4,39:1)</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --corail-clair</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --papier-tiers, filet en pointillé</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTRE PAPIER — lecture ============ -->
+  <section class="section-demo registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie">
+        <p class="surtitre">Registre papier — lecture</p>
+      </div>
+      <div class="contenu-regie">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">1. .surtitre — registre papier</h2>
+          <p class="surtitre">Chiffres 2025 — 9 pays · 12 spectacles · 130 festivaliers</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">5. .citation — même citation qu'en registre rideau, pour comparer la hiérarchie</h2>
+          <blockquote class="citation">
+            <p>Créée en 2005 par Tahar Elqour en compagnie des jeunes étudiants de l'École
+              Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action
+              Universitaire est chérie pour sa diversification culturelle et artistique
+              mais surtout par sa jeunesse qui la porte.</p>
+            <cite>qui-sommes-nous.html, ASAU</cite>
+          </blockquote>
+          <p class="demo-etat-label">Attribution en --texte-tiers (7,46:1) ici, en --papier-tiers
+            (7,29:1) en registre rideau plus haut — même rôle, deux tokens.</p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">8. .fiche-adresse</h2>
+          <dl class="fiche-adresse">
+            <dt>Palais des Arts et de la Culture</dt>
+            <dd>Adresse [à confirmer] — Tanger</dd>
+            <dd>Capacité [à confirmer]</dd>
+          </dl>
+          <div class="fiche-adresse-plan" role="img" aria-label="Plan statique à ajouter">
+            [plan statique à ajouter]
+          </div>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">6. .filet-section</h2>
+          <p class="demo-etat-label">
+            Le filet de 1px utilisé six fois sur cette page pour séparer chaque composant en
+            est la démonstration — aucun exemplaire supplémentaire ci-dessous.
+          </p>
+        </div>
+
+        <hr class="filet-section">
+
+        <div class="demo-bloc">
+          <h2 class="demo-titre-composant">7. .bouton — registre papier (--rideau, 11,92:1 — AAA)</h2>
+          <div class="demo-boutons">
+            <div class="demo-piece">
+              <button type="button" class="bouton">Voir le programme →</button>
+              <span class="demo-etat-label">repos</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Survole-moi</button>
+              <span class="demo-etat-label">survol → --rideau (le corail est illisible ici, 2,72:1)</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Navigue au clavier (Tab)</button>
+              <span class="demo-etat-label">focus → outline 2px --rideau</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton">Clique et maintiens</button>
+              <span class="demo-etat-label">actif (:active) → bordure 2px</span>
+            </div>
+            <div class="demo-piece">
+              <button type="button" class="bouton" aria-disabled="true">Complet</button>
+              <span class="demo-etat-label">désactivé — --texte-tiers, filet en pointillé</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+</body>
+</html>

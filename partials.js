@@ -39,10 +39,13 @@ const renderSocialIcons = (extraClass) =>
   ).join('');
 
 const HEADER_HTML = `
-  <nav id="navbar">
+  <nav id="navbar" class="registre-encre">
     <div class="nav-inner">
       <a href="index.html" class="logo-link">
-        <img src="https://fitut.ma/wp-content/uploads/2020/04/cropped-Logo-fitut-1-1-118x51.png" alt="FITUT" class="logo">
+        <!-- [logo SVG \u00e0 confirmer] : le fichier WordPress actuel (118\u00d751px,
+             pas de version claire, cf. CLAUDE.md \u00a77) est retir\u00e9. Repli
+             typographique en attendant le fichier r\u00e9el du comit\u00e9. -->
+        <span class="logo-texte">fitut</span>
       </a>
       <button type="button" class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav-links" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -55,33 +58,38 @@ const HEADER_HTML = `
         <li><a href="nos-editions.html" data-page="nos-editions.html">Nos \u00c9ditions</a></li>
         <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" class="btn-apply" target="_blank" rel="noopener">Postuler Ici</a></li>
       </ul>
-        </li>
-        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf6Bl9MHpWoAjpdvnDW7QfhoKUvt-cIkYV8DCM8isQ54GS9DQ/viewform?usp=publish-editor" class="btn-apply" target="_blank">Postuler Ici</a></li>
-      </ul>
     </div>
   </nav>
 `;
 
-const SIDEBAR_HTML = `
-  <aside class="social-sidebar" aria-label="R\u00e9seaux sociaux">
-    ${renderSocialIcons('social-icon-sidebar')}
-  </aside>
-`;
-
 const FOOTER_INNER_HTML = `
-  <div class="container">
-    <img src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-2-1024x215.png" alt="Association de l'Action Universitaire (ASAU)" class="footer-logo" width="320" height="67" loading="lazy">
-    <p>Par des \u00e9tudiants marocains pour les \u00e9tudiants du Monde.</p>
-    <p>Festival International du Th\u00e9\u00e2tre Universitaire de Tanger.</p>
-    <address class="footer-contact">
-      <a href="mailto:fitutanger@gmail.com">fitutanger@gmail.com</a>
-      <a href="tel:+212662666338">+212 (0)6 62 66 63 38</a>
-      <span>Route de l'a\u00e9roport, BP 1255, 90000 Tanger Principal &mdash; ENCG Tanger</span>
-    </address>
-    <div class="footer-social" aria-label="R\u00e9seaux sociaux">
-      ${renderSocialIcons('social-icon-footer')}
+  <div class="footer-inner">
+    <div class="footer-grille">
+      <div class="footer-asau">
+        <!-- [logo ASAU blanc \u00e0 confirmer] : le seul fichier disponible est
+             hotlink\u00e9 depuis l'ancien WordPress, probablement con\u00e7u pour un
+             fond clair \u2014 son rendu sur --rideau n'est pas v\u00e9rifiable sans
+             navigateur (m\u00eame r\u00e9serve que le logo de qui-sommes-nous.html,
+             CLAUDE.md \u00a77). Repli typographique en attendant. -->
+        <p class="footer-logo-texte">ASAU</p>
+        <p class="footer-description">Par des \u00e9tudiants marocains pour les \u00e9tudiants du Monde.</p>
+      </div>
+      <div class="footer-contact-bloc">
+        <p class="surtitre">Contact</p>
+        <address class="footer-contact">
+          <a href="mailto:fitutanger@gmail.com">fitutanger@gmail.com</a>
+          <a href="tel:+212662666338">+212 (0)6 62 66 63 38</a>
+          <span>Route de l'a\u00e9roport, BP 1255, 90000 Tanger Principal &mdash; ENCG Tanger</span>
+        </address>
+      </div>
     </div>
-    <p class="footer-copy">&copy; FITUT ${new Date().getFullYear()} &mdash; Tous droits r\u00e9serv\u00e9s</p>
+    <div class="filet-section"></div>
+    <div class="footer-bas">
+      <div class="footer-social" aria-label="R\u00e9seaux sociaux">
+        ${renderSocialIcons('social-icon-footer')}
+      </div>
+      <p class="footer-copy">&copy; FITUT ${new Date().getFullYear()} &mdash; ASAU</p>
+    </div>
   </div>
 `;
 
@@ -91,13 +99,6 @@ const FOOTER_INNER_HTML = `
 
   const footerEl = document.getElementById('site-footer');
   if (footerEl) footerEl.innerHTML = FOOTER_INNER_HTML;
-
-  // La barre latérale est injectée juste après le header (positionnement fixe via CSS)
-  if (headerEl) {
-    headerEl.insertAdjacentHTML('afterend', SIDEBAR_HTML);
-  } else {
-    document.body.insertAdjacentHTML('afterbegin', SIDEBAR_HTML);
-  }
 
   // Marquer le lien actif d'après l'URL courante
   const rawPath = location.pathname.split('/').pop() || 'index.html';

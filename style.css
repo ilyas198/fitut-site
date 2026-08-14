@@ -1,18 +1,123 @@
 /* =========================================
-   FITUT — Global Stylesheet
-   Aesthetic: Editorial Theatre — warm cream,
-   deep charcoal, gold accent. Cormorant + Montserrat.
+   FITUT — Feuille de style globale
+
+   Système à trois registres (encre / rideau / papier), palette dérivée
+   du logo officiel (voir .claude/skills/fitut-design/SKILL.md — source
+   de vérité de toute décision visuelle). Les 7 pages du site et
+   composants.html s'y conforment intégralement depuis la migration de
+   le-carnaval.html (LOT 6c) : l'ancien système (crème / charbon / or,
+   Cormorant + Montserrat) a disparu avec la dernière page qui en
+   dépendait, tokens compris.
    ========================================= */
 
 :root {
-  --cream: #f7f3ec;
-  --charcoal: #1c1c1c;
-  --gold: #b8922a;
-  --gold-light: #d4a843;
-  --warm-grey: #6b6558;
-  --line: rgba(28,28,28,0.12);
-  --nav-h: 60px;
-  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  /* --nav-h : valeur mobile par défaut (mobile-first, §30) ; relevée à
+     60px dès 1024px près du bloc #navbar ci-dessous, plutôt que dans un
+     @media (max-width) interdit en code neuf. Sert aussi au calcul de
+     hauteur du hero. */
+  --nav-h: 54px;
+
+  /* ==========================================================
+     NOUVEAU SYSTÈME — trois registres, palette du logo officiel
+     fitut-design SKILL.md : axes verrouillés, ne pas modifier
+     sans revalider la skill (§0 — axes verrouillés / axes libres).
+     ========================================================== */
+
+  /* ---------- Couleurs (§10) — dérivées du logo officiel ---------- */
+  /* Primaire : l'encre — base majoritaire, on regarde */
+  --encre-nuit:     #0A1428;
+  --encre-coulisse: #101C33;  /* surfaces secondaires sur fond sombre */
+
+  /* Secondaire : les surfaces */
+  --rideau:         #5B1327;  /* bordeaux du logo — interruptions, Grand Prix (§26) */
+  --rideau-profond: #3E0C1B;  /* variante pour aplats denses */
+  --papier:         #F6F1EA;  /* blanc chaud — registre de lecture, on lit */
+  --papier-ombre:   #E9E0D5;  /* aplats secondaires sur papier */
+
+  /* Accent : le corail — sur fond sombre UNIQUEMENT (2,72:1 sur --papier, échec) */
+  --corail:         #FF5D38;  /* registre encre : 6,01:1 */
+  --corail-clair:   #FF8A63;  /* registre rideau : 5,79:1, AA large */
+
+  /* Texte sur papier */
+  --texte:          #1A1420;  /* 16,04:1 sur --papier */
+  --texte-tiers:    #584A4E;  /* 7,46:1 sur --papier — surtitres, crédits, métadonnées */
+
+  /* Texte secondaire sur fond sombre — seul moyen d'obtenir une hiérarchie
+     de texte en registre encre/rideau, opacity étant interdit sur du texte */
+  --papier-tiers:   #C9BDB4;  /* 9,99:1 sur --encre-nuit, 7,29:1 sur --rideau */
+
+  /* Filets — séparateur autorisé, jamais d'ombre */
+  --filet-sombre:   rgba(246, 241, 234, 0.16); /* sur fond --encre-nuit/--rideau */
+  --filet-clair:    rgba(26, 20, 32, 0.14);    /* sur fond --papier */
+
+  /* Voile des barres fixes (§17) — --encre-nuit translucide, exception unique
+     à l'interdit général de transparence empilée (§10). 82 % est un plancher
+     calculé, pas un réglage esthétique : composé sur du blanc pur (le pire
+     cas), --papier y garde 9,5:1 — vérifié par calcul, pas supposé. Se
+     densifie légèrement au défilement (0,82 → 0,92), jamais en dessous de 0,80. */
+  --voile-barre:        rgba(10, 20, 40, 0.82);
+  --voile-barre-dense:  rgba(10, 20, 40, 0.92);
+  --voile-barre-repli:  rgba(10, 20, 40, 0.94); /* @supports sans backdrop-filter */
+
+  /* ---------- Typographie — familles (§9) ---------- */
+  --police-affiche: 'Readex Pro', system-ui, sans-serif;
+  --police-revue:   'Literata', Georgia, serif;
+  --police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
+  --police-arabe:   'Readex Pro', 'Noto Naskh Arabic', sans-serif;
+
+  /* ---------- Typographie — échelle, ratio 1,333 (quarte juste) (§9) ---------- */
+  --pas-xs:   0.750rem;   /* surtitres, crédits */
+  --pas-s:    0.875rem;   /* métadonnées */
+  --pas-base: 1rem;       /* texte courant */
+  --pas-m:    1.333rem;   /* chapeaux */
+  --pas-l:    1.777rem;   /* titres de section */
+  --pas-xl:   2.369rem;   /* titres de page */
+  --pas-2xl:  clamp(3rem, 9vw, 6.313rem);    /* affiche */
+  --pas-3xl:  clamp(4rem, 16vw, 11.22rem);   /* hero */
+
+  /* ---------- Typographie — interlignage, jamais d'héritage (§9) ---------- */
+  --interligne-serre:   1.05;   /* titres d'affiche — échelle d'affiche, composition compacte */
+  --interligne-donnees: 1.35;   /* surtitres, distributions, métadonnées */
+  --interligne-lecture: 1.65;   /* texte de revue */
+
+  /* ---------- Grilles — largeurs de contenu par registre (§11) ---------- */
+  --largeur-revue:   680px;   /* lecture longue */
+  --largeur-archive: 1040px;  /* listes, tableaux, programme */
+  --largeur-affiche: 100%;    /* pleine largeur, sans marge */
+  --marge-regie-tablette: 88px;
+  --marge-regie-desktop:  140px;
+
+  /* ---------- Espacements — base 8, sauts francs (§12) ---------- */
+  --esp-1: 8px;
+  --esp-2: 16px;
+  --esp-3: 24px;
+  --esp-4: 40px;
+  --esp-5: 64px;
+  --esp-6: 96px;
+  --esp-7: 144px;   /* entre sections */
+  --esp-8: 216px;   /* bascule encre ↔ rideau ↔ papier */
+
+  /* ---------- Mouvement — durées et courbes (§34) ---------- */
+  --duree-ui:      200ms;   /* survol, focus, ouverture de menu */
+  --duree-contenu: 400ms;   /* apparition au défilement, opacité seule */
+  --duree-hero:   1200ms;   /* lever de rideau, une seule fois */
+
+  --courbe-sortie: cubic-bezier(0.22, 1, 0.36, 1);   /* apparitions */
+  --courbe-entree: cubic-bezier(0.65, 0, 0.35, 1);   /* disparitions */
+}
+
+/* ==========================================================
+   Respect de prefers-reduced-motion (§31, §34) — posé ici en
+   fondation : le lever de rideau devient une apparition instantanée,
+   les apparitions au défilement perdent leur transition. S'applique
+   dès qu'un composant utilise --duree-* / --courbe-* ci-dessus.
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duree-ui: 0ms;
+    --duree-contenu: 0ms;
+    --duree-hero: 0ms;
+  }
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,61 +125,28 @@
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  background: var(--cream);
-  color: var(--charcoal);
-  font-family: 'Montserrat', sans-serif;
+  background: var(--encre-nuit);
+  color: var(--papier);
+  font-family: var(--police-affiche);
   font-weight: 300;
-  line-height: 1.7;
   overflow-x: hidden;
-}
-@media (max-width: 480px) {
-  body {
-    line-height: 1.75;
-  }
 }
 
 img { display: block; max-width: 100%; height: auto; aspect-ratio: auto; }
 a { color: inherit; text-decoration: none; }
 
-/* ---- TYPOGRAPHY ---- */
+/* ---- TYPOGRAPHY ----
+   Repli minimal : chaque titre réel du site fixe sa propre famille, sa
+   propre taille (.titre-bilingue, .titre-section, .edition-titre…) — ce
+   bloc n'est plus qu'un filet de sécurité depuis la migration complète
+   des 7 pages. Anciennement Cormorant Garamond avec des tailles en
+   clamp() propres à l'ancien système : c'est exactement le defaut qui
+   avait produit le bug du hero documenté en CLAUDE.md §3 bis (une règle
+   ancienne jamais retirée continuait de peser sur du contenu neuf) —
+   retiré pour de bon plutôt que laissé en embuscade. ---- */
 h1, h2, h3, h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 400;
-  line-height: 1.15;
-}
-h1 { font-size: clamp(2.4rem, 6vw, 5rem); }
-h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.3rem, 2.5vw, 2rem); }
-
-.section-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  padding-bottom: 1rem;
-}
-@media (max-width: 768px) {
-  .section-title {
-    margin-bottom: 2.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .section-title {
-    margin-bottom: 2rem;
-  }
-}
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 60px; height: 2px;
-  background: var(--gold);
-}
-@media (max-width: 480px) {
-  .section-title::after {
-    width: 45px;
-    height: 1.5px;
-  }
+  font-family: var(--police-affiche);
+  font-weight: 500;
 }
 
 /* ---- LAYOUT ---- */
@@ -85,7 +157,6 @@ h3 { font-size: clamp(1.3rem, 2.5vw, 2rem); }
 @media (max-width: 480px) {
   .container { padding: 0 1rem; }
 }
-.text-center { text-align: center; }
 section { padding: 6rem 0; }
 @media (max-width: 768px) {
   section { padding: 4rem 0; }
@@ -94,115 +165,151 @@ section { padding: 6rem 0; }
   section { padding: 3rem 0; }
 }
 
-/* ---- NAVBAR ---- */
+/* ==========================================================
+   NAVIGATION — migrée vers le système à trois registres (fitut-design
+   §17). Registre encre, barre translucide superposée au hero (motif
+   mawazine.ma, corrections urgentes) : elle ne pousse plus le contenu
+   vers le bas, elle se superpose à lui. Se densifie légèrement au
+   défilement (voir .est-defile plus bas, posé sur <body> par main.js) —
+   c'est le seul changement autorisé, jamais d'ombre, jamais de
+   réduction de hauteur, jamais de disparition. Mobile-first : la
+   version plein écran est la valeur par défaut, la barre horizontale
+   n'apparaît qu'à partir de 1024px (§30, aucun @media max-width).
+   ========================================================== */
 #navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--nav-h);
-  background: rgba(247,243,236,0.97);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid var(--filet-sombre);
+  box-shadow: none;
   z-index: 1001;
-  transition: box-shadow var(--transition), height 0.2s ease;
+  transition: background var(--duree-ui) var(--courbe-sortie),
+              backdrop-filter var(--duree-ui) var(--courbe-sortie),
+              -webkit-backdrop-filter var(--duree-ui) var(--courbe-sortie);
 }
-#navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+body.est-defile #navbar {
+  background: var(--voile-barre-dense);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  #navbar { background: var(--voile-barre-repli); }
+  body.est-defile #navbar { background: var(--voile-barre-repli); }
+}
 
 .nav-inner {
   position: relative;
-  max-width: 1160px;
+  max-width: var(--largeur-archive); /* aligne la barre sur la largeur de
+    contenu de .grille-regie plutôt qu'une valeur propre à la nav */
   margin: 0 auto;
-  padding: 0 clamp(1rem, 3vw, 1.75rem);
+  padding: 0 var(--esp-2);
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--esp-2);
 }
+@media (min-width: 600px)  { .nav-inner { padding: 0 var(--esp-3); } }
+@media (min-width: 1024px) { .nav-inner { padding: 0 var(--esp-4); } }
 
-/* Logo FITUT (118×51) — proportions fixes, pas d’écrasement flex */
+/* Logo — le fichier WordPress (118×51, pas de version claire) est
+   retiré : repli typographique en attendant le SVG réel du comité
+   (CLAUDE.md §7, commentaire dans partials.js). */
 .logo-link {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
   line-height: 0;
-  max-height: 100%;
 }
-#navbar .logo {
-  display: block;
-  flex-shrink: 0;
-  width: auto;
-  max-width: none;
-  height: clamp(26px, 4.2vw, 34px);
-  max-height: 34px;
-  aspect-ratio: 118 / 51;
-  object-fit: contain;
-  object-position: left center;
+.logo-texte {
+  font-family: var(--police-affiche);
+  font-weight: 600;
+  font-size: var(--pas-m);
+  letter-spacing: -0.02em;
+  color: var(--corail);
 }
 
+/* ---- Liens — mobile : plein écran, entrées à l'échelle de l'affiche.
+   Fond hérité du registre-encre de #navbar. Ouverture en fondu, 200ms
+   (--duree-ui) : opacity/visibility plutôt que display, pour transitionner
+   proprement (display:none ne transitionne pas). ---- */
 .nav-links {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0; bottom: 0;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: nowrap;
-  gap: clamp(0.65rem, 1.1vw, 1.2rem);
-  list-style: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--esp-1);
   margin: 0;
-  padding: 0;
-  min-width: 0;
+  padding: var(--esp-4) var(--esp-3);
+  list-style: none;
+  background: var(--encre-nuit);
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duree-ui) var(--courbe-sortie);
 }
-.nav-links a {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-  transition: color var(--transition);
-  white-space: nowrap;
+.nav-links.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.nav-links > li {
+  width: 100%;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+.nav-links > li:last-child { border-bottom: none; }
 
-.btn-apply {
-  background: var(--gold) !important;
-  color: #fff !important;
-  padding: 0.42rem 0.95rem;
-  border-radius: 2px;
-  font-weight: 500 !important;
-  letter-spacing: 0.07em;
-  font-size: 0.65rem !important;
-  transition: background var(--transition) !important;
-  min-height: 44px;
+.nav-links a {
+  position: relative;
+  display: block;
+  padding: var(--esp-2) 0;
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-xl);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+  color: var(--papier);
+  transition: color var(--duree-ui) var(--courbe-sortie);
+  white-space: normal;
+}
+/* Page active : un filet sous le libellé, jamais une couleur seule (§17) */
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--corail);
+}
+
+.nav-links .btn-apply {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 48px;
+  margin-top: var(--esp-2);
+  padding: var(--esp-2) var(--esp-3);
+  background: var(--corail);
+  color: var(--encre-nuit);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--duree-ui) var(--courbe-sortie);
 }
-.btn-apply:hover { background: var(--gold-light) !important; color: #fff !important; }
+.nav-links .btn-apply:hover { background: var(--corail-clair); color: var(--encre-nuit); }
+.nav-links .btn-apply:focus-visible { outline: 2px solid var(--papier); outline-offset: 3px; }
 
-/* Dropdown */
-.dropdown { position: relative; }
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%; left: 0;
-  background: var(--cream);
-  border: 1px solid var(--line);
-  min-width: 152px;
-  list-style: none;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  z-index: 1001;
-}
-.dropdown:hover .dropdown-menu { display: block; }
-.dropdown-menu li a {
-  display: block;
-  padding: 0.55rem 1rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.07em;
-}
-.dropdown-menu li a:hover { background: rgba(184,146,42,0.08); color: var(--gold); }
-
-/* Burger */
+/* ---- Burger — mobile uniquement, disparaît dès la barre horizontale ---- */
 .burger {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -211,55 +318,98 @@ section { padding: 6rem 0; }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  margin-right: -0.25rem;
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 4px;
-  color: var(--charcoal);
+  padding: var(--esp-1);
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--papier);
 }
-@media (max-width: 480px) {
-  .burger {
-    min-width: 40px;
-    min-height: 40px;
-    padding: 0.35rem;
-  }
-}
-.burger:hover { background: rgba(28,28,28,0.05); }
+.burger:hover { color: var(--corail); }
+.burger:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
 .burger span {
   display: block;
   width: 22px; height: 2px;
   background: currentColor;
-  transition: var(--transition);
-}
-@media (max-width: 480px) {
-  .burger span {
-    width: 20px;
-    height: 2px;
-  }
+  transition: background var(--duree-ui) var(--courbe-sortie);
 }
 
-/* ---- FIXED BANNER ---- */
+/* ---- Bascule vers la barre horizontale (§30) ---- */
+@media (min-width: 1024px) {
+  :root { --nav-h: 60px; }
+
+  .burger { display: none; }
+
+  .nav-links {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: var(--esp-3);
+    width: auto;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    min-width: 0;
+  }
+  .nav-links > li { width: auto; border-bottom: none; }
+  .nav-links a {
+    padding: var(--esp-1) 0;
+    font-size: var(--pas-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: var(--interligne-donnees);
+    white-space: nowrap;
+  }
+  .nav-links .btn-apply { margin-top: 0; }
+}
+
+/* ---- FIXED BANNER — Haut Patronage (index.html uniquement) ----
+   --banner-h : hauteur réelle du bandeau à chaque palier, calculée
+   (padding*2 + line-height héritée de body{line-height:1.7} + bordure
+   1px), pas devinée — sert au calcul de hauteur du hero. Même barre
+   translucide superposée que #navbar (§17, corrections urgentes) —
+   retokenisée au passage : 'Montserrat' et le rgba(255,255,255,0.1) en
+   dur étaient un reliquat de l'ancien système, jamais migrés faute
+   d'être dans le périmètre d'un LOT précédent. */
+:root { --banner-h: 50px; }
 .fixed-banner {
   position: fixed;
   top: var(--nav-h);
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, rgba(28, 28, 28, 0.95), rgba(28, 28, 28, 0.85));
-  color: #fff;
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  color: var(--papier);
   text-align: center;
   padding: 0.75rem 1rem;
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--police-affiche);
   font-weight: 500;
   z-index: 1000;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--filet-sombre);
+  box-shadow: none;
+  transition: background var(--duree-ui) var(--courbe-sortie),
+              backdrop-filter var(--duree-ui) var(--courbe-sortie),
+              -webkit-backdrop-filter var(--duree-ui) var(--courbe-sortie);
+}
+body.est-defile .fixed-banner {
+  background: var(--voile-barre-dense);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .fixed-banner { background: var(--voile-barre-repli); }
+  body.est-defile .fixed-banner { background: var(--voile-barre-repli); }
 }
 @media (max-width: 768px) {
+  :root { --banner-h: 41px; }
   .fixed-banner {
     padding: 0.6rem 0.75rem;
     font-size: 0.75rem;
@@ -267,6 +417,7 @@ section { padding: 6rem 0; }
   }
 }
 @media (max-width: 480px) {
+  :root { --banner-h: 35px; }
   .fixed-banner {
     padding: 0.5rem 0.5rem;
     font-size: 0.65rem;
@@ -278,1584 +429,303 @@ section { padding: 6rem 0; }
   margin: 0 auto;
 }
 
-/* ---- HERO SLIDER ---- */
-.hero-slider {
-  position: relative;
-  overflow: hidden;
-  height: calc(100vh - 110px);
-  min-height: 480px;
-  max-height: 900px;
-  margin-top: 110px;
-}
-@media (max-width: 900px) {
-  .hero-slider {
-    height: 70vh;
-    min-height: 400px;
-    max-height: none;
-  }
-}
-@media (max-width: 768px) {
-  .hero-slider {
-    height: 60vh;
-    min-height: 360px;
-    margin-top: 110px;
-  }
-}
-@media (max-width: 640px) {
-  .hero-slider {
-    height: 55vh;
-    min-height: 320px;
-  }
-}
-@media (max-width: 480px) {
-  .hero-slider {
-    height: 50vh;
-    min-height: 280px;
-  }
-}
-.hero-slider::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.08));
-  mix-blend-mode: soft-light;
-  z-index: 1;
-}
-.slider-track {
-  display: flex;
-  width: 300%;
-  height: 100%;
-  transition: transform 0.6s ease-in-out;
-  will-change: transform;
-}
-.slide {
-  width: 33.333%;
-  height: 100%;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.promo-slide {
-  background: #faf8f2;
-}
-@keyframes slideShow {
-  0%, 32% { transform: translateX(0); }
-  33%, 65% { transform: translateX(-33.333%); }
-  66%, 98% { transform: translateX(-66.666%); }
-  99%, 100% { transform: translateX(0); }
-}
-
-/* ---- SLIDER NAVIGATION ---- */
-.slider-nav {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1rem;
-  z-index: 200;
-  opacity: 1;
-  visibility: visible;
-}
-@media (max-width: 768px) {
-  .slider-nav {
-    bottom: 1.5rem;
-    gap: 0.85rem;
-  }
-}
-@media (max-width: 480px) {
-  .slider-nav {
-    bottom: 1rem;
-    gap: 0.7rem;
-  }
-}
-.slider-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid rgba(20, 20, 20, 0.85);
-  background: rgba(255, 255, 255, 0.28);
-  cursor: pointer;
-  transition: background var(--transition), transform var(--transition), border-color var(--transition);
-  opacity: 1;
-  visibility: visible;
-}
-@media (max-width: 480px) {
-  .slider-dot {
-    width: 10px;
-    height: 10px;
-    border-width: 1.5px;
-  }
-}
-.slider-dot.active {
-  background: #ffd15f;
-  border-color: rgba(20, 20, 20, 0.9);
-  transform: scale(1.2);
-  box-shadow: 0 0 0 6px rgba(255, 209, 77, 0.16);
-}
-
-@media (max-width: 480px) {
-  .slider-dot.active {
-    transform: scale(1.1);
-  }
-}
-.slider-dot:hover {
-  border-color: rgba(20, 20, 20, 1);
-  background: rgba(255, 255, 255, 0.45);
-}
-
-/* ---- SLIDER CONTROLS ---- */
-.slider-prev,
-.slider-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  font-size: 1.5rem;
-  color: var(--charcoal);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 50%;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
-  cursor: pointer;
-  z-index: 200;
-  transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
-  opacity: 1;
-  visibility: visible;
-}
-.slider-prev:hover,
-.slider-next:hover {
-  background: #ffffff;
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 22px 52px rgba(0, 0, 0, 0.18);
-}
-.slider-prev {
-  left: 62px; /* clears the 54px social sidebar + 8px breathing room */
-}
-.slider-next {
-  right: 1.5rem;
-}
-@media (max-width: 1100px) {
-  .slider-prev,
-  .slider-next {
-    width: 44px;
-    height: 44px;
-    font-size: 1.2rem;
-  }
-}
-@media (max-width: 900px) {
-  .slider-prev {
-    left: 1.5rem; /* sidebar is hidden at this breakpoint, revert to normal */
-  }
-}
-@media (max-width: 768px) {
-  .slider-prev,
-  .slider-next {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
-    left: 0.75rem;
-    right: 0.75rem;
-  }
-}
-@media (max-width: 480px) {
-  .slider-prev,
-  .slider-next {
-    display: none;
-  }
-}
-
-/* ---- VENUES / FESTIVAL LOCATIONS ---- */
-.venues-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.75rem;
-}
-@media (max-width: 900px) {
-  .venues-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .venues-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-.venue-card {
-  display: block;
-  background: #ffffff;
-  border: 1px solid rgba(28, 28, 28, 0.09);
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 45px rgba(28, 28, 28, 0.08);
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-}
-.venue-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(184, 146, 42, 0.22);
-  box-shadow: 0 28px 60px rgba(28, 28, 28, 0.14);
-}
-.venue-card img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-}
-@media (max-width: 640px) {
-  .venue-card img {
-    aspect-ratio: 4 / 3;
-    height: auto;
-  }
-}
-.venue-card-body {
-  padding: 1.75rem;
-}
-.venue-card-body h3 {
-  margin-bottom: 0.85rem;
-  color: var(--charcoal);
-}
-.venue-card-body p {
-  margin-bottom: 1.25rem;
-  color: var(--warm-grey);
-  line-height: 1.85;
-}
-.venue-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.venue-card-link::after {
-  content: '→';
-  transition: transform var(--transition);
-}
-.venue-card:hover .venue-card-link::after {
-  transform: translateX(4px);
-}
-
-
-/* ---- HERO ---- */
-.hero {
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.05);
-  animation: heroZoom 12s ease-out forwards;
-}
-@keyframes heroZoom {
-  to { transform: scale(1); }
-}
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(28,28,28,0.45) 0%, rgba(28,28,28,0.6) 100%);
-}
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  color: #fff;
-  padding: 0 2rem;
-  max-width: 800px;
-}
-.hero-subtitle {
-  font-size: 0.9rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  opacity: 0.92;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(255,255,255,0.45);
-  padding-bottom: 0.7rem;
-}
-.hero-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3.25rem, 8vw, 6.8rem);
-  font-weight: 400;
-  color: #fff;
-  margin-bottom: 1rem;
-  line-height: 1.02;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  text-shadow: 0 16px 38px rgba(0, 0, 0, 0.35);
-}
-.hero-title sup { font-size: 0.55em; vertical-align: super; }
-.hero-tagline {
-  font-size: 1rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-bottom: 2.5rem;
-  opacity: 0.9;
-  color: rgba(255,255,255,0.95);
-}
-.hero-cta {
-  display: inline-block;
-  background: var(--gold);
-  color: #fff;
-  padding: 1rem 2.75rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
-  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-}
-.hero-cta:hover {
-  background: var(--gold-light);
-  transform: translateY(-3px);
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.28);
-}
-@media (max-width: 768px) {
-  .hero-cta {
-    padding: 0.9rem 2.2rem;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-@media (max-width: 480px) {
-  .hero-cta {
-    padding: 0.85rem 1.8rem;
-    font-size: 0.8rem;
-  }
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255,255,255,0.6);
-  font-size: 1.2rem;
-  animation: bounce 2s infinite;
-  z-index: 2;
-}
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
-}
-
-/* Fade-in animations */
-.fade-in { opacity: 0; transform: translateY(24px); animation: fadeUp 0.9s forwards; }
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ---- PROMO SECTION ---- */
-.promo-section {
-  min-height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #faf8f2;
-  padding: 3rem 0;
-}
-@media (max-width: 900px) {
-  .promo-section {
-    padding: 2.5rem 0;
-  }
-}
-@media (max-width: 768px) {
-  .promo-section {
-    padding: 2rem 0;
-  }
-}
-@media (max-width: 480px) {
-  .promo-section {
-    padding: 1.75rem 0;
-  }
-}
-.promo-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-@media (max-width: 900px) {
-  .promo-grid {
-    gap: 2rem;
-  }
-}
-@media (max-width: 768px) {
-  .promo-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    text-align: center;
-  }
-}
-@media (max-width: 480px) {
-  .promo-grid {
-    gap: 1rem;
-  }
-}
-.promo-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 16px 42px rgba(28, 28, 28, 0.15);
-  transition: transform 0.7s ease, filter 0.7s ease;
-  max-width: 100%;
-}
-@media (max-width: 768px) {
-  .promo-image img {
-    max-height: 320px;
-    object-fit: cover;
-  }
-}
-@media (max-width: 480px) {
-  .promo-image img {
-    max-height: 280px;
-    object-fit: cover;
-  }
-}
-.promo-text h2 {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  margin-bottom: 1rem;
-  color: var(--charcoal);
-}
-@media (max-width: 480px) {
-  .promo-text h2 {
-    margin-bottom: 0.75rem;
-  }
-}
-.promo-text p {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--warm-grey);
-  margin-bottom: 2rem;
-}
-@media (max-width: 768px) {
-  .promo-text p {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .promo-text p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
-  }
-}
-.promo-image,
-.promo-text,
-.promo-text .promo-btn,
-.promo-text .hero-cta {
-  opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.promo-image {
-  transform: translateX(-50px) scale(0.98);
-}
-.promo-text {
-  transform: translateX(50px);
-}
-.slide.active .promo-image,
-.slide.active .promo-text,
-.slide.active .promo-text .promo-btn,
-.slide.active .promo-text .hero-cta {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-.slide.active .promo-image img {
-  transform: scale(1.03);
-}
-.slide.active .promo-image {
-  transition-delay: 0.1s;
-}
-.slide.active .promo-text {
-  transition-delay: 0.2s;
-}
-.slide.active .promo-text .promo-btn,
-.slide.active .promo-text .hero-cta {
-  transition-delay: 0.35s;
-}
-.slide {
-  opacity: 1;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.slide.active {
-  opacity: 1;
-  transform: scale(1.008);
-}
-
-/* Ensure slide 0 inner content is visible immediately before JS activates .active */
-.slide:first-child .promo-image,
-.slide:first-child .promo-text,
-.slide:first-child .promo-text .promo-btn,
-.slide:first-child .promo-text .hero-cta {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-.promo-btn {
-  display: inline-block;
-  background: var(--gold);
-  color: #fff;
-  padding: 0.8rem 2rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-radius: 6px;
-  transition: background var(--transition), transform var(--transition);
-}
-.promo-btn:hover {
-  background: var(--gold-light);
-  transform: translateY(-2px);
-}
-@media (max-width: 768px) {
-  .promo-btn {
-    padding: 0.9rem 2.2rem;
-    font-size: 0.95rem;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-@media (max-width: 480px) {
-  .promo-btn {
-    padding: 0.9rem 1.8rem;
-    width: fit-content;
-    min-height: 44px;
-  }
-}
-@media (max-width: 768px) {
-  .promo-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-  .promo-image {
-    order: -1;
-  }
-  .promo-text {
-    order: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .promo-text .promo-btn,
-  .promo-text .hero-cta {
-    order: 0;
-    width: fit-content;
-  }
-  .promo-text h2,
-  .promo-text p {
-    order: 1;
-  }
-}
-.quote-section {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 5rem 0;
-  margin-top: 0;
-  position: relative;
-  z-index: 10;
-}
-@media (max-width: 768px) {
-  .quote-section {
-    padding: 4rem 0;
-  }
-}
-@media (max-width: 480px) {
-  .quote-section {
-    padding: 3rem 0;
-  }
-}
-.quote-section blockquote {
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
-.quote-section p {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-@media (max-width: 480px) {
-  .quote-section p {
-    line-height: 1.7;
-  }
-}
-.quote-section cite {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-/* ---- STATS ---- */
-.stats-section { background: var(--cream); }
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 3rem;
-  text-align: center;
-}
-@media (max-width: 900px) {
-  .stats-grid {
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  }
-}
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-}
-.stat-number {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3rem, 7vw, 5rem);
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-@media (max-width: 480px) {
-  .stat-number {
-    font-size: clamp(2rem, 5vw, 3rem);
-  }
-}
-.stat-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-}
-@media (max-width: 480px) {
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-  }
-}
-
-/* ---- GALLERY PREVIEW ---- */
-.gallery-preview { padding: 0; }
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 50vh;
-}
-@media (max-width: 900px) {
-  .gallery-grid {
-    min-height: 40vh;
-  }
-}
-@media (max-width: 640px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-    min-height: 50vh;
-  }
-}
-.gallery-card {
-  position: relative;
-  overflow: hidden;
-  display: block;
-}
-.gallery-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.7s ease;
-  aspect-ratio: auto;
-}
-.gallery-card:hover img { transform: scale(1.06); }
-.gallery-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(28,28,28,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background var(--transition);
-}
-.gallery-card:hover .gallery-card-overlay { background: rgba(28,28,28,0.55); }
-.gallery-card-overlay span {
-  color: #fff;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ---- SOCIAL — sidebar fixe (desktop) : position verticale ajustée au scroll dans main.js pour éviter le footer ; footer (mobile) ---- */
-.social-sidebar {
-  position: fixed;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem 0.5rem;
-  background: rgba(28, 28, 28, 0.92);
-  border-radius: 0 6px 6px 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-  z-index: 999;
-}
-
-.social-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(247, 243, 236, 0.78);
-  border-radius: 4px;
-  transition: color var(--transition), background var(--transition), transform var(--transition), border-color var(--transition);
-}
+/* ---- SOCIAL — liens sociaux dans le footer (barre latérale flottante
+   retirée, §17). Système nouveau exclusivement : le footer est
+   .registre-rideau sur les 6 pages qui l'utilisent (§6 : exception à la
+   rareté du rideau, c'est le rideau qui tombe — voir plus bas). Accent
+   --corail-clair, pas --corail : sur --rideau, --corail ne fait que
+   4,39:1 (§10) — vérifié, pas supposé. ---- */
+.social-icon { display: inline-flex; align-items: center; justify-content: center; }
 .social-icon svg { display: block; }
 
-.social-icon-sidebar {
-  width: 38px;
-  height: 38px;
-}
-.social-icon-sidebar svg { width: 18px; height: 18px; }
-.social-icon-sidebar:hover {
-  color: var(--gold);
-  background: rgba(247, 243, 236, 0.08);
-  transform: translateX(2px);
-}
-
-.footer-social {
-  display: none;
-  justify-content: center;
-  gap: 0.9rem;
-  margin: 1.5rem 0 0.5rem;
-}
+.footer-social { display: flex; gap: var(--esp-2); }
 .social-icon-footer {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(247, 243, 236, 0.22);
-  border-radius: 50%;
-  color: rgba(247, 243, 236, 0.7);
+  border: 1px solid var(--filet-sombre);
+  color: var(--papier-tiers);
+  transition: color var(--duree-ui) var(--courbe-sortie),
+              border-color var(--duree-ui) var(--courbe-sortie);
 }
 .social-icon-footer svg { width: 16px; height: 16px; }
-.social-icon-footer:hover {
-  color: var(--gold);
-  border-color: var(--gold);
+.social-icon-footer:hover,
+.social-icon-footer:focus-visible {
+  color: var(--corail-clair);
+  border-color: var(--corail-clair);
+}
+.social-icon-footer:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+
+.chargement-page { padding: 8rem 0; text-align: center; }
+
+/* ==========================================================
+   FOOTER — deux colonnes, registre rideau (§17, §6 : exception à la
+   rareté du rideau — « c'est le rideau qui tombe, la clôture ». Élément
+   persistant, pas une section de contenu : ne compte pas dans la limite
+   de deux blocs rideau par page, --esp-8 avant lui reste indépendant de
+   tout calcul de bascule par page (le footer est un seul composant
+   partagé par toutes les pages via partials.js, CLAUDE.md §2).
+   768px (et non 600/1024/1440, §30) : seuil demandé explicitement pour
+   ce commit, signalé comme l'écart qu'il est — voir aussi .lieux-grille.
+   ========================================================== */
+.site-footer { padding: var(--esp-8) 0 var(--esp-5); }
+
+.footer-inner {
+  max-width: var(--largeur-archive);
+  margin: 0 auto;
+  padding: 0 var(--esp-2);
+}
+@media (min-width: 600px)  { .footer-inner { padding: 0 var(--esp-3); } }
+@media (min-width: 1024px) { .footer-inner { padding: 0 var(--esp-4); } }
+
+.footer-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+}
+@media (min-width: 768px) {
+  .footer-grille { grid-template-columns: repeat(2, 1fr); gap: var(--esp-4); }
 }
 
-/* ---- PAGE HERO (inner pages) ---- */
-.page-hero {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 8rem 0 4rem;
-  text-align: center;
+/* Colonne 1 — logo ASAU en attente d'un fichier réel (voir partials.js) */
+.footer-logo-texte {
+  font-family: var(--police-affiche);
+  font-weight: 600;
+  font-size: var(--pas-m);
+  letter-spacing: -0.02em;
+  color: var(--corail-clair); /* --corail : 4,39:1 sur --rideau, échec (§10) */
 }
-@media (max-width: 900px) {
-  .page-hero {
-    padding: 6rem 0 3rem;
-  }
+.footer-description {
+  margin-top: var(--esp-2);
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  color: var(--papier-tiers);
 }
-@media (max-width: 640px) {
-  .page-hero {
-    padding: 4rem 0 2.5rem;
-  }
+
+/* Colonne 2 — contact */
+.footer-contact-bloc .surtitre { margin-bottom: var(--esp-2); }
+.footer-contact {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  line-height: var(--interligne-donnees);
 }
-.page-hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
-  font-weight: 300;
+.footer-contact span { display: block; max-width: 420px; color: var(--papier-tiers); }
+
+/* Ligne basse — réseaux sociaux + copyright, de part et d'autre dès 600px */
+.footer-bas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-3);
+}
+@media (min-width: 600px) {
+  .footer-bas { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+.footer-copy {
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
   letter-spacing: 0.05em;
-  color: var(--cream);
-}
-.page-hero .gold-line {
-  width: 60px; height: 2px;
-  background: var(--gold);
-  margin: 1.5rem auto 0;
+  color: var(--papier-tiers);
 }
 
-/* ---- TEAM GRID ---- */
-.team-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-  text-align: center;
-  margin-top: 3rem;
-}
-@media (max-width: 480px) {
-  .team-grid {
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-}
-.team-row--lead {
-  display: flex;
-  justify-content: center;
-}
-.team-row--rest {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-  max-width: 720px;
-  margin: 0 auto;
-  width: 100%;
-}
-@media (max-width: 900px) {
-  .team-row--rest {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    max-width: none;
-  }
-}
-@media (max-width: 640px) {
-  .team-row--rest {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 480px) {
-  .team-row--rest {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-.team-member img {
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 1rem;
-  border: 3px solid var(--line);
-}
-@media (max-width: 640px) {
-  .team-member img {
-    width: 110px;
-    height: 110px;
-  }
-}
-@media (max-width: 480px) {
-  .team-member img {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 0.75rem;
-  }
-}
-.team-member p {
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-@media (max-width: 480px) {
-  .team-member p {
-    font-size: 0.7rem;
-  }
-}
+/* ---- Apparition au défilement, système à trois registres (§34) —
+   opacité seule, aucune translation. .reveal (ancien système, à base de
+   translateY) a disparu avec la dernière page qui en dépendait
+   (le-carnaval.html, LOT 6c) : .apparition est désormais le seul
+   mécanisme de révélation au défilement du site. prefers-reduced-motion :
+   --duree-contenu passe déjà à 0ms (voir :root), inutile de dupliquer la
+   règle ici. ---- */
+.apparition { opacity: 0; transition: opacity var(--duree-contenu) var(--courbe-sortie); }
+.apparition.est-visible { opacity: 1; }
 
-/* ---- VALUES GRID ---- */
-.values-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 465px));
-  gap: 2rem;
-}
-@media (max-width: 900px) {
-  .values-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .values-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-.value-card {
-  padding: 2rem;
-  border: 1px solid var(--line);
-  text-align: center;
-  transition: border-color var(--transition), transform var(--transition);
-}
-@media (max-width: 640px) {
-  .value-card {
-    padding: 1.5rem;
-  }
-}
-.value-card:hover { border-color: var(--gold); transform: translateY(-4px); }
-.value-card:nth-child(5) { grid-column: 1 / -1; justify-self: center; max-width: 300px; }
-@media (max-width: 640px) {
-  .value-card:nth-child(5) {
-    max-width: 100%;
-  }
-}
-.value-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.75rem;
-  color: var(--gold);
-}
-@media (max-width: 480px) {
-  .value-card h3 {
-    font-size: 1.2rem;
-  }
-}
-.value-card p { font-size: 0.9rem; font-style: italic; color: var(--warm-grey); }
-@media (max-width: 480px) {
-  .value-card p {
-    font-size: 0.85rem;
-  }
-}
+/* ==========================================================
+   DYNAMISME — sur tout le site, dans les limites de §34 (correction
+   urgente). Quatre comportements documentés dans la skill §34, points
+   1 à 4 : décalage plafonné dans les grilles, survol des éléments
+   cliquables, saturation d'image, filet de lien qui se déploie.
+   ========================================================== */
 
-/* ---- VENUES GRID ---- */
-.venues-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-}
-.venue-card {
-  border: 1px solid var(--line);
-  overflow: hidden;
-  transition: transform var(--transition);
-}
-.venue-card:hover { transform: translateY(-4px); }
-.venue-card img { width: 100%; height: 180px; object-fit: cover; }
-.venue-card-body { padding: 1.2rem; }
-.venue-card-body h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-.venue-card-body p { font-size: 0.88rem; color: var(--warm-grey); }
-
-/* ---- PRIX LIST — hiérarchie en 4 lignes ---- */
-.prix-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: stretch;
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-}
-@media (max-width: 640px) {
-  .prix-list {
-    gap: 1rem;
-  }
-}
-.prix-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  width: 100%;
-}
-@media (max-width: 640px) {
-  .prix-row {
-    gap: 0.75rem;
-  }
-}
-@media (max-width: 480px) {
-  .prix-row {
-    gap: 0.6rem;
-  }
-}
-.prix-item {
-  border: 1px solid var(--gold);
-  padding: 0.6rem 1.2rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-  font-family: 'Montserrat', sans-serif;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.3;
-}
-@media (max-width: 480px) {
-  .prix-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-  }
-}
-.prix-item-medium {
-  font-size: 0.95rem;
-  padding: 0.85rem 1.6rem;
-  letter-spacing: 0.1em;
-}
-@media (max-width: 480px) {
-  .prix-item-medium {
-    font-size: 0.85rem;
-    padding: 0.65rem 1.2rem;
-  }
-}
-.prix-item-grand {
-  font-size: 1.4rem;
-  font-weight: 700;
-  padding: 1.1rem 2.5rem;
-  border-width: 2px;
-  letter-spacing: 0.12em;
-}
-@media (max-width: 480px) {
-  .prix-item-grand {
-    font-size: 1.1rem;
-    padding: 0.9rem 1.8rem;
-  }
-}
-
-/* Bloc prix + ligne pour le nom du lauréat */
-.prix-block {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.55rem;
-  vertical-align: top;
-}
-.prix-block .prix-item {
-  flex: 0 0 auto;
-}
-.prix-name-line {
-  display: block;
-  min-height: 1.35rem;
-  min-width: 9rem;
-  margin: 0 0.15rem;
-  border-bottom: 1px solid rgba(247, 243, 236, 0.4);
-}
-
-/* ---- PHOTO GRID ---- */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
-@media (max-width: 900px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.9rem;
-  }
-}
-@media (max-width: 640px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-}
-@media (max-width: 480px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-}
-.photo-grid img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  display: block;
-}
-@media (max-width: 640px) {
-  .photo-grid img {
-    height: 200px;
-  }
-}
-@media (max-width: 480px) {
-  .photo-grid img {
-    height: 180px;
-  }
-}
-.photo-grid img:hover { transform: scale(1.03); }
-
-/* ---- PRESS FILES ---- */
-.press-files {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(260px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-@media (max-width: 900px) {
-  .press-files {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .press-files {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-.press-files-card {
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(28,28,28,0.08);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 18px 48px rgba(28,28,28,0.06);
-}
-@media (max-width: 640px) {
-  .press-files-card {
-    padding: 1.5rem;
-  }
-}
-.press-files-card h2 {
-  margin-bottom: 1rem;
-  font-size: clamp(1.7rem, 2.5vw, 2.2rem);
-}
-.press-files-card p {
-  color: var(--warm-grey);
-  margin-bottom: 1.5rem;
-}
-.file-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.9rem;
-}
-@media (max-width: 480px) {
-  .file-list {
-    gap: 0.75rem;
-  }
-}
-.file-list li a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.85rem 1rem;
-  background: rgba(247,243,236,0.8);
-  border-radius: 10px;
-  color: var(--charcoal);
-  border: 1px solid rgba(28,28,28,0.08);
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
-  min-height: 44px;
-}
-@media (max-width: 640px) {
-  .file-list li a {
-    padding: 0.9rem 0.9rem;
-  }
-}
-.file-list li a:hover {
-  background: rgba(255,255,255,0.98);
-  transform: translateX(2px);
-  box-shadow: 0 14px 28px rgba(28,28,28,0.08);
-}
-.file-date {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  color: var(--warm-grey);
-  white-space: nowrap;
-}
-@media (max-width: 900px) {
-  .press-files {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---- PRESS LOGOS ---- */
-.press-logos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  align-items: center;
-}
-@media (max-width: 992px) {
-  .press-logos {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 768px) {
-  .press-logos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-}
-@media (max-width: 480px) {
-  .press-logos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-}
-.press-logos a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-}
-.press-logos a:hover {
-  border-color: var(--gold);
-  transform: translateY(-3px);
-  box-shadow: 0 18px 50px rgba(28, 28, 28, 0.08);
-}
-.press-logos img {
-  max-height: 50px;
-  width: auto;
-  filter: none;
-  opacity: 1;
-  transition: transform var(--transition), opacity var(--transition);
-}
-.press-logos a:hover img {
-  transform: scale(1.05);
-  opacity: 1;
-}
-
-.press-logos img {
-  max-height: 50px;
-  width: auto;
-  filter: none;
-  opacity: 1;
-  transition: transform var(--transition), opacity var(--transition);
-}
-.press-logos a:hover img {
-  transform: scale(1.05);
-  opacity: 1;
-}
-
-/* ---- CARNAVAL ---- */
-.carnaval-route {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  margin-bottom: 5rem;
-}
-@media (max-width: 900px) {
-  .carnaval-route {
-    gap: 2rem;
-    margin-bottom: 3.5rem;
-  }
-}
-@media (max-width: 640px) {
-  .carnaval-route {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-}
-.carnaval-route img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-@media (max-width: 640px) {
-  .carnaval-route img {
-    height: 220px;
-  }
-}
-.route-step-number {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 5rem;
-  font-weight: 300;
-  color: var(--gold);
-  opacity: 0.3;
-  line-height: 1;
-}
-@media (max-width: 640px) {
-  .route-step-number {
-    font-size: 3.5rem;
-  }
-}
-
-/* ---- PALMARES ---- */
-.edition-block { margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid var(--line); }
-.edition-block:last-child { border-bottom: none; }
-.edition-block h2 { color: var(--gold); margin-bottom: 1rem; }
-
-/* ---- CONTACT BLOCK ---- */
-.contact-block {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 3rem;
-  text-align: center;
-  max-width: 600px;
-  margin: 3rem auto 0;
-}
-@media (max-width: 768px) {
-  .contact-block {
-    padding: 2.5rem;
-    margin: 2rem auto 0;
-  }
-}
-@media (max-width: 480px) {
-  .contact-block {
-    padding: 2rem;
-    margin: 1.5rem auto 0;
-  }
-}
-.contact-block h3 { color: var(--gold); margin-bottom: 1rem; }
-.contact-block a {
-  color: var(--gold-light);
-  font-size: 1.1rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-}
-@media (max-width: 480px) {
-  .contact-block a {
-    font-size: 1rem;
-  }
-}
-
-/* ---- FOUNDER ---- */
-.founder-block {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2.5rem;
-  align-items: start;
-  background: rgba(184,146,42,0.05);
-  border-left: 3px solid var(--gold);
-  padding: 2rem;
-  margin: 3rem 0;
-}
-@media (max-width: 900px) {
-  .founder-block {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    margin: 2rem 0;
-  }
-  .founder-block img {
-    margin: 0 auto;
-  }
-}
-.founder-block img {
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-@media (max-width: 640px) {
-  .founder-block img {
-    width: 100px;
-    height: 100px;
-  }
-}
-.founder-block p { font-size: 0.9rem; line-height: 1.8; color: var(--warm-grey); }
-.founder-block strong { font-weight: 500; color: var(--charcoal); }
-
-/* ---- FOOTER ---- */
-.site-footer {
-  background: var(--charcoal);
-  color: rgba(247,243,236,0.6);
-  text-align: center;
-  padding: 4rem 0;
-  font-size: 0.85rem;
-  line-height: 1.9;
-}
-@media (max-width: 768px) {
-  .site-footer {
-    padding: 3rem 0;
-    font-size: 0.8rem;
-  }
-}
-@media (max-width: 480px) {
-  .site-footer {
-    padding: 2.5rem 0;
-    font-size: 0.75rem;
-    line-height: 1.8;
-  }
-}
-.footer-logo {
-  height: 50px;
-  width: auto;
-  margin: 0 auto 1.5rem;
-  filter: brightness(0) invert(1);
-  opacity: 0.5;
-}
-@media (max-width: 480px) {
-  .footer-logo {
-    height: 40px;
-    margin: 0 auto 1rem;
-  }
-}
-.footer-copy { margin-top: 1rem; opacity: 0.4; font-size: 0.75rem; letter-spacing: 0.1em; }
-@media (max-width: 480px) {
-  .footer-copy {
-    margin-top: 0.75rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-  }
-}
-
-/* Override inline section padding styles for mobile */
-section[style*="padding:6rem"] {
-  padding: 6rem 0 !important;
-}
-@media (max-width: 900px) {
-  section[style*="padding:6rem"] {
-    padding: 4.5rem 0 !important;
-  }
-}
-@media (max-width: 768px) {
-  section[style*="padding:6rem"] {
-    padding: 4rem 0 !important;
-  }
-}
-@media (max-width: 640px) {
-  section[style*="padding:6rem"] {
-    padding: 3rem 0 !important;
-  }
-}
-@media (max-width: 480px) {
-  section[style*="padding:6rem"] {
-    padding: 2.5rem 0 !important;
-  }
-}
-
-/* Override inline text sizes for mobile */
-p[style*="font-size:1.05rem"] {
-  font-size: 1.05rem !important;
-}
-@media (max-width: 768px) {
-  p[style*="font-size:1.05rem"] {
-    font-size: 1rem !important;
-  }
-}
-@media (max-width: 480px) {
-  p[style*="font-size:1.05rem"] {
-    font-size: 0.95rem !important;
-  }
-}
-div[style*="height:55vh"] {
-  height: 55vh !important;
-}
-@media (max-width: 900px) {
-  div[style*="height:55vh"] {
-    height: 45vh !important;
-  }
-}
-@media (max-width: 768px) {
-  div[style*="height:55vh"] {
-    height: 40vh !important;
-  }
-}
-@media (max-width: 640px) {
-  div[style*="height:55vh"] {
-    height: 35vh !important;
-  }
-}
-@media (max-width: 480px) {
-  div[style*="height:55vh"] {
-    height: 32vh !important;
-  }
-}
-.reveal {
+/* ---- 1. Décalage de 60ms entre éléments d'une même grille/liste —
+   ciblés par sélecteur (voir main.js, SELECTEUR_APPARITION_GROUPE),
+   pas par une classe posée à la main sur chaque élément. Plafonné à
+   4 paliers (0/60/120/180ms), le reste à 240ms — au-delà, ça traîne
+   plutôt que d'accompagner l'œil (skill §34, « Interdits »). nth-of-type
+   plutôt que nth-child : robuste face à un titre de section qui précède
+   parfois la liste dans le même conteneur (sélection, hommages). ---- */
+.galerie-grille > img,
+.valeurs-grille > .valeur,
+.lieux-grille > .fiche-adresse,
+.ateliers-grille > .atelier,
+.generique-liste > .generique,
+.index-liens > li,
+.liste-presse > li,
+.liste-documents > li,
+.distribution > .distribution-ligne,
+.edition-selection .entree-programme,
+.edition-hommages .hommage,
+.parcours-liste > .route-etape {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity var(--duree-contenu) var(--courbe-sortie);
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+).est-visible { opacity: 1; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+):nth-of-type(1) { transition-delay: 0ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+):nth-of-type(2) { transition-delay: 60ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+):nth-of-type(3) { transition-delay: 120ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+):nth-of-type(4) { transition-delay: 180ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage,
+  .parcours-liste > .route-etape
+):nth-of-type(n+5) { transition-delay: 240ms; }
 
-/* ---- RESPONSIVE ---- */
-@media (max-width: 900px) {
-  .gallery-grid { grid-template-columns: 1fr; }
-  .carnaval-route { grid-template-columns: 1fr; }
-  .founder-block { grid-template-columns: 1fr; text-align: center; }
-  .founder-block img { margin: 0 auto; }
-
-  .team-row--rest {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    max-width: none;
-  }
-
-  /* Barre sociale latérale -> masquée sur mobile, icônes dans le footer */
-  .social-sidebar { display: none; }
-  .footer-social { display: flex; }
-
-  /* Liste des prix : taille un peu réduite pour tenir sur mobile */
-  .prix-item-medium { font-size: 0.85rem; padding: 0.7rem 1.2rem; }
-  .prix-item-grand { font-size: 1.15rem; padding: 0.9rem 1.6rem; }
+/* ---- 2. Survol des éléments cliquables — filet + texte vers l'accent
+   du registre, --duree-ui, jamais de scale/ombre. Les liens et .bouton
+   génériques l'ont déjà via le bloc « États d'interaction » (§10/§15) ;
+   ce qui suit couvre les cas où le filet visible n'est pas sur l'<a>
+   lui-même mais sur un enfant (l'entrée de la bande d'affiches). ---- */
+.affiche-entree-cadre {
+  transition: border-color var(--duree-ui) var(--courbe-sortie);
+}
+.affiche-entree-ordinal {
+  transition: color var(--duree-ui) var(--courbe-sortie);
+}
+.affiche-entree-lien:hover .affiche-entree-cadre,
+.affiche-entree-lien:focus-visible .affiche-entree-cadre {
+  border-color: var(--corail);
+}
+.affiche-entree-lien:hover .affiche-entree-ordinal,
+.affiche-entree-lien:focus-visible .affiche-entree-ordinal {
+  color: var(--corail);
 }
 
-@media (max-width: 1100px) {
-  :root { --nav-h: 54px; }
+/* ---- 3. Images — traitement de repos (§13, jusqu'ici documenté dans la
+   skill mais jamais posé en CSS) sur toute photographie réelle du site,
+   et le seul effet d'image autorisé au survol d'une entrée cliquable :
+   saturate(0.75) → saturate(1), --duree-contenu. Jamais sur l'affiche
+   officielle du hero (traitement propre, §16) ; les cadres typographiques
+   de remplacement ne sont pas des <img>, non concernés. ---- */
+.galerie-grille img,
+.hommage-portrait,
+.generique-portrait,
+.affiche-entree-cadre img,
+.edition-affiche {
+  filter: saturate(0.75) contrast(1.08);
+}
+.affiche-entree-cadre img {
+  transition: filter var(--duree-contenu) var(--courbe-sortie);
+}
+.affiche-entree-lien:hover .affiche-entree-cadre img,
+.affiche-entree-lien:focus-visible .affiche-entree-cadre img {
+  filter: saturate(1) contrast(1.08);
+}
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: stretch;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: min(70vh, calc(100dvh - var(--nav-h) - 8px));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background: var(--cream);
-    padding: 0.75rem 1.25rem 1.25rem;
-    gap: 0.15rem;
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
-    z-index: 1001;
-  }
-  .nav-links.open { display: flex; }
-  .burger { display: flex; }
-
-  .nav-links > li {
-    width: 100%;
-    border-bottom: 1px solid rgba(28,28,28,0.06);
-  }
-  .nav-links > li:last-child { border-bottom: none; }
-
-  .nav-links a {
-    display: block;
-    padding: 0.65rem 0.25rem;
-    text-align: center;
-    white-space: normal;
-    font-size: 0.72rem;
-  }
-  .nav-links .btn-apply {
-    margin: 0.5rem 0 0.25rem;
-    text-align: center;
-  }
-
-  .dropdown-menu {
-    position: static;
-    display: none;
-    box-shadow: none;
-    border: none;
-    border-top: 1px solid rgba(28,28,28,0.06);
-    padding: 0.25rem 0 0.5rem;
-    margin: 0;
-    background: transparent;
-  }
-  .dropdown:hover .dropdown-menu { display: none; }
-  .dropdown.open .dropdown-menu { display: block; }
-  .dropdown-menu li a {
-    padding: 0.5rem 0.25rem;
-    text-align: center;
-  }
+/* ---- 4. Liens de texte — filet qui se déploie de gauche à droite au
+   survol, 200ms (--duree-ui). Animation de largeur, pas de
+   transform:scaleX (skill §34, point 4) : le filet n'existe pas avant
+   le survol, ce n'est pas l'agrandissement d'un élément déjà visible. ---- */
+.index-liens a,
+.liste-presse a,
+.liste-documents a,
+.edition-retour {
+  position: relative;
+}
+.index-liens a::after,
+.liste-presse a::after,
+.liste-documents a::after,
+.edition-retour::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--duree-ui) var(--courbe-sortie);
+}
+.index-liens a:hover::after, .index-liens a:focus-visible::after,
+.liste-presse a:hover::after, .liste-presse a:focus-visible::after,
+.liste-documents a:hover::after, .liste-documents a:focus-visible::after,
+.edition-retour:hover::after, .edition-retour:focus-visible::after {
+  width: 100%;
 }
 
 /* =========================================
@@ -1865,333 +735,20 @@ div[style*="height:55vh"] {
 
 .loading-msg {
   text-align: center;
-  color: var(--warm-grey);
+  color: var(--papier-tiers);
   font-style: italic;
   padding: 3rem 0;
 }
 
-.page-hero-sub {
-  max-width: 640px;
-  margin: 1.5rem auto 0;
-  color: var(--warm-grey);
-  font-size: 0.95rem;
-  line-height: 1.8;
-  padding: 0 1rem;
-}
-
-/* ---- Grille des éditions ---- */
-.editions-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-@media (min-width: 560px) {
-  .editions-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem; }
-}
-@media (min-width: 900px) {
-  .editions-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-}
-@media (min-width: 1200px) {
-  .editions-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-.edition-card {
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.edition-card:hover,
-.edition-card:focus-visible {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(28, 28, 28, 0.1);
-}
-.edition-card--next { border-color: var(--gold); }
-
-.edition-card-visual {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: rgba(184, 146, 42, 0.06);
-}
-.edition-card-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-.edition-card:hover .edition-card-visual img { transform: scale(1.04); }
-
-.edition-card-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(184,146,42,0.10), rgba(28,28,28,0.06));
-}
-.edition-card-fallback span {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3rem, 12vw, 5rem);
-  color: var(--gold);
-  opacity: 0.55;
-  line-height: 1;
-}
-
-.edition-badge {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background: var(--gold);
-  color: #fff;
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  padding: 0.35rem 0.7rem;
-}
-
-.edition-card-body { padding: 1.1rem 1.15rem 1.35rem; }
-.edition-card-body h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.35rem;
-  line-height: 1.2;
-}
-.edition-card-date {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
-}
-.edition-card-theme {
-  margin-top: 0.6rem;
-  font-size: 0.86rem;
-  color: var(--warm-grey);
-  line-height: 1.6;
-}
-.edition-card-meta {
-  margin-top: 0.8rem;
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.76rem;
-  color: var(--warm-grey);
-}
-
-/* ---- Fiche d'une édition ---- */
-.edition-detail { display: block; }
-
-.edition-hero {
-  margin-top: var(--nav-h);
-  padding: 3.5rem 0 2.5rem;
-  border-bottom: 1px solid var(--line);
-  background: rgba(184, 146, 42, 0.04);
-}
-@media (min-width: 768px) { .edition-hero { padding: 5rem 0 3.5rem; } }
-
-.edition-back {
-  display: inline-block;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-  margin-bottom: 1.25rem;
-  transition: color var(--transition);
-}
-.edition-back:hover { color: var(--gold); }
-
-.edition-hero h1 {
-  font-size: clamp(2.2rem, 8vw, 4rem);
-  font-weight: 300;
-  margin-bottom: 0.6rem;
-}
-.edition-hero-date {
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
-}
-.edition-hero-theme {
-  margin-top: 1rem;
-  max-width: 620px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.15rem, 3vw, 1.55rem);
-  font-style: italic;
-  color: var(--charcoal);
-  line-height: 1.5;
-}
-
-.edition-intro-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-@media (min-width: 768px) {
-  .edition-intro-grid { grid-template-columns: minmax(200px, 300px) 1fr; gap: 3rem; }
-  .edition-intro-grid--noimg { grid-template-columns: 1fr; }
-}
-.edition-affiche {
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
-  border: 1px solid var(--line);
-}
-.edition-resume p {
-  font-size: 1rem;
-  line-height: 1.9;
-  color: var(--warm-grey);
-}
-
-/* ---- Chiffres clés ---- */
-.edition-chiffres { background: var(--charcoal); color: var(--cream); }
-.edition-chiffres .section-title { color: var(--cream); }
-.chiffres-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.75rem 1rem;
-  text-align: center;
-}
-@media (min-width: 600px) { .chiffres-grid { grid-template-columns: repeat(4, 1fr); } }
-
-.chiffre-valeur {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.9rem, 7vw, 3rem);
-  color: var(--gold-light);
-  line-height: 1.1;
-}
-.chiffre-label {
-  display: block;
-  margin-top: 0.4rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(247, 243, 236, 0.55);
-}
-
-/* ---- Palmarès ---- */
-.palmares-list {
-  max-width: 860px;
-  margin: 0 auto;
-}
-.palmares-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.3rem;
-  padding: 1.1rem 0;
-  border-bottom: 1px solid var(--line);
-}
-@media (min-width: 768px) {
-  .palmares-row { grid-template-columns: 260px 1fr; gap: 1.5rem; padding: 1.25rem 0; }
-}
-.palmares-row dt {
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--gold);
-  line-height: 1.5;
-}
-.palmares-row dd {
-  margin: 0;
-  color: var(--charcoal);
-  line-height: 1.75;
-  font-size: 0.95rem;
-}
-
-/* ---- Sélection officielle ---- */
-.edition-selection { background: rgba(184, 146, 42, 0.05); border-top: 1px solid var(--line); }
-.selection-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-@media (min-width: 700px) { .selection-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
-@media (min-width: 1100px) { .selection-grid { grid-template-columns: repeat(3, 1fr); } }
-
-.selection-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  padding: 1.4rem 1.35rem;
-}
-.selection-card h3 { font-size: 1.35rem; margin-bottom: 0.5rem; line-height: 1.25; }
-.selection-troupe {
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
-}
-.selection-univ { margin-top: 0.3rem; font-size: 0.85rem; color: var(--warm-grey); }
-.selection-synopsis {
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.88rem;
-  line-height: 1.75;
-  color: var(--warm-grey);
-}
-
-/* ---- Hommages ---- */
-.hommage-block {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-  max-width: 880px;
-  margin: 0 auto 2.5rem;
-  padding-bottom: 2.5rem;
-  border-bottom: 1px solid var(--line);
-}
-.hommage-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-@media (min-width: 700px) {
-  .hommage-block { grid-template-columns: 200px 1fr; gap: 2.25rem; align-items: start; }
-}
-.hommage-block img { width: 100%; max-width: 220px; margin: 0 auto; object-fit: cover; }
-.hommage-block h3 { margin-bottom: 0.7rem; }
-.hommage-block p { color: var(--warm-grey); line-height: 1.9; font-size: 0.95rem; }
-
-/* ---- Table ronde ---- */
-.tableronde-block {
-  max-width: 780px;
-  margin: 0 auto;
-  border-left: 3px solid var(--gold);
-  padding: 0.25rem 0 0.25rem 1.5rem;
-}
-.tableronde-block h3 { font-size: clamp(1.2rem, 4vw, 1.7rem); line-height: 1.6; }
-.tableronde-fr {
-  margin-top: 0.5rem;
-  font-style: italic;
-  color: var(--warm-grey);
-}
-.tableronde-meta { list-style: none; margin-top: 1.25rem; }
-.tableronde-meta li {
-  padding: 0.45rem 0;
-  font-size: 0.9rem;
-  color: var(--warm-grey);
-  line-height: 1.7;
-}
-.tableronde-meta strong {
-  display: inline-block;
-  min-width: 110px;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
-}
-
-/* ---- Accessibilité & confort tactile ---- */
+/* ---- Accessibilité & confort tactile — repli générique pour tout
+   élément interactif hors d'un .registre-* (l'état de chargement/erreur
+   d'edition.html n'en porte pas). Partout ailleurs, la règle par
+   registre (.registre-encre a:focus-visible, etc.) l'emporte déjà par
+   spécificité. ---- */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--corail);
   outline-offset: 3px;
-}
-@media (hover: none) {
-  .edition-card:hover { transform: none; box-shadow: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -2201,21 +758,6 @@ button:focus-visible {
   }
 }
 
-/* ---- Footer : bloc contact ---- */
-.footer-contact {
-  font-style: normal;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 1.5rem 0 0.5rem;
-  font-size: 0.85rem;
-  line-height: 1.7;
-}
-.footer-contact a { transition: color var(--transition); }
-.footer-contact a:hover { color: var(--gold-light); }
-.footer-contact span { opacity: 0.7; max-width: 420px; }
-
 /* =========================================
    ACCUEIL — hero, compte à rebours, presse
    ========================================= */
@@ -2224,380 +766,1256 @@ button:focus-visible {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--charcoal);
-  color: var(--cream);
+  background: var(--encre-nuit);
+  color: var(--papier);
   padding: 0.75rem 1.25rem;
   z-index: 2000;
   font-size: 0.8rem;
 }
 .skip-link:focus { left: 0; }
 
-/* ---- HERO : panneau de texte fixe + bande de visuels en défilement vertical ---- */
+/* ==========================================================
+   HERO (LOT 4 phase A, repris) — fil d'annonces, fitut-design §16.
+   Système nouveau exclusivement. Remplace intégralement la structure
+   « l'affiche et la distribution » : rendu entièrement par
+   assets/js/annonces.js depuis data/annonces.json, rien de codé en dur.
+
+   Hauteur exacte de la fenêtre, sans scroll : le hero commence en haut
+   de l'écran, plein 100svh — la navbar et le bandeau Haut Patronage se
+   superposent à lui en translucide (§17, corrections urgentes) plutôt
+   que de le pousser vers le bas. svh plutôt que vh. Le CONTENU (pas le
+   visuel, qui passe sous les barres) réserve un espace libre en haut
+   via le padding-top de .hero-grille, ci-dessous.
+   ========================================================== */
 .hero {
   position: relative;
   height: 100svh;
-  height: 100vh;
   display: flex;
-  flex-direction: column;      /* mobile : texte au-dessus, visuel en dessous */
+  align-items: center;
   overflow: hidden;
-  background: var(--charcoal);
+}
+.hero-fil { width: 100%; height: 100%; }
+
+.hero-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  width: 100%;
+  max-height: 100%;
+  padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-2)) var(--esp-2) var(--esp-2);
+}
+.hero-grille > .marge-regie,
+.hero-grille > .hero-contenu,
+.hero-grille > .hero-visuel { grid-column: 1; }
+
+@media (min-width: 600px) {
+  .hero-grille {
+    grid-template-columns: var(--marge-regie-tablette) 1fr;
+    gap: var(--esp-3);
+    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-3)) var(--esp-3) var(--esp-3);
+  }
+  .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
+  .hero-grille > .hero-visuel  { grid-column: 2; grid-row: 1; }
+  .hero-grille > .hero-contenu { grid-column: 2; grid-row: 2; }
 }
 @media (min-width: 1024px) {
-  .hero { flex-direction: row; }   /* desktop : texte à gauche, visuel à droite */
+  .hero-grille {
+    grid-template-columns: var(--marge-regie-desktop) minmax(0, 2fr) minmax(240px, 1fr);
+    align-items: center;
+    gap: var(--esp-4);
+    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-4)) var(--esp-4) var(--esp-4);
+  }
+  .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
+  .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
+  .hero-grille > .hero-visuel  { grid-column: 3; grid-row: 1; }
 }
 
-/* -- Panneau de texte -- */
-.hero-text {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: calc(var(--nav-h) + 3rem) clamp(1.25rem, 5vw, 2rem) 1.75rem;
-  color: var(--cream);
-}
-@media (min-width: 1024px) {
-  .hero-text {
-    flex: 0 0 42%;
-    height: 100%;
-    padding: calc(var(--nav-h) + 4rem) clamp(2rem, 4vw, 3.5rem) 3rem clamp(1.5rem, 4vw, 3.5rem);
+/* Date de l'annonce dans la marge de régie : un fait, pas une
+   numérotation (§36 interdit « 01 / 02 » — l'information de position
+   est déjà portée par les filets de navigation). Change avec l'état
+   réel du diaporama. Vertical dès que la marge de régie existe,
+   horizontal sur mobile comme .surtitre. */
+.hero-date { margin: 0; }
+@media (min-width: 600px) {
+  .hero-date {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    justify-self: center;
+    white-space: nowrap;
   }
 }
 
-.hero-kicker {
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-light);
+/* ---- Texte : surtitre + titre + description + lien, un seul bloc dont
+   le CONTENU change — jamais plusieurs <h1> simultanés (§31). Le texte
+   suit le visuel avec 200ms de retard, fondu + légère montée (12px). ---- */
+.hero-texte {
+  transition: opacity var(--duree-contenu) var(--courbe-sortie),
+              transform var(--duree-contenu) var(--courbe-sortie);
+}
+.hero-texte.est-sortant { opacity: 0; transform: translateY(12px); }
+.hero-titre {
+  font-family: var(--police-affiche);
   font-weight: 500;
-  margin-bottom: 0.85rem;
+  /* --pas-2xl (échelle affiche), pas --pas-3xl : --pas-3xl visait le
+     titre-bilingue de l'ancien hero (un nom propre très court). Ici le
+     titre est une phrase de 4 à 8 mots (§16) — à --pas-3xl (179,5px à
+     1440px), un seul mot comme « édition » dépasse déjà la colonne de
+     contenu. Vérifié au calcul, pas supposé. */
+  font-size: var(--pas-2xl);
+  letter-spacing: -0.03em;
+  line-height: var(--interligne-serre);
+  margin: var(--esp-2) 0 var(--esp-3);
 }
-.hero-title {
-  font-size: clamp(1.75rem, 6.5vw, 3.4rem);
-  font-weight: 300;
-  line-height: 1.1;
-  color: #fff;
-  margin-bottom: 0.85rem;
+.hero-description {
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  margin-bottom: var(--esp-4);
 }
-@media (min-width: 1024px) {
-  .hero-title { font-size: clamp(2.1rem, 3.2vw, 3.4rem); }
-}
-.hero-dates {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.05rem, 3.5vw, 1.5rem);
-  font-style: italic;
-  color: var(--gold-light);
-  margin-bottom: 0.85rem;
-}
-.hero-lead {
-  max-width: 480px;
-  font-size: 0.88rem;
-  line-height: 1.75;
-  color: rgba(247, 243, 236, 0.82);
-  margin-bottom: 1.5rem;
+@media (max-width: 599px) {
+  .hero-titre { font-size: clamp(1.75rem, 8vw, 2.5rem); }
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-
-.btn {
-  display: inline-block;
-  padding: 0.95rem 1.9rem;
-  font-size: 0.74rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 500;
-  border: 1px solid transparent;
-  transition: all var(--transition);
-  min-height: 48px;          /* confort tactile */
-  line-height: 1.6;
-}
-.btn-primary { background: var(--gold); color: #fff; border-color: var(--gold); }
-.btn-primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
-.btn-ghost { color: var(--cream); border-color: rgba(247, 243, 236, 0.45); }
-.btn-ghost:hover { background: rgba(247, 243, 236, 0.12); border-color: var(--cream); }
-@media (max-width: 480px) {
-  .hero-actions { flex-direction: column; align-items: stretch; }
-  .btn { text-align: center; }
-}
-
-/* -- Bande de visuels : plusieurs images empilées, translation verticale franche -- */
-.hero-visual {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 200px;
-  overflow: hidden;
-}
-@media (min-width: 1024px) {
-  .hero-visual { flex: 1 1 58%; height: 100%; min-height: 0; }
-}
-
-.hero-visual-slide {
+/* ---- Visuel : pile de couches en fondu-croisé + léger zoom arrière —
+   jamais de glissement (§16). object-fit:contain : le visuel n'est
+   jamais recadré (§13), quel que soit son ratio d'origine. ---- */
+.hero-visuel { position: relative; }
+.hero-visuel-couche {
   position: absolute;
   inset: 0;
-  margin: 0;
-  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  opacity: 0;
+  transition: opacity var(--duree-hero) var(--courbe-sortie);
 }
-/* Position de repli avant l'exécution de main.js : évite tout flash au chargement. */
-.hero-visual-slide:nth-child(1) { transform: translateY(0%); }
-.hero-visual-slide:nth-child(2) { transform: translateY(100%); }
-.hero-visual-slide:nth-child(3) { transform: translateY(200%); }
-.hero-visual-slide:nth-child(n+4) { transform: translateY(300%); }
-.hero-visual-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.hero-visuel-couche.is-active { position: relative; opacity: 1; }
+.hero-visuel-couche img,
+.hero-visuel-cadre { width: 100%; height: 100%; object-fit: contain; }
+.hero-visuel-couche img { animation: hero-visuel-zoom var(--duree-hero) var(--courbe-sortie); }
+@keyframes hero-visuel-zoom {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1); }
 }
-.hero-visual::after {         /* voile discret en bas, pour la lisibilité des puces/flèches */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18,18,18,0.45) 0%, rgba(18,18,18,0) 30%);
-  pointer-events: none;
-}
-
-/* -- Flèches précédent/suivant -- */
-.hero-visual-controls {
-  position: absolute;
-  right: clamp(0.75rem, 2.5vw, 1.5rem);
-  bottom: 4.5rem;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.hero-arrow {
-  width: 44px;
-  height: 44px;
+.hero-visuel-cadre {
+  aspect-ratio: 3 / 4;
+  width: auto;
+  max-height: 16svh; /* mobile : vignette, pas l'objet */
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(247, 243, 236, 0.35);
-  border-radius: 50%;
-  background: rgba(18, 18, 18, 0.32);
-  color: var(--cream);
-  cursor: pointer;
-  backdrop-filter: blur(2px);
-  transition: background var(--transition), border-color var(--transition);
+  border: 1px solid var(--filet-sombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers);
+  text-align: center;
+  padding: var(--esp-2);
+  overflow-wrap: break-word; /* la vignette mobile (16svh) est trop étroite
+    pour « [visuel » (~50px) en un seul mot ; sans coupure il déborde de
+    la boîte au lieu de passer à la ligne — vérifié au calcul, pas supposé */
 }
-.hero-arrow svg { width: 18px; height: 18px; }
-.hero-arrow:hover { background: rgba(18, 18, 18, 0.55); border-color: var(--gold-light); }
-@media (hover: none) {
-  .hero-arrow:hover { background: rgba(18, 18, 18, 0.32); border-color: rgba(247, 243, 236, 0.35); }
+@media (min-width: 600px) {
+  .hero-visuel-cadre { max-height: 38svh; }
+}
+@media (min-width: 1024px) {
+  .hero-visuel-cadre { width: 100%; max-height: 70svh; margin: 0; }
 }
 
-/* -- Puces de progression : minuteur, comme un diaporama qui s'annonce -- */
-.hero-progress {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 1.5rem;
-  z-index: 3;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.hero-dot {
-  width: 34px;
-  height: 3px;
+/* ---- Navigation : filets horizontaux qui se remplissent — pas de
+   puces rondes, pas de flèches (§16). Rendue seulement si 2+ annonces
+   actives (annonces.js). ---- */
+.hero-nav { display: flex; gap: var(--esp-1); margin-top: var(--esp-2); }
+.hero-filet {
+  flex: 1 1 0;
+  max-width: 64px;
+  height: 2px;
   padding: 0;
   border: none;
-  background: rgba(247, 243, 236, 0.3);
+  background: var(--filet-sombre);
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.hero-dot::before {           /* zone de clic élargie pour le tactile */
-  content: '';
-  position: absolute;
-  inset: -14px -4px;
-}
-.hero-dot-fill {
-  position: absolute;
-  inset: 0;
-  width: 0%;
-  background: var(--gold-light);
-}
-.hero-dot-fill.is-filling { transition: width linear; }
+.hero-filet::before { content: ''; position: absolute; inset: -14px -2px; } /* zone de clic élargie */
+.hero-filet-remplissage { position: absolute; inset: 0; width: 0%; background: var(--corail); }
+.hero-filet-remplissage.is-filling { transition: width linear; }
+.hero-filet:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
 
+/* ---- prefers-reduced-motion : annonces.js construit un empilement
+   statique séparé (pas de diaporama à désactiver après coup). La
+   hauteur stricte n'a plus lieu d'être — plusieurs annonces complètes
+   empilées ont besoin de leur place, la page défile normalement. ---- */
 @media (prefers-reduced-motion: reduce) {
-  .hero-visual-slide { transition-duration: 0.01s !important; }
-  .hero-dot-fill.is-filling { transition: none !important; }
+  .hero { height: auto; min-height: 100svh; overflow: visible; }
+}
+.hero-grille.hero-grille--empilee {
+  grid-template-columns: 1fr;
+  padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-3)) var(--esp-2) var(--esp-3);
+}
+.hero-vue-empilee { padding: var(--esp-4) 0; border-bottom: 1px solid var(--filet-sombre); }
+.hero-vue-empilee:last-child { border-bottom: none; }
+.hero-vue-empilee .hero-visuel { position: static; margin-bottom: var(--esp-3); }
+.hero-vue-empilee .hero-titre { font-size: var(--pas-xl); }
+
+/* ==========================================================
+   PAGE D'ACCUEIL — LE RESTE DE LA PAGE (LOT 4 phase B)
+   Composition B (validée) : encre (hero) → rideau (chiffres, bloc unique,
+   §6) → papier (explorer) → papier (presse). Le rythme porte sur le
+   padding-top de la section qui SUIT une frontière, jamais des deux
+   côtés à la fois (sinon l'écart réel double) : --esp-8 précède une
+   bascule de registre, --esp-7 un simple passage entre sections de même
+   registre (§12 : « entre sections » vs « bascule … » sur les tokens
+   eux-mêmes). Le padding-bottom ne sert qu'au confort de lecture interne
+   (--esp-4), pas au rythme entre sections.
+   ========================================================== */
+
+/* ---- CHIFFRES — registre rideau, relevé statique (§15, §23) ---- */
+.chiffres-section { padding: var(--esp-8) 0 var(--esp-4); } /* bascule encre → rideau */
+.releve-chiffres {
+  margin-top: var(--esp-3);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-m);
+  letter-spacing: 0.02em;
+  line-height: var(--interligne-donnees);
 }
 
-/* ---- COMPTE À REBOURS ---- */
-.countdown-section {
-  background: var(--charcoal);
-  color: var(--cream);
-  padding: 3.5rem 0;
-  text-align: center;
-}
-@media (min-width: 768px) { .countdown-section { padding: 4.5rem 0; } }
+/* ---- Compteur animé (§23) — utilisé partout où un chiffre clé
+   apparaît (accueil, carnaval, fiches d'édition), pas seulement dans
+   .releve-chiffres : chiffres largeur constante pendant le décompte
+   (main.js, animerCompteur), sans quoi le bloc tressaute à chaque
+   incrément. Ni couleur ni taille propres : hérite du texte qui
+   l'entoure, comme un mot au milieu d'une phrase. ---- */
+.compteur { font-variant-numeric: tabular-nums; }
 
-.countdown-title {
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+/* ---- EXPLORER — registre papier, index de liens, pas de cartes (§15) ---- */
+.explorer-section { padding: var(--esp-8) 0 var(--esp-4); } /* bascule rideau → papier */
+.index-liens { list-style: none; margin: 0; padding: 0; }
+.index-liens li {
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.index-liens li:last-child { border-bottom: none; }
+.index-liens a {
+  display: block;
+  font-family: var(--police-affiche);
   font-weight: 500;
-  color: var(--gold-light);
-  margin-bottom: 1.75rem;
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
 }
-.countdown {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-  max-width: 560px;
-  margin: 0 auto;
-}
-.countdown-num {
+.index-liens-detail {
   display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 9vw, 3.6rem);
-  line-height: 1;
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-}
-.countdown-label {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(247, 243, 236, 0.5);
-}
-.countdown-note {
-  margin-top: 1.75rem;
-  font-size: 0.8rem;
-  color: rgba(247, 243, 236, 0.6);
+  margin-top: var(--esp-1);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA (§10) */
 }
 
-/* ---- BANDEAU PRESSE ---- */
-.press-section { padding: 4.5rem 0; overflow: hidden; }
-.press-marquee {
-  position: relative;
-  overflow: hidden;
-  padding: 1rem 0;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-}
-.press-track {
+/* ---- PRESSE — registre papier, ligne de liste (§15, §27, §36) ---- */
+.presse-section { padding: var(--esp-7) 0 var(--esp-7); } /* pas de bascule (papier → papier) ; --esp-7 aussi en bas, avant le pied de page */
+.liste-presse { list-style: none; margin: 0; padding: 0; }
+.liste-presse li { border-bottom: 1px solid var(--filet-clair); }
+.liste-presse li:last-child { border-bottom: none; }
+.liste-presse a {
   display: flex;
-  align-items: center;
-  gap: 3rem;
-  width: max-content;
-  animation: press-scroll 45s linear infinite;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  padding: var(--esp-2) 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
 }
-.press-marquee:hover .press-track { animation-play-state: paused; }
-.press-track a { flex: 0 0 auto; }
-.press-track img {
-  height: 34px;
-  width: auto;
-  max-width: 150px;
-  object-fit: contain;
-  filter: grayscale(100%);
-  opacity: 0.55;
-  transition: filter var(--transition), opacity var(--transition);
-}
-.press-track a:hover img { filter: grayscale(0%); opacity: 1; }
-@media (min-width: 768px) {
-  .press-track { gap: 4rem; }
-  .press-track img { height: 42px; max-width: 180px; }
-}
-@keyframes press-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .press-track { animation: none; flex-wrap: wrap; width: 100%; justify-content: center; }
-}
+.liste-presse-fleche { font-family: var(--police-donnees); }
 
-/* ---- ÉQUIPE (grille uniforme) ---- */
-.team-intro {
-  max-width: 620px;
-  margin: 0 auto 2.5rem;
-  text-align: center;
-  color: var(--warm-grey);
-  line-height: 1.85;
-}
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-@media (min-width: 700px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
-@media (min-width: 1000px) { .team-grid { grid-template-columns: repeat(4, 1fr); } }
+/* ==========================================================
+   LOT 3 (repris) — LES 8 COMPOSANTS, système à trois registres
+   (fitut-design §6, §10, §15). Système nouveau exclusivement : aucune
+   valeur en dur, aucun token de l'ancien système. Consommé par
+   composants.html (page de démonstration temporaire, non liée au menu,
+   à supprimer en fin de projet — voir LOT 8). Aucune des 6 pages
+   existantes n'utilise ce bloc pour l'instant — LOT 4.
 
-.team-member { margin: 0; text-align: center; }
-.team-member img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 0.9rem;
-  filter: grayscale(20%);
-  transition: filter var(--transition);
-}
-.team-member:hover img { filter: grayscale(0%); }
-.team-name {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
-  color: var(--charcoal);
-}
-.team-role {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.66rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
+   Règle §35 bis : un composant ne définit jamais sa propre couleur
+   d'état, il hérite de son registre. Le bloc "États d'interaction"
+   ci-dessous couvre les 3 registres une seule fois ; les composants
+   ne font que poser leur structure.
+   ========================================================== */
 
-/* ---- ATELIERS ---- */
-.ateliers-intro {
-  max-width: 740px;
-  margin: 0 auto 3rem;
-  text-align: center;
-  font-size: 1.02rem;
-  line-height: 1.9;
-  color: var(--warm-grey);
-}
-.ateliers-grid {
+/* ---- Registres — bascule encre / rideau / papier (§6) ---- */
+.registre-encre  { background: var(--encre-nuit); color: var(--papier); }
+.registre-rideau { background: var(--rideau); color: var(--papier); }
+.registre-papier { background: var(--papier); color: var(--texte); }
+
+/* ---- Grille de régie (§11) — colonne 1 réservée aux surtitres/années/
+   numéros, contenu en colonnes 2-12. Mobile : empilé, marge de régie
+   disparaît (le surtitre passe au-dessus du contenu). ---- */
+.grille-regie {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: var(--esp-2);
+  max-width: var(--largeur-archive);
+  padding: 0 var(--esp-2);
+  margin: 0 auto;
 }
-@media (min-width: 700px) { .ateliers-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+.grille-regie > .marge-regie,
+.grille-regie > .contenu-regie { grid-column: 1; }
+@media (min-width: 600px) {
+  .grille-regie {
+    grid-template-columns: var(--marge-regie-tablette) repeat(11, 1fr);
+    column-gap: var(--esp-3);
+    padding: 0 var(--esp-3);
+  }
+  .grille-regie > .contenu-regie { grid-column: 2 / -1; }
+}
+@media (min-width: 1024px) {
+  .grille-regie {
+    grid-template-columns: var(--marge-regie-desktop) repeat(11, 1fr);
+    padding: 0 var(--esp-4);
+  }
+}
 
-.atelier-card {
-  border: 1px solid var(--line);
-  padding: 1.5rem 1.4rem;
-  background: #fff;
+/* ---- Rythme des sections de démonstration — toute bascule de registre
+   est précédée de --esp-8 (règle §6). ---- */
+.section-demo { padding: var(--esp-6) 0; }
+.section-demo + .section-demo { margin-top: var(--esp-8); }
+
+/* ==========================================================
+   ÉTATS D'INTERACTION — les trois registres, une seule fois (§10, §15)
+   ========================================================== */
+
+/* Registre encre */
+.registre-encre a,
+.registre-encre .bouton {
+  color: var(--papier);
+  border-color: var(--filet-sombre);
 }
-.atelier-type {
-  display: inline-block;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--gold);
-  padding: 0.25rem 0.6rem;
-  margin-bottom: 0.85rem;
+.registre-encre a:hover,
+.registre-encre .bouton:hover  { color: var(--corail); border-color: var(--corail); }
+.registre-encre a:focus-visible,
+.registre-encre .bouton:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+
+/* Registre rideau — le corail plein n'y passe qu'en AA large (4,39:1) :
+   corail-clair uniquement (5,79:1), y compris pour l'état repos hérité
+   de .registre-rideau ci-dessus. */
+.registre-rideau a:hover,
+.registre-rideau .bouton:hover { color: var(--corail-clair); border-color: var(--corail-clair); }
+.registre-rideau a:focus-visible,
+.registre-rideau .bouton:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+
+/* Registre papier — le corail y est ILLISIBLE (2,72:1), accent = --rideau */
+.registre-papier a,
+.registre-papier .bouton {
+  color: var(--texte);
+  border-color: var(--filet-clair);
 }
-.atelier-card h3 { font-size: 1.3rem; margin-bottom: 0.9rem; line-height: 1.25; }
-.atelier-meta { list-style: none; }
-.atelier-meta li {
-  padding: 0.35rem 0;
-  font-size: 0.86rem;
-  color: var(--warm-grey);
-  border-bottom: 1px solid var(--line);
-}
-.atelier-meta li:last-child { border-bottom: none; }
-.atelier-meta strong {
+.registre-papier a:hover,
+.registre-papier .bouton:hover { color: var(--rideau); border-color: var(--rideau); }
+.registre-papier a:focus-visible,
+.registre-papier .bouton:focus-visible { outline: 2px solid var(--rideau); outline-offset: 3px; }
+
+/* État désactivé : dépend du registre, comme tout le reste */
+.registre-encre  :is(a, .bouton)[aria-disabled="true"],
+.registre-rideau :is(a, .bouton)[aria-disabled="true"] { color: var(--papier-tiers); }
+.registre-papier :is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); }
+
+/* Communs aux trois registres */
+:is(a, .bouton):active { border-width: 2px; }
+:is(a, .bouton)[aria-disabled="true"] { cursor: not-allowed; border-style: dashed; }
+
+/* ---- 1. .surtitre (§6) — les deux registres, jamais d'opacity sur du
+   texte (§10, §31) : une couleur explicite par registre. ---- */
+.surtitre {
   display: block;
-  font-size: 0.62rem;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: var(--interligne-donnees);
+  color: var(--corail); /* défaut : registre encre, 6,01:1 (§31) */
+}
+.registre-rideau .surtitre { color: var(--corail-clair); } /* 5,79:1, AA large */
+.registre-papier .surtitre { color: var(--rideau); } /* 11,92:1 (§10 règle 1) */
+
+/* ---- L'élément signature — .titre-bilingue (§6) ---- */
+.titre-bilingue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  /* Sans ceci, hérite silencieusement de l'ancien h2{font-size:clamp(...)}
+     (ligne ~146) — même bug que le hero Cormorant (CLAUDE.md §3 bis) :
+     le composant doit fixer sa propre taille, pas dépendre de ce que
+     l'élément HTML porteur (h1, h2…) valait dans l'ancien système. */
+  font-size: var(--pas-l);
+}
+.titre-bilingue [lang="fr"] {
+  display: block;
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: var(--interligne-serre); /* était 1,04 en dur, harmonisé */
+}
+.titre-bilingue [lang="ar"] {
+  display: block;
+  font-family: var(--police-arabe);
+  direction: rtl;
+  letter-spacing: 0;
+  line-height: var(--interligne-serre); /* était 1,3 — reste un rôle de titre, voir bilan */
+  color: var(--corail); /* même règle registre-aware que .surtitre (§9, §31) */
+}
+.registre-rideau .titre-bilingue [lang="ar"] { color: var(--corail-clair); }
+.registre-papier .titre-bilingue [lang="ar"] { color: var(--rideau); }
+
+/* ---- 2. .distribution (§15, §26) — registre encre ----
+   Clé-valeur sur une seule ligne dès le mobile — dt à gauche, dd à
+   droite, jamais empilé (mesuré : l'empilement doublait la hauteur
+   sans raison). Le filet de conduite pointillé n'apparaît qu'à partir
+   de 1024px, en plus de la colonne dt élargie — pas un changement de
+   structure, un embellissement. */
+.distribution { margin: 0; }
+.distribution-ligne {
+  display: grid;
+  grid-template-columns: minmax(auto, 40%) 1fr;
+  align-items: baseline;
+  gap: var(--esp-2);
+  padding: var(--esp-1) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+@media (min-width: 600px) {
+  .distribution-ligne { padding: var(--esp-3) 0; } /* --esp-1 mobile, --esp-3 dès 600px (desktop) */
+}
+.distribution dt {
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold);
+  line-height: var(--interligne-donnees);
+}
+.distribution dd {
+  margin: 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-donnees); /* dd est en police-revue mais reste une valeur de fait
+    courte (lauréat, date...), pas un texte de lecture — voir bilan si ça doit changer */
+}
+.distribution dd em { font-style: italic; }
+/* Tout contenu en langue arabe reçoit la police arabe (§5), qu'il occupe
+   tout l'élément (titre) ou un span imbriqué dans une ligne mixte
+   français/arabe (palmarès) — le sélecteur reste générique pour couvrir
+   les deux cas plutôt que de supposer où lang="ar" est posé. */
+[lang="ar"] { font-family: var(--police-arabe); }
+@media (min-width: 1024px) {
+  .distribution-ligne {
+    grid-template-columns: minmax(200px, 320px) 1fr;
+    gap: var(--esp-3);
+  }
+  .distribution dt {
+    position: relative;
+    padding-right: var(--esp-2);
+  }
+  .distribution dt::after {
+    content: '';
+    position: absolute;
+    left: 100%; right: calc(-1 * var(--esp-3));
+    bottom: 0.4em;
+    border-bottom: 1px dotted var(--filet-sombre);
+  }
+}
+/* Grand Prix (§26) : --rideau est une surface, jamais un texte sur fond
+   sombre (§10 règle 2, 1,4:1 — invisible) — traité en fond de bloc,
+   texte --papier dessus (11,92:1, AAA), pas en couleur de texte directe. */
+.distribution-ligne--grand-prix {
+  background: var(--rideau);
+  padding: var(--esp-2) var(--esp-3);
+  margin: 0 calc(-1 * var(--esp-3));
+  border-bottom: none;
+}
+.distribution-ligne--grand-prix dt,
+.distribution-ligne--grand-prix dd { color: var(--papier); }
+
+/* ---- 3. .entree-programme (§15, §20) — registre encre ---- */
+.entree-programme {
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+.entree-programme-titre {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+}
+.entree-programme-titre[lang="ar"] { letter-spacing: 0; }
+.entree-programme-traduction {
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  margin-top: var(--esp-1);
+}
+/* Synopsis (LOT 5, edition.html) : prose descriptive, pas une traduction
+   de titre — ne doit pas hériter de l'italique de .entree-programme-traduction. */
+.entree-programme-synopsis {
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  margin-top: var(--esp-2);
+}
+.entree-programme-meta {
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit — .entree-programme est registre encre uniquement */
+}
+.entree-programme-meta span + span::before { content: ' \00b7 '; }
+a.entree-programme-lien { display: block; }
+
+/* ---- 4. .fiche-archive (§15, §24) — registre encre ---- */
+.fiche-archive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-3);
+  padding: var(--esp-4) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+@media (min-width: 600px) {
+  .fiche-archive { grid-template-columns: auto 1fr; align-items: start; gap: var(--esp-4); }
+}
+.fiche-archive-annee {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-2xl);
+  line-height: 0.9; /* en dur, volontairement hors des 3 tokens : un chiffre d'affiche
+    (l'année en marge de régie) n'est pas un rôle de lecture, pas de var(--interligne-*) */
+}
+.fiche-archive-corps { font-family: var(--police-revue); font-size: var(--pas-base); }
+.fiche-archive-corps p { max-width: var(--largeur-revue); line-height: var(--interligne-lecture); }
+/* Frise verticale (archives ≤ 6 entrées, §24) — au-delà, voir la bande
+   horizontale plus bas (.bande-editions). Affiche : jamais recadrée
+   (§13), comme le visuel du hero. Aucune édition n'a encore de fichier
+   affiche réel (vérifié sur les 19), donc en pratique c'est toujours le
+   cadre-espace réservé qui s'affiche pour l'instant. */
+.fiche-archive-affiche,
+.fiche-archive-affiche-cadre {
+  display: block;
+  margin: var(--esp-2) 0;
+  width: 100%;
+  max-width: 320px; /* une vignette de frise, pas l'affiche pleine page (voir .edition-affiche) */
+  aspect-ratio: 3 / 4;
+}
+.fiche-archive-affiche { object-fit: contain; }
+.fiche-archive-affiche-cadre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--filet-sombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit */
+  padding: var(--esp-2);
+}
+.fiche-archive-meta {
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers);
+}
+/* Édition à venir (§35 bis, exemple donné pour ce composant précis) :
+   accent posé sur l'année seule, pas de badge décoratif superposé. */
+.fiche-archive--a-venir .fiche-archive-annee { color: var(--corail); }
+a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:grid,
+  répété ici par convention (§15) — un <a> est inline par défaut */
+
+/* ---- 5. .citation (§15) — les deux registres ---- */
+.citation {
+  max-width: var(--largeur-revue);
+  padding-left: var(--esp-3);
+  border-left: 1px solid var(--filet-clair);
+}
+.registre-encre .citation,
+.registre-rideau .citation { border-left-color: var(--filet-sombre); }
+.citation p {
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-lecture);
+}
+.citation cite {
+  display: block;
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-style: normal;
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: var(--interligne-donnees);
+}
+.registre-papier .citation cite { color: var(--texte-tiers); } /* 7,46:1, AAA */
+.registre-encre .citation cite,
+.registre-rideau .citation cite { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
+
+/* ---- Crédit photographique (§13) — pas un des 8 composants, mais un
+   texte secondaire sous toute image, même logique de hiérarchie. ---- */
+.credit-photo {
+  display: block;
+  margin-top: var(--esp-1);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--texte-tiers); /* défaut : registre papier, 7,46:1 */
+}
+.registre-encre .credit-photo,
+.registre-rideau .credit-photo { color: var(--papier-tiers); } /* 9,99:1 encre, 7,29:1 rideau */
+
+/* ---- 6. .filet-section (§15) — les deux registres ---- */
+.filet-section {
+  display: block;
+  height: 0;
+  width: 100%;
+  margin: var(--esp-4) 0;
+  border: none;
+  border-top: 1px solid var(--filet-clair);
+}
+.registre-encre .filet-section,
+.registre-rideau .filet-section { border-top-color: var(--filet-sombre); }
+
+/* ---- 7. .bouton (§15) — structure commune, couleur héritée du
+   registre (bloc "États d'interaction" plus haut). ---- */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: var(--esp-2) var(--esp-4);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1; /* déjà explicite, volontairement hors des 3 valeurs : centrage
+    vertical d'un libellé d'un seul mot dans une boîte de hauteur fixe (48px min),
+    pas un rôle de lecture — voir bilan si ça doit s'aligner quand même */
+  background: transparent;
+  border: 1px solid; /* couleur posée par le bloc États d'interaction */
+  cursor: pointer;
+  transition: border-color var(--duree-ui) var(--courbe-sortie),
+              color var(--duree-ui) var(--courbe-sortie);
+}
+@media (hover: none) {
+  .registre-encre .bouton:hover,
+  .registre-rideau .bouton:hover,
+  .registre-papier .bouton:hover { color: inherit; border-color: inherit; }
+}
+
+/* ---- 8. .fiche-adresse (§15, §29) — registre papier ---- */
+.fiche-adresse { max-width: var(--largeur-archive); }
+.fiche-adresse dt {
+  font-family: var(--police-revue);
+  font-size: var(--pas-m);
+  line-height: var(--interligne-lecture);
+  margin-top: var(--esp-3);
+}
+.fiche-adresse dt:first-child { margin-top: 0; }
+.fiche-adresse dd {
+  margin: var(--esp-1) 0 0;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  line-height: var(--interligne-donnees);
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
+}
+.fiche-adresse-plan {
+  margin-top: var(--esp-3);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--filet-clair);
+  background: var(--papier-ombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--texte-tiers); /* 6,42:1 sur --papier-ombre, AA — vérifié, pas supposé */
+}
+
+/* ==========================================================
+   NOS ÉDITIONS — intro + bande horizontale d'affiches (LOT 5 révisé, §24)
+   Au-delà de 6 entrées, la frise verticale enterre le contenu ancien
+   sous le défilement — bande horizontale à la place, registre encre.
+   ========================================================== */
+.editions-intro { padding: var(--esp-6) 0 var(--esp-4); }
+.editions-intro-texte {
+  margin-top: var(--esp-2);
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+
+/* --affiche-largeur : calculée pour ~2,5 vignettes visibles sur mobile
+   à 375px (la moitié coupée signale le défilement, §24) et ~6 dès
+   1024px à 1440px — 375 et 1440 vérifiés au calcul (voir le commit),
+   pas devinés. */
+:root { --affiche-largeur: 128px; }
+@media (min-width: 600px)  { :root { --affiche-largeur: 168px; } }
+@media (min-width: 1024px) { :root { --affiche-largeur: 210px; } }
+
+.bande-editions { padding: 0 0 var(--esp-6); }
+.bande-defilement {
+  display: flex;
+  list-style: none; /* <ul> : la remise à zéro margin/padding est déjà
+    globale (*), mais pas list-style — sans ceci, des puces s'ajoutent
+    à un défilement horizontal où elles n'ont pas de sens */
+  margin: 0;
+  gap: var(--esp-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--esp-2) var(--esp-3);
+}
+@media (min-width: 600px) {
+  .bande-defilement { gap: var(--esp-3); padding: 0 var(--esp-3) var(--esp-3); }
+}
+@media (min-width: 1024px) {
+  .bande-defilement { padding: 0 var(--esp-4) var(--esp-3); }
+}
+
+.affiche-entree {
+  flex: 0 0 var(--affiche-largeur);
+  width: var(--affiche-largeur);
+  scroll-snap-align: start;
+}
+.affiche-entree-lien { display: block; } /* le <li> est l'item flex,
+  le <a> à l'intérieur remplit tout l'espace cliquable (§15) */
+.affiche-entree-cadre {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--filet-sombre);
+}
+.affiche-entree-cadre img { width: 100%; height: 100%; object-fit: contain; display: block; }
+/* Remplacement typographique tant qu'aucune affiche réelle n'existe
+   (vérifié sur les 19 éditions) — même ratio 3:4 qu'une vraie affiche :
+   rien à changer dans la mise en page le jour où les fichiers arrivent. */
+.affiche-entree-cadre-vide {
+  width: 100%;
+  height: 100%;
+  background: var(--encre-coulisse);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  text-align: center;
+}
+.affiche-entree-cadre-annee {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-2xl);
+  line-height: 0.9; /* en dur, comme .fiche-archive-annee : un chiffre
+    d'affiche n'est pas un rôle de lecture */
+  color: var(--papier); /* 15,12:1 sur --encre-coulisse, AAA — vérifié */
+}
+.affiche-entree-cadre-numero {
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--papier-tiers); /* 9,24:1 sur --encre-coulisse, AAA — vérifié */
+}
+.affiche-entree-legende { margin-top: var(--esp-2); }
+.affiche-entree-prochaine { margin-bottom: var(--esp-1); } /* .surtitre : corail, 6,01:1 */
+.affiche-entree-ordinal {
+  display: block;
+  font-family: var(--police-affiche);
   font-weight: 500;
+  font-size: var(--pas-s);
+  line-height: var(--interligne-serre);
+}
+.affiche-entree-annee {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit, AAA — déjà vérifié (§9) */
+}
+
+/* Filet de progression — même esprit que la navigation du hero (§16) :
+   lecture continue, pas de flèches ni de pastilles. Largeur et position
+   reflètent le ratio visible/total (assets/js/editions.js), jamais un
+   scroll détourné : la bande reste un overflow-x natif. */
+.bande-progression {
+  position: relative;
+  height: 2px;
+  margin: 0 var(--esp-2) 0;
+  background: var(--filet-sombre);
+}
+@media (min-width: 600px)  { .bande-progression { margin: 0 var(--esp-3) 0; } }
+@media (min-width: 1024px) { .bande-progression { margin: 0 var(--esp-4) 0; } }
+.bande-progression-remplissage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--rp-gauche, 0%);
+  width: var(--rp-largeur, 20%);
+  background: var(--corail);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bande-progression-remplissage { transition: left 100ms linear, width 100ms linear; }
+}
+
+/* ==========================================================
+   FICHE D'ÉDITION (LOT 5b, §24 : ordre d'un programme imprimé)
+   Chaque section porte le registre de son TYPE de contenu (§6, table),
+   pas un choix esthétique par page : chiffres et hommages en rideau
+   (jamais consécutifs), sélection et galerie en encre, palmarès,
+   table ronde et documents en papier. Rythme identique à la phase B
+   de l'accueil : --esp-8 précède toute bascule de registre.
+   ========================================================== */
+.edition-entete { padding: var(--esp-6) 0 var(--esp-4); }
+.edition-retour {
+  display: inline-block;
+  margin-bottom: var(--esp-3);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.edition-titre {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-xl); /* explicite : sans ceci, hérite de l'ancien
+    h1{font-size:clamp(2.4rem,6vw,5rem)} — même bug que .titre-bilingue */
+  letter-spacing: -0.02em;
+  line-height: var(--interligne-serre);
+}
+.edition-badge-texte { color: var(--corail); }
+.edition-theme {
+  margin-top: var(--esp-2);
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-lecture);
+}
+.edition-affiche,
+.edition-affiche-cadre {
+  display: block;
+  margin: var(--esp-3) 0;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 3 / 4;
+}
+.edition-affiche { object-fit: contain; }
+.edition-affiche-cadre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--filet-sombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers);
+  padding: var(--esp-3);
+}
+.edition-resume {
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+
+/* ---- Titre de sous-section, réutilisé par chiffres/sélection/palmarès/
+   hommages/table ronde/galerie/documents — explicite comme .edition-titre,
+   même raison. ---- */
+.titre-section {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+  margin-bottom: var(--esp-3);
+}
+
+.edition-chiffres  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule encre → rideau */
+.edition-selection { padding: var(--esp-8) 0 var(--esp-4); } /* bascule rideau → encre */
+.edition-palmares   { padding: var(--esp-8) 0 var(--esp-4); } /* bascule encre → papier */
+.edition-hommages   { padding: var(--esp-8) 0 var(--esp-4); } /* bascule papier → rideau */
+.edition-tableronde { padding: var(--esp-8) 0 var(--esp-4); } /* bascule rideau → papier */
+.edition-galerie    { padding: var(--esp-8) 0 var(--esp-4); } /* bascule papier → encre */
+.edition-documents  { padding: var(--esp-8) 0 var(--esp-6); } /* bascule encre → papier, dernière section */
+
+/* ---- Hommages (registre rideau) — pas un des 8 composants : portrait +
+   nom + bio n'a pas de forme prescrite au §15. Structure minimale à
+   partir des tokens existants plutôt qu'un composant inventé sans
+   validation ; à documenter dans la skill si ce patron se répète. ---- */
+.hommage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-3);
+  padding: var(--esp-4) 0;
+  border-bottom: 1px solid var(--filet-sombre);
+}
+.hommage:last-child { border-bottom: none; }
+@media (min-width: 600px) {
+  .hommage { grid-template-columns: 160px 1fr; align-items: start; gap: var(--esp-4); }
+}
+.hommage-portrait,
+.hommage-portrait-cadre {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  aspect-ratio: 1 / 1; /* carré, jamais rond — §36 */
+}
+.hommage-portrait { object-fit: cover; }
+.hommage-portrait-cadre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--filet-sombre);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  line-height: var(--interligne-donnees);
+  color: var(--papier-tiers);
+  padding: var(--esp-2);
+}
+.hommage-nom {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+}
+.hommage-bio {
+  margin-top: var(--esp-2);
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+
+/* ---- Table ronde (registre papier) — pas un des 8 composants : liste
+   de faits (date, lieu, encadrement…) proche dans l'esprit de
+   .fiche-adresse (§15, "en liste de définition"), rejouée ici avec les
+   mêmes tokens plutôt que la classe elle-même (l'adresse reste un
+   contenu distinct). ---- */
+.table-ronde-titre {
+  font-family: var(--police-arabe);
+  direction: rtl;
+  font-size: var(--pas-l);
+  line-height: var(--interligne-serre);
+}
+.table-ronde-titre-fr {
+  margin-top: var(--esp-1);
+  font-family: var(--police-revue);
+  font-style: italic;
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+.table-ronde-faits { margin-top: var(--esp-3); }
+.table-ronde-faits dt {
+  margin-top: var(--esp-2);
+  font-family: var(--police-revue);
+  font-size: var(--pas-s);
+  line-height: var(--interligne-lecture);
+}
+.table-ronde-faits dt:first-child { margin-top: 0; }
+.table-ronde-faits dd {
+  margin: var(--esp-1) 0 0;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-s);
+  line-height: var(--interligne-donnees);
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
+}
+
+/* ---- Galerie (registre encre) ---- */
+.galerie-grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--esp-2);
+}
+@media (min-width: 600px)  { .galerie-grille { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .galerie-grille { grid-template-columns: repeat(4, 1fr); gap: var(--esp-3); } }
+.galerie-grille img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- Documents (registre papier) — même structure que .liste-presse
+   (accueil, LOT 4 phase B), déclarée séparément par convention de nom
+   (§35 bis : chaque composant garde ses propres classes). ---- */
+.liste-documents { list-style: none; margin: 0; padding: 0; }
+.liste-documents li { border-bottom: 1px solid var(--filet-clair); }
+.liste-documents li:last-child { border-bottom: none; }
+.liste-documents a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  padding: var(--esp-2) 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+}
+.liste-documents-fleche { font-family: var(--police-donnees); }
+
+/* ==========================================================
+   QUI SOMMES NOUS (LOT 6a) — deux registres, pas un seul (§6 : aucune
+   page n'est monorégistre). ASAU = encre (récit d'ouverture, ça se
+   regarde avant de se lire) → bascule --esp-8 → Valeurs = papier →
+   pas de bascule (papier → papier) → Équipe = papier, --esp-7.
+   ========================================================== */
+.asau-intro   { padding: var(--esp-6) 0 var(--esp-4); } /* première section : pas de bascule à annoncer */
+.asau-valeurs { padding: var(--esp-8) 0 var(--esp-4); } /* bascule encre → papier */
+.asau-equipe  { padding: var(--esp-7) 0 var(--esp-4); } /* pas de bascule, papier → papier */
+
+/* Paragraphe de lecture réutilisable — colonne à 680px (§28). */
+.texte-revue {
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+.texte-revue + .texte-revue { margin-top: var(--esp-3); }
+
+/* Logo ASAU — prête à recevoir la version blanche (CLAUDE.md §7) sans
+   rien décider de nouveau à ce moment-là ; inutilisée tant que le
+   fichier réel n'existe pas (voir le commentaire dans le HTML). */
+.asau-logo {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  margin: var(--esp-3) 0 var(--esp-4);
+}
+
+/* ---- Philosophie & valeurs — grille asymétrique, jamais un
+   empilement pour 4 à 6 éléments courts (§18). Pas un des 8
+   composants : filet-numéro-titre-texte à partir des tokens existants.
+   Valeur 1 (Partage) pleine largeur dès 600px, valeurs 2 à 5 en 2×2 —
+   un seul grid-template-columns:2, la valeur 1 en grid-column:1/-1
+   suffit à produire les deux sans grille séparée. ---- */
+.valeurs-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 600px) {
+  .valeurs-grille { grid-template-columns: repeat(2, 1fr); }
+}
+.valeur {
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--filet-clair); /* filet en haut seulement — pas de border-radius (§36) */
+}
+@media (min-width: 600px) {
+  .valeur--principale { grid-column: 1 / -1; }
+}
+.valeur-numero {
+  display: block;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA (§10) */
+}
+.valeur-titre {
+  margin-top: var(--esp-1);
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.valeur--principale .valeur-titre { font-size: var(--pas-l); }
+.valeur-texte {
+  margin-top: var(--esp-2);
+  max-width: var(--largeur-revue);
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+  color: var(--texte-tiers);
+}
+.valeur--principale .valeur-texte { font-size: var(--pas-m); } /* texte « plus généreux » : échelle, pas plus de mots */
+
+/* ---- Équipe — « ligne de générique » (§15) : portrait carré, nom,
+   fonction, en ligne plutôt qu'en grille de cartes (§15 : sortir de la
+   carte). Pas un des 8 composants — structure minimale à partir des
+   tokens existants. ---- */
+.generique-liste { margin-top: var(--esp-3); }
+.generique {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.generique:last-child { border-bottom: none; }
+@media (min-width: 600px) {
+  .generique { grid-template-columns: 96px 1fr; align-items: center; gap: var(--esp-3); }
+}
+.generique-portrait {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: cover; /* portrait réel, cadrage carré assumé — jamais rond (§36) */
+}
+.generique-nom {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.generique-fonction {
+  margin-top: 2px;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--texte-tiers); /* 7,46:1 sur --papier, AAA */
+}
+
+/* ==========================================================
+   LE FESTIVAL (LOT 6b) — 7 sections, registre du TYPE de contenu
+   (§6), pas un choix par page : encre, encre, papier, papier, encre,
+   papier, encre. 4 bascules sur une page longue (« sers-t'en pour la
+   rythmer ») ; pas de rideau forcé — aucune section n'est une vraie
+   interruption (chiffres clés / hommage / candidature / Grand Prix,
+   §6), en inventer un aurait été le contraire de « sa force vient de
+   sa rareté ». --esp-8 précède chaque bascule, --esp-7 sinon (§12).
+   ========================================================== */
+.festival-intro        { padding: var(--esp-6) 0 var(--esp-4); } /* première section */
+.festival-participants { padding: var(--esp-7) 0 var(--esp-4); } /* encre → encre, pas de bascule */
+.festival-impact       { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 1 : encre → papier */
+.festival-lieux        { padding: var(--esp-7) 0 var(--esp-4); } /* papier → papier, pas de bascule */
+.festival-competition  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 2 : papier → encre */
+.festival-prix         { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 3 : encre → papier */
+.festival-ateliers     { padding: var(--esp-8) 0 var(--esp-6); } /* bascule 4 : papier → encre, dernière section */
+
+/* ---- Lieux — .fiche-adresse (§15, §29, registre papier), 3 entrées sur
+   une seule ligne dès 900px (une colonne en dessous) — seuil demandé
+   explicitement pour ce commit plutôt que 600/1024/1440 (§30) : signalé
+   ici comme l'écart qu'il est, pas silencieusement aligné sur la grille
+   canonique. Avec seulement 3 colonnes égales, une bascule à 600px les
+   aurait rendues trop étroites pour le contenu de la fiche (adresse,
+   capacité, plan, bouton). ---- */
+.lieux-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 900px) { .lieux-grille { grid-template-columns: repeat(3, 1fr); } }
+.fiche-adresse .bouton { margin-top: var(--esp-3); }
+
+/* ---- Prix — .distribution (§15), registre papier. Compte réel de
+   décernements par prix (data/editions.json, palmarès archivés,
+   éditions 1 à 17), pas un lauréat : ce n'est pas le palmarès d'une
+   édition (§26) mais le catalogue des prix du festival. ---- */
+.festival-prix-note {
+  margin-top: var(--esp-2);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  color: var(--texte-tiers);
+}
+
+/* ---- Ateliers — gabarits à crochets, registre encre. Cas justifié de
+   carte (§15) : trois créneaux réellement interchangeables tant que le
+   programme officiel n'est pas reçu. Filet en haut, pas de
+   border-radius (§36), comme .valeur. ---- */
+.ateliers-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-5);
+  margin-top: var(--esp-3);
+}
+@media (min-width: 700px) { .ateliers-grille { grid-template-columns: repeat(3, 1fr); } }
+.atelier {
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--filet-sombre);
+}
+.atelier-type {
+  display: block;
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--papier-tiers); /* 9,99:1 sur --encre-nuit, AAA */
+}
+.atelier-titre {
+  margin-top: var(--esp-1);
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-m);
+  line-height: var(--interligne-serre);
+}
+.atelier-meta { margin-top: var(--esp-2); }
+.atelier-meta dt {
+  margin-top: var(--esp-1);
+  font-family: var(--police-donnees);
+  font-size: var(--pas-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--papier-tiers);
+}
+.atelier-meta dt:first-child { margin-top: 0; }
+.atelier-meta dd {
+  margin: 2px 0 0;
+  font-family: var(--police-revue);
+  font-size: var(--pas-base);
+  line-height: var(--interligne-lecture);
+}
+
+/* ==========================================================
+   LE CARNAVAL (LOT 6c) — 4 sections, registre du TYPE de contenu (§6) :
+   encre, papier, rideau, encre. 3 bascules, rideau en bloc unique
+   (chiffres clés). Le parcours en deux étapes est le seul contenu du
+   site avec une vraie logique spatiale, traité en papier
+   (informations pratiques, même famille que .fiche-adresse) plutôt
+   qu'en encre : ce sont deux lieux réels et un ordre de passage, pas
+   une scène à regarder — les photos qui l'illustrent restent
+   secondaires au texte, pas l'inverse.
+   ========================================================== */
+.carnaval-intro     { padding: var(--esp-6) 0 var(--esp-4); } /* première section */
+.carnaval-parcours  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 1 : encre → papier */
+.carnaval-chiffres  { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 2 : papier → rideau */
+.carnaval-galerie   { padding: var(--esp-8) 0 var(--esp-6); } /* bascule 3 : rideau → encre, dernière section */
+
+/* ---- Le parcours — pas un des 8 composants : numéro réel (premier
+   arrêt, second arrêt — pas décoratif, §36) dans la position de marge
+   qu'occupe l'année d'une .fiche-archive, réutilisée ici pour une
+   séquence spatiale plutôt que temporelle. Les deux étapes partagent
+   la même composition — aucune raison réelle de les distinguer
+   visuellement (voir le-carnaval.html pour le hack retiré). ---- */
+.parcours-liste { margin-top: var(--esp-3); }
+.route-etape {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+  padding: var(--esp-4) 0;
+  border-bottom: 1px solid var(--filet-clair);
+}
+.route-etape:last-child { border-bottom: none; }
+@media (min-width: 600px) {
+  .route-etape { grid-template-columns: 80px 1fr; align-items: start; gap: var(--esp-4); }
+}
+.route-etape-numero {
+  font-family: var(--police-affiche);
+  font-size: var(--pas-xl);
+  line-height: 0.9; /* chiffre d'affiche, pas un rôle de lecture — comme .fiche-archive-annee */
+}
+.route-etape-titre {
+  font-family: var(--police-affiche);
+  font-weight: 500;
+  font-size: var(--pas-l);
+  letter-spacing: -0.01em;
+  line-height: var(--interligne-serre);
+  margin-bottom: var(--esp-2);
+}
+.route-etape-image {
+  display: block;
+  margin-top: var(--esp-3);
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 3 / 2; /* traitement scène, §13 */
+  object-fit: cover;
+  filter: saturate(0.75) contrast(1.08); /* §13, repos — pas d'entrée cliquable ici, pas de survol */
 }
