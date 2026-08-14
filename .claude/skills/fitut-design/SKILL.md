@@ -170,6 +170,22 @@ Règles de rythme :
 - **Le pied de page fait exception.** Il est en registre rideau sur toutes les pages :
   c'est le rideau qui tombe, la clôture. Élément persistant et non section de contenu,
   il ne compte pas dans la limite de deux blocs rideau par page.
+
+### Rayons
+
+```css
+--rayon-s: 4px;    /* boutons, champs, puces, étiquettes */
+--rayon-m: 8px;    /* blocs bordés, fiches, encadrés */
+--rayon-l: 12px;   /* grands conteneurs, visuels d'annonce */
+--rayon-plein: 999px; /* uniquement les puces de pagination */
+```
+
+**Tout élément portant une bordure, un fond ou une image cadrée reçoit un rayon.**
+Jamais de valeur en dur : toujours un token. L'échelle s'arrête à 12 px — au-delà, on
+tombe dans le vocabulaire des applications.
+
+Les filets de séparation (§15) n'ont pas de rayon : ce sont des lignes, pas des boîtes.
+
 ### L'élément signature : la ligne bilingue
 
 Le logotype du FITUT est bilingue par construction — les tracés du mot « fitut » se lisent
@@ -233,8 +249,9 @@ babouche, théière.
 2. **La composition remplace l'ornement.** Asymétrie, échelle, blanc.
 3. **Aligné à gauche par défaut.** Un bloc centré doit se justifier ; le centrage est
    réservé aux citations et aux blocs de moins de trois lignes.
-4. **Les angles sont vifs.** `border-radius: 0` partout, sauf 2 px maximum sur les
-   éléments d'interface fins.
+4. **Les angles sont doux mais mesurés.** Tout élément bordé, rempli ou cadré porte un
+   rayon de l'échelle `--rayon-*` (§6). Jamais au-delà de 12 px. Les filets de séparation
+   n'ont pas de rayon.
 5. **Aucune ombre d'élévation.** La séparation se fait par filet de 1 px ou par
    changement de registre.
 6. **Une seule couleur d'accent visible à la fois** dans le champ de vision.
@@ -389,7 +406,8 @@ courant long.
 - **Ne jamais appliquer `opacity` à du texte** — l'opacité réduit le contraste réel, pas
   seulement l'apparence. Utiliser une couleur explicite.
 **Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs d'accent
-multiples dans un même écran, transparences empilées (glassmorphism), crème + or.
+multiples dans un même écran, transparences empilées (glassmorphism) ailleurs que sur les
+deux barres fixes (§17), crème + or.
 
 ## 11. Grilles
 
@@ -653,9 +671,40 @@ Le nombre de vues est **lu depuis les données**, jamais codé en dur dans le Ja
 
 ## 17. Navigation
 
-Barre haute fine, fond `--papier`, filet de 1 px en bas, **sans ombre portée**.
-Elle ne change **pas** d'apparence au défilement : elle est stable, comme la signalétique
-d'un lieu.
+### Barre translucide superposée
+
+La navigation et le bandeau du Haut Patronage se **superposent au hero**, en translucide,
+sans occuper de hauteur propre : le visuel commence en haut de l'écran et passe dessous.
+
+```css
+--voile-barre: rgba(10, 20, 40, 0.82);   /* --encre-nuit à 82 % */
+
+.bandeau-patronage, #navbar {
+  position: fixed;
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid var(--filet-sombre);
+  box-shadow: none;
+}
+
+/* Repli obligatoire : sans backdrop-filter, on monte l'opacité */
+@supports not (backdrop-filter: blur(1px)) {
+  .bandeau-patronage, #navbar { background: rgba(10, 20, 40, 0.94); }
+}
+```
+
+**L'opacité de 82 % n'est pas un choix esthétique, c'est un plancher calculé.** Dans le
+pire cas — une image de fond entièrement blanche — le composite donne encore 9,4:1 avec
+`--papier`. Sous 75 %, le texte passe en dessous du seuil AAA et devient illisible sur
+les photos claires. Ne jamais descendre sous 0,80.
+
+Au défilement, la barre **se densifie légèrement** : opacité de 0,82 à 0,92, flou de 14 px
+à 20 px, sur `--duree-ui`. C'est le seul changement autorisé — pas d'ombre, pas de
+réduction de hauteur, pas de disparition au défilement.
+
+Le hero prévoit un **espace libre en haut** égal à la hauteur cumulée des deux barres,
+pour qu'aucun contenu ne passe dessous.
 
 Cinq entrées plus l'action de candidature en bouton plein. La page active est signalée
 par un **filet sous le libellé**, jamais par une couleur seule.
@@ -925,6 +974,10 @@ forme. Un élément non cliquable ne réagit jamais au survol.
 d'un élément déjà visible (carte, image, icône), pas un filet qui n'existe pas avant le
 survol et se construit sous le mot.
 
+Exception distincte, propre aux deux barres fixes (§17) : leur densité (opacité, flou)
+répond à la position de défilement en continu — ce n'est ni une apparition ni un survol,
+et §17 en fixe seul l'encadrement.
+
 `prefers-reduced-motion` respecté systématiquement — sans exception pour ces quatre
 comportements, ni pour les compteurs animés du §23 (qui affichent leur valeur finale
 d'emblée, sans décompte).
@@ -946,8 +999,7 @@ Le mouvement le plus fort du site reste la bascule encre ↔ rideau ↔ papier a
 
 **Interdits** : parallaxe, machine à écrire, rebond, `transform: scale`
 au survol, apparitions en cascade, curseur personnalisé, défilement détourné,
-animation qui ne sert pas le sujet. Les compteurs animés ne figurent plus dans cette
-liste : autorisés depuis §23, sous l'encadrement qui les distingue du registre commercial.
+animation qui ne sert pas le sujet.
 
 « Apparitions en cascade » désigne un défilé long et démonstratif (nombreux éléments,
 délais croissants sans plafond) — pas le décalage de 60 ms plafonné à 4 paliers du point 1
@@ -987,8 +1039,6 @@ Chacun de ces éléments est présent ou l'a été dans le code, et doit dispara
 
 | Anti-pattern | Pourquoi |
 |---|---|
-| `border-radius: 24px` sur les blocs | vocabulaire d'application, pas d'affiche |
-| `border-radius: 999px` (pilules) | bouton d'app mobile |
 | `box-shadow: 0 20px 45px` | élévation Material Design |
 | `linear-gradient` décoratif | ornement sans justification |
 | Bandeau de logos défilant | « Trusted by » de landing page SaaS |
@@ -1019,10 +1069,11 @@ dans la conversation en cours.**
 - ❌ Ne pas enchaîner deux blocs `--rideau` consécutifs
 - ❌ Ne pas utiliser Montserrat, Cormorant Garamond, Poppins, Inter, Playfair Display,
   Archivo ni Newsreader
-- ❌ Ne pas utiliser de dégradé décoratif, de glassmorphism, de neumorphisme
+- ❌ Ne pas utiliser de dégradé décoratif ni de neumorphisme
+- ❌ Ne pas utiliser de translucidité ailleurs que sur les barres fixes (§17)
 - ❌ Ne pas utiliser de dégradé violet/bleu générique
 - ❌ Ne pas mettre dans le hero une annonce inventée, ni plus d'un lien par vue
-- ❌ Ne pas arrondir les angles au-delà de 2 px
+- ❌ Ne pas arrondir au-delà de `--rayon-l` (12 px), sauf puces de pagination
 - ❌ Ne pas ajouter d'ombre portée d'élévation
 - ❌ Ne pas centrer un titre de section
 - ❌ Ne pas construire une page uniquement avec des cartes
