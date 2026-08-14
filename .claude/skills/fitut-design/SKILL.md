@@ -879,10 +879,37 @@ Le contenu est un gisement de longue traîne inexploité.
 le surtitre s'inscrit ligne à ligne comme un surtitrage réel, le titre monte, l'image
 apparaît en dernier en fondu lent. Deux secondes. Une seule fois. Jamais rejoué.
 
-Partout ailleurs :
-- Apparition au défilement : **opacité seule**, 400 ms, **aucune translation**
-- Survol : changement de couleur de filet uniquement, **jamais de mise à l'échelle**
-- `prefers-reduced-motion` respecté systématiquement
+Partout ailleurs, quatre comportements couvrent tout le site — reproductibles, pas
+réinventés page par page :
+
+**1. Apparition au défilement.** Opacité seule, 400 ms (`--duree-contenu`), aucune
+translation. S'applique au contenu de chaque section (`.contenu-regie`), jamais à la
+section elle-même : le fond de registre est déjà peint par la section, seul son contenu
+entre en fondu — faire l'inverse laisserait voir le fond de page pendant la transition.
+Dans une grille ou une liste répétée (galerie, fiches de lieu, générique d'équipe,
+distribution, entrées de programme…), un décalage de 60 ms sépare chaque élément —
+**jamais davantage : plafonné à 4 paliers (0, 60, 120, 180 ms), le reste à 240 ms**, sinon
+l'apparition traîne au lieu d'accompagner l'œil.
+
+**2. Survol des éléments cliquables.** Tout élément cliquable qui porte un filet
+(fiche, bouton, entrée de bande d'affiches…) change la couleur de ce filet vers l'accent
+du registre au survol ; son texte fait de même. `--duree-ui` (200 ms). Jamais de
+`transform: scale`, jamais d'ombre : la réaction est une couleur, pas un mouvement de
+forme. Un élément non cliquable ne réagit jamais au survol.
+
+**3. Images.** Au survol d'une entrée cliquable, la photographie passe de
+`saturate(0.75)` (état de repos, §13) à `saturate(1)`, sur `--duree-contenu`. C'est le
+**seul** effet d'image autorisé — jamais de zoom, jamais d'assombrissement.
+
+**4. Liens de texte.** Un filet se déploie de gauche à droite sous le texte au survol,
+200 ms (`--duree-ui`). Implémenté en **largeur** (`width: 0 → 100%`), jamais en
+`transform: scaleX` : l'interdit « jamais de mise à l'échelle » vise l'agrandissement
+d'un élément déjà visible (carte, image, icône), pas un filet qui n'existe pas avant le
+survol et se construit sous le mot.
+
+`prefers-reduced-motion` respecté systématiquement — sans exception pour ces quatre
+comportements.
+
 **Tokens de mouvement — aucune durée ni courbe en dur :**
 
 ```css
@@ -901,6 +928,10 @@ Le mouvement le plus fort du site reste la bascule encre ↔ rideau ↔ papier a
 **Interdits** : parallaxe, compteurs animés, machine à écrire, rebond, `transform: scale`
 au survol, apparitions en cascade, curseur personnalisé, défilement détourné,
 animation qui ne sert pas le sujet.
+
+« Apparitions en cascade » désigne un défilé long et démonstratif (nombreux éléments,
+délais croissants sans plafond) — pas le décalage de 60 ms plafonné à 4 paliers du point 1
+ci-dessus, qui accompagne une grille plutôt que de la mettre en scène.
 
 ## 35. Règles de contenu visuel
 

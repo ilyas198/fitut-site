@@ -826,6 +826,184 @@ section { padding: 6rem 0; }
 .apparition { opacity: 0; transition: opacity var(--duree-contenu) var(--courbe-sortie); }
 .apparition.est-visible { opacity: 1; }
 
+/* ==========================================================
+   DYNAMISME — sur tout le site, dans les limites de §34 (correction
+   urgente). Quatre comportements documentés dans la skill §34, points
+   1 à 4 : décalage plafonné dans les grilles, survol des éléments
+   cliquables, saturation d'image, filet de lien qui se déploie.
+   ========================================================== */
+
+/* ---- 1. Décalage de 60ms entre éléments d'une même grille/liste —
+   ciblés par sélecteur (voir main.js, SELECTEUR_APPARITION_GROUPE),
+   pas par une classe posée à la main sur chaque élément. Plafonné à
+   4 paliers (0/60/120/180ms), le reste à 240ms — au-delà, ça traîne
+   plutôt que d'accompagner l'œil (skill §34, « Interdits »). nth-of-type
+   plutôt que nth-child : robuste face à un titre de section qui précède
+   parfois la liste dans le même conteneur (sélection, hommages). ---- */
+.galerie-grille > img,
+.valeurs-grille > .valeur,
+.lieux-grille > .fiche-adresse,
+.ateliers-grille > .atelier,
+.generique-liste > .generique,
+.index-liens > li,
+.liste-presse > li,
+.liste-documents > li,
+.distribution > .distribution-ligne,
+.edition-selection .entree-programme,
+.edition-hommages .hommage {
+  opacity: 0;
+  transition: opacity var(--duree-contenu) var(--courbe-sortie);
+}
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+).est-visible { opacity: 1; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+):nth-of-type(1) { transition-delay: 0ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+):nth-of-type(2) { transition-delay: 60ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+):nth-of-type(3) { transition-delay: 120ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+):nth-of-type(4) { transition-delay: 180ms; }
+:is(
+  .galerie-grille > img,
+  .valeurs-grille > .valeur,
+  .lieux-grille > .fiche-adresse,
+  .ateliers-grille > .atelier,
+  .generique-liste > .generique,
+  .index-liens > li,
+  .liste-presse > li,
+  .liste-documents > li,
+  .distribution > .distribution-ligne,
+  .edition-selection .entree-programme,
+  .edition-hommages .hommage
+):nth-of-type(n+5) { transition-delay: 240ms; }
+
+/* ---- 2. Survol des éléments cliquables — filet + texte vers l'accent
+   du registre, --duree-ui, jamais de scale/ombre. Les liens et .bouton
+   génériques l'ont déjà via le bloc « États d'interaction » (§10/§15) ;
+   ce qui suit couvre les cas où le filet visible n'est pas sur l'<a>
+   lui-même mais sur un enfant (l'entrée de la bande d'affiches). ---- */
+.affiche-entree-cadre {
+  transition: border-color var(--duree-ui) var(--courbe-sortie);
+}
+.affiche-entree-ordinal {
+  transition: color var(--duree-ui) var(--courbe-sortie);
+}
+.affiche-entree-lien:hover .affiche-entree-cadre,
+.affiche-entree-lien:focus-visible .affiche-entree-cadre {
+  border-color: var(--corail);
+}
+.affiche-entree-lien:hover .affiche-entree-ordinal,
+.affiche-entree-lien:focus-visible .affiche-entree-ordinal {
+  color: var(--corail);
+}
+
+/* ---- 3. Images — traitement de repos (§13, jusqu'ici documenté dans la
+   skill mais jamais posé en CSS) sur toute photographie réelle du site,
+   et le seul effet d'image autorisé au survol d'une entrée cliquable :
+   saturate(0.75) → saturate(1), --duree-contenu. Jamais sur l'affiche
+   officielle du hero (traitement propre, §16) ; les cadres typographiques
+   de remplacement ne sont pas des <img>, non concernés. ---- */
+.galerie-grille img,
+.hommage-portrait,
+.generique-portrait,
+.affiche-entree-cadre img,
+.edition-affiche {
+  filter: saturate(0.75) contrast(1.08);
+}
+.affiche-entree-cadre img {
+  transition: filter var(--duree-contenu) var(--courbe-sortie);
+}
+.affiche-entree-lien:hover .affiche-entree-cadre img,
+.affiche-entree-lien:focus-visible .affiche-entree-cadre img {
+  filter: saturate(1) contrast(1.08);
+}
+
+/* ---- 4. Liens de texte — filet qui se déploie de gauche à droite au
+   survol, 200ms (--duree-ui). Animation de largeur, pas de
+   transform:scaleX (skill §34, point 4) : le filet n'existe pas avant
+   le survol, ce n'est pas l'agrandissement d'un élément déjà visible. ---- */
+.index-liens a,
+.liste-presse a,
+.liste-documents a,
+.edition-retour {
+  position: relative;
+}
+.index-liens a::after,
+.liste-presse a::after,
+.liste-documents a::after,
+.edition-retour::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--duree-ui) var(--courbe-sortie);
+}
+.index-liens a:hover::after, .index-liens a:focus-visible::after,
+.liste-presse a:hover::after, .liste-presse a:focus-visible::after,
+.liste-documents a:hover::after, .liste-documents a:focus-visible::after,
+.edition-retour:hover::after, .edition-retour:focus-visible::after {
+  width: 100%;
+}
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 900px) {
   .carnaval-route { grid-template-columns: 1fr; }

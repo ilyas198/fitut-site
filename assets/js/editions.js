@@ -211,7 +211,7 @@ function renderDetail(e, mount) {
     <section class="edition-entete registre-encre">
       <div class="grille-regie">
         <div class="marge-regie"><p class="surtitre">${esc(e.dates)}${e.ville ? ' · ' + esc(e.ville) : ''}</p></div>
-        <div class="contenu-regie">
+        <div class="contenu-regie apparition">
           <a class="edition-retour" href="nos-editions.html">← Toutes les éditions</a>
           <h1 class="edition-titre">${ordinal(e.numero)} édition${aVenir ? ' <span class="edition-badge-texte">— à venir</span>' : ''}</h1>
           ${has(e.theme) ? `<p class="edition-theme">${marquerArabe(e.theme)}</p>` : ''}
@@ -228,7 +228,7 @@ function renderDetail(e, mount) {
       <section class="edition-chiffres registre-rideau">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">En chiffres</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <p class="releve-chiffres">${releve}</p>
           </div>
         </div>
@@ -245,7 +245,7 @@ function renderDetail(e, mount) {
       <section class="edition-selection registre-encre">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">${e.selection.length} spectacle${e.selection.length > 1 ? 's' : ''}</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h2 class="titre-section">Sélection officielle</h2>
             ${e.selection.map(s => {
               const meta = [s.troupe, s.universite, s.pays].filter(has).map(marquerArabe);
@@ -267,7 +267,7 @@ function renderDetail(e, mount) {
       <section class="edition-palmares registre-papier">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">${e.palmares.length} prix</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h2 class="titre-section">Palmarès</h2>
             <dl class="distribution">
               ${e.palmares.map(p => {
@@ -290,7 +290,7 @@ function renderDetail(e, mount) {
       <section class="edition-hommages registre-rideau">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">${e.hommages.length} hommage${e.hommages.length > 1 ? 's' : ''}</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h2 class="titre-section">Hommages</h2>
             ${e.hommages.map(h => `
               <article class="hommage">
@@ -314,7 +314,7 @@ function renderDetail(e, mount) {
       <section class="edition-tableronde registre-papier">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">Table ronde</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h3 class="table-ronde-titre" lang="ar" dir="rtl">${esc(tr.titre)}</h3>
             ${has(tr.titreFr) ? `<p class="table-ronde-titre-fr">${esc(tr.titreFr)}</p>` : ''}
             <dl class="table-ronde-faits">
@@ -335,7 +335,7 @@ function renderDetail(e, mount) {
       <section class="edition-galerie registre-encre">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">${e.galerie.length} photo${e.galerie.length > 1 ? 's' : ''}</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h2 class="titre-section">Galerie</h2>
             <div class="galerie-grille">
               ${e.galerie.map((g, i) => `<img src="${esc(g)}" alt="Photo ${i + 1} de la ${ordinalTxt(e.numero)} édition du FITUT" loading="lazy" width="600" height="600">`).join('')}
@@ -351,7 +351,7 @@ function renderDetail(e, mount) {
       <section class="edition-documents registre-papier">
         <div class="grille-regie">
           <div class="marge-regie"><p class="surtitre">${e.documents.length} document${e.documents.length > 1 ? 's' : ''}</p></div>
-          <div class="contenu-regie">
+          <div class="contenu-regie apparition">
             <h2 class="titre-section">Documents</h2>
             <ul class="liste-documents">
               ${e.documents.map(d => `<li><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.titre)} <span class="liste-documents-fleche" aria-hidden="true">→</span></a></li>`).join('')}
