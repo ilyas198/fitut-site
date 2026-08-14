@@ -221,9 +221,9 @@ function renderDetail(e, mount) {
       </div>
     </section>`);
 
-  /* ---- Chiffres (§23 : relevé statique, jamais de compteur — registre rideau) ---- */
+  /* ---- Chiffres (§23 : compteurs animés — registre rideau) ---- */
   if (has(e.chiffres)) {
-    const releve = e.chiffres.map(c => `${esc(c.valeur)} ${esc(c.label)}`).join(' · ');
+    const releve = e.chiffres.map(c => `<span class="compteur">${esc(c.valeur)}</span> ${esc(c.label)}`).join(' · ');
     sections.push(`
       <section class="edition-chiffres registre-rideau">
         <div class="grille-regie">

@@ -1290,6 +1290,14 @@ button:focus-visible {
   line-height: var(--interligne-donnees);
 }
 
+/* ---- Compteur animé (§23) — utilisé partout où un chiffre clé
+   apparaît (accueil, carnaval, fiches d'édition), pas seulement dans
+   .releve-chiffres : chiffres largeur constante pendant le décompte
+   (main.js, animerCompteur), sans quoi le bloc tressaute à chaque
+   incrément. Ni couleur ni taille propres : hérite du texte qui
+   l'entoure, comme un mot au milieu d'une phrase. ---- */
+.compteur { font-variant-numeric: tabular-nums; }
+
 /* ---- EXPLORER — registre papier, index de liens, pas de cartes (§15) ---- */
 .explorer-section { padding: var(--esp-8) 0 var(--esp-4); } /* bascule rideau → papier */
 .index-liens { list-style: none; margin: 0; padding: 0; }
