@@ -167,6 +167,9 @@ Règles de rythme :
 - Le papier occupe au minimum **30 %** de la hauteur de chaque page. Une page entièrement
   sombre tombe dans le défaut ② (voir §0).
 - Toute bascule de registre est précédée de `--esp-8`.
+- **Le pied de page fait exception.** Il est en registre rideau sur toutes les pages :
+  c'est le rideau qui tombe, la clôture. Élément persistant et non section de contenu,
+  il ne compte pas dans la limite de deux blocs rideau par page.
 ### L'élément signature : la ligne bilingue
 
 Le logotype du FITUT est bilingue par construction — les tracés du mot « fitut » se lisent
@@ -477,7 +480,7 @@ interchangeables — ce n'est presque jamais le cas ici.
 | Édition | **entrée de frise** — année en marge de régie, affiche et résumé en contenu |
 | Lieu | **fiche d'adresse** — nom, adresse, capacité, plan statique |
 | Membre d'équipe | **ligne de générique** — portrait carré, nom, fonction |
-| Chiffre | **relevé statique** en monospace, sans animation |
+| Chiffre | **compteur animé** (§23) — monospace, `tabular-nums` |
 | Référence presse | **ligne de liste** — média, titre, date, lien |
 | Texte long | **colonne de revue** à 680 px |
 
@@ -490,7 +493,7 @@ justifier à l'utilisateur.
 
 **Relevé de chiffres** (page d'accueil, LOT 4 phase B) : pas un neuvième composant —
 réutilise le format déjà prescrit au §23 (ligne mono à séparateurs `·`, sans balisage
-dédié) plutôt que d'en créer un.
+dédié), désormais en compteur animé comme le reste du site plutôt qu'en valeur statique.
 
 ### Spécification des huit composants
 
@@ -724,19 +727,34 @@ crédibilité le plus fort auprès des partenaires comme des troupes candidates.
 
 **Index alphabétique par pays**, en composition d'archive : pays, université, ville,
 éditions de participation. Dense, factuel, sobre. **Pas de carte du monde animée**, pas
-de compteur, pas de drapeaux en émoji.
+de compteur global, pas de drapeaux en émoji.
 
 ## 23. Participants
 
 Festivaliers, bénévoles, jury, intervenants. Registre archive. Toujours reliés à une
-édition. Les chiffres se présentent en **relevé statique** :
+édition. Les chiffres se présentent en **compteurs animés** (ci-dessous), à leur valeur
+finale :
 
 ```
 9 pays · 12 spectacles · 130 festivaliers · 100 bénévoles · 840 nuitées
 ```
 
-**Jamais de compteur animé de 0 à N.** Un chiffre d'archive est un fait, pas une
-performance de croissance.
+### Les compteurs animés
+
+Les chiffres clés se comptent de 0 jusqu'à leur valeur à l'apparition, sur tout le site.
+
+Encadrement obligatoire, sinon l'effet bascule dans le registre commercial :
+
+- **Une seule fois par session.** Déclenché à la première apparition dans le champ de
+  vision, jamais rejoué, même si l'on remonte.
+- **900 ms, `--courbe-sortie`**, jamais linéaire : le décompte ralentit en fin de course.
+- **`font-variant-numeric: tabular-nums`** obligatoire, sinon la largeur du bloc tressaute
+  à chaque incrément.
+- **Le suffixe n'apparaît qu'à l'arrivée** : `200+` ne s'affiche qu'une fois 200 atteint.
+- **La valeur finale est écrite dans le HTML**, pas seulement en `data-target` : sans
+  JavaScript, le chiffre reste lisible et indexable.
+- **`prefers-reduced-motion` : valeur finale affichée immédiatement**, sans décompte.
+- Aucun autre élément de la page n'est animé pendant le décompte.
 
 ## 24. Éditions précédentes
 
@@ -908,7 +926,8 @@ d'un élément déjà visible (carte, image, icône), pas un filet qui n'existe 
 survol et se construit sous le mot.
 
 `prefers-reduced-motion` respecté systématiquement — sans exception pour ces quatre
-comportements.
+comportements, ni pour les compteurs animés du §23 (qui affichent leur valeur finale
+d'emblée, sans décompte).
 
 **Tokens de mouvement — aucune durée ni courbe en dur :**
 
@@ -925,9 +944,10 @@ Une seule courbe par type de mouvement. Ne pas introduire de ressort ni de rebon
 
 Le mouvement le plus fort du site reste la bascule encre ↔ rideau ↔ papier au défilement.
 
-**Interdits** : parallaxe, compteurs animés, machine à écrire, rebond, `transform: scale`
+**Interdits** : parallaxe, machine à écrire, rebond, `transform: scale`
 au survol, apparitions en cascade, curseur personnalisé, défilement détourné,
-animation qui ne sert pas le sujet.
+animation qui ne sert pas le sujet. Les compteurs animés ne figurent plus dans cette
+liste : autorisés depuis §23, sous l'encadrement qui les distingue du registre commercial.
 
 « Apparitions en cascade » désigne un défilé long et démonstratif (nombreux éléments,
 délais croissants sans plafond) — pas le décalage de 60 ms plafonné à 4 paliers du point 1
@@ -971,7 +991,6 @@ Chacun de ces éléments est présent ou l'a été dans le code, et doit dispara
 | `border-radius: 999px` (pilules) | bouton d'app mobile |
 | `box-shadow: 0 20px 45px` | élévation Material Design |
 | `linear-gradient` décoratif | ornement sans justification |
-| Compteurs animés 0 → N | registre commercial |
 | Bandeau de logos défilant | « Trusted by » de landing page SaaS |
 | Compte à rebours en quatre blocs | vocabulaire de lancement de produit |
 | Portraits ronds | avatars d'interface |
@@ -1037,7 +1056,8 @@ dans la conversation en cours.**
 ## Mouvement
 
 - ❌ Ne pas ajouter de parallaxe, de curseur personnalisé, de défilement détourné
-- ❌ Ne pas animer un chiffre d'archive
+- ❌ Ne pas animer un compteur hors de l'encadrement du §23 (linéaire, rejoué au retour,
+  sans `tabular-nums`, valeur finale absente du HTML)
 - ❌ Ne pas mettre à l'échelle au survol
 - ❌ Ne pas ajouter d'animation qui ne serve pas le sujet
 ---
