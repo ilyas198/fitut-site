@@ -387,8 +387,10 @@ section { padding: 6rem 0; }
 
 /* ---- SOCIAL — liens sociaux dans le footer (barre latérale flottante
    retirée, §17). Système nouveau exclusivement : le footer est
-   .registre-encre sur les 6 pages qui l'utilisent (commit « footer »,
-   corrections urgentes). ---- */
+   .registre-rideau sur les 6 pages qui l'utilisent (§6 : exception à la
+   rareté du rideau, c'est le rideau qui tombe — voir plus bas). Accent
+   --corail-clair, pas --corail : sur --rideau, --corail ne fait que
+   4,39:1 (§10) — vérifié, pas supposé. ---- */
 .social-icon { display: inline-flex; align-items: center; justify-content: center; }
 .social-icon svg { display: block; }
 
@@ -404,20 +406,20 @@ section { padding: 6rem 0; }
 .social-icon-footer svg { width: 16px; height: 16px; }
 .social-icon-footer:hover,
 .social-icon-footer:focus-visible {
-  color: var(--corail);
-  border-color: var(--corail);
+  color: var(--corail-clair);
+  border-color: var(--corail-clair);
 }
-.social-icon-footer:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+.social-icon-footer:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
 
 .chargement-page { padding: 8rem 0; text-align: center; }
 
 /* ==========================================================
-   FOOTER — deux colonnes, registre encre (§17, corrections urgentes
-   commit 4). Toujours .registre-encre : traité comme un geste de
-   clôture propre, --esp-8 avant plutôt qu'un calcul de bascule par
-   page (le footer est un seul composant partagé par toutes les pages
-   via partials.js, CLAUDE.md §2 — pas une section de contenu qui
-   participe au rythme encre/rideau/papier de la page qui le précède).
+   FOOTER — deux colonnes, registre rideau (§17, §6 : exception à la
+   rareté du rideau — « c'est le rideau qui tombe, la clôture ». Élément
+   persistant, pas une section de contenu : ne compte pas dans la limite
+   de deux blocs rideau par page, --esp-8 avant lui reste indépendant de
+   tout calcul de bascule par page (le footer est un seul composant
+   partagé par toutes les pages via partials.js, CLAUDE.md §2).
    768px (et non 600/1024/1440, §30) : seuil demandé explicitement pour
    ce commit, signalé comme l'écart qu'il est — voir aussi .lieux-grille.
    ========================================================== */
@@ -446,7 +448,7 @@ section { padding: 6rem 0; }
   font-weight: 600;
   font-size: var(--pas-m);
   letter-spacing: -0.02em;
-  color: var(--corail);
+  color: var(--corail-clair); /* --corail : 4,39:1 sur --rideau, échec (§10) */
 }
 .footer-description {
   margin-top: var(--esp-2);

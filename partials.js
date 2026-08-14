@@ -68,8 +68,8 @@ const FOOTER_INNER_HTML = `
       <div class="footer-asau">
         <!-- [logo ASAU blanc \u00e0 confirmer] : le seul fichier disponible est
              hotlink\u00e9 depuis l'ancien WordPress, probablement con\u00e7u pour un
-             fond clair \u2014 son rendu sur --encre-nuit n'est pas v\u00e9rifiable
-             sans navigateur (m\u00eame r\u00e9serve que le logo de qui-sommes-nous.html,
+             fond clair \u2014 son rendu sur --rideau n'est pas v\u00e9rifiable sans
+             navigateur (m\u00eame r\u00e9serve que le logo de qui-sommes-nous.html,
              CLAUDE.md \u00a77). Repli typographique en attendant. -->
         <p class="footer-logo-texte">ASAU</p>
         <p class="footer-description">Par des \u00e9tudiants marocains pour les \u00e9tudiants du Monde.</p>
