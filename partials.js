@@ -39,10 +39,13 @@ const renderSocialIcons = (extraClass) =>
   ).join('');
 
 const HEADER_HTML = `
-  <nav id="navbar">
+  <nav id="navbar" class="registre-encre">
     <div class="nav-inner">
       <a href="index.html" class="logo-link">
-        <img src="https://fitut.ma/wp-content/uploads/2020/04/cropped-Logo-fitut-1-1-118x51.png" alt="FITUT" class="logo">
+        <!-- [logo SVG \u00e0 confirmer] : le fichier WordPress actuel (118\u00d751px,
+             pas de version claire, cf. CLAUDE.md \u00a77) est retir\u00e9. Repli
+             typographique en attendant le fichier r\u00e9el du comit\u00e9. -->
+        <span class="logo-texte">fitut</span>
       </a>
       <button type="button" class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav-links" aria-expanded="false">
         <span></span><span></span><span></span>
