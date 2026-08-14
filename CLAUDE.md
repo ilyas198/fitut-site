@@ -89,6 +89,7 @@ Refonte demandée par le client, **déjà appliquée** — ne pas revenir en arr
 | Photos et « Mot du Fondateur » retirés de Qui Sommes Nous | fait |
 | Slider à translation `-33.333%` remplacé | fait — fondu-croisé piloté par le DOM |
 | Doublon « Meilleure Actrice » corrigé | fait — devenu « Meilleur Acteur » |
+| Divergence sur le 4ᵉ lieu du festival (« Centre Culturel Ahmed Boukmakh » sur `le-festival.html` vs « ENCG Tanger » au §6, signalée en §7) | fait — tranchée : ni l'un ni l'autre, le site n'affiche plus que les 3 lieux non contestés |
 
 Redirections 301 des trois pages supprimées : dans `.htaccess`.
 
@@ -184,7 +185,9 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
 - ASAU fondée en **2005**, premier festival en **2007**
 - Carnaval : Place du 9 Avril (Cinéma Rif) → Place des Nations-Unies, 5 000+ spectateurs
 - Lieux : Palais des Arts et de la Culture, Espace Beckett (Institut Français),
-  University of New England, ENCG Tanger
+  University of New England — 3 lieux (voir §3 : « Centre Culturel Ahmed
+  Boukmakh », affiché un temps sur `le-festival.html`, retiré définitivement,
+  n'a jamais fait partie de cette liste)
 - Contact affiché actuellement : `fitutanger@gmail.com` / +212 (0)6 62 66 63 38
   Route de l'aéroport, BP 1255, 90000 Tanger Principal — ENCG Tanger
 
@@ -232,12 +235,7 @@ Extraites du *Guide 2025* et de la *Proposition de sponsoring FITUT 2026*.
     n'est pas vérifiable sans navigateur. Le logo est retiré en attendant ; son
     emplacement est marqué en commentaire dans le HTML, prêt à recevoir la version
     blanche dès qu'elle existe.
-12. **Un des 4 lieux du festival est contradictoire selon la source** (`le-festival.html`
-    §6) : ce fichier liste « Centre Culturel Ahmed Boukmakh » (contenu déjà en ligne),
-    tandis que le §6 ci-dessus (Guide 2025 / dossier de sponsoring) liste « ENCG
-    Tanger » à la place. Le contenu actuel de `le-festival.html` est conservé tel quel
-    en attendant — ne pas trancher seul entre les deux.
-13. **Adresses exactes et capacités des 4 lieux du festival** (`le-festival.html`,
+12. **Adresses exactes et capacités des 3 lieux du festival** (`le-festival.html`,
     `.fiche-adresse`) : absentes de nos sources, affichées `[à confirmer]`. Un plan
     statique par lieu est prévu (`.fiche-adresse-plan`) mais aucun fichier réel
     n'existe encore.

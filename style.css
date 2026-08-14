@@ -2224,15 +2224,20 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 .festival-prix         { padding: var(--esp-8) 0 var(--esp-4); } /* bascule 3 : encre → papier */
 .festival-ateliers     { padding: var(--esp-8) 0 var(--esp-6); } /* bascule 4 : papier → encre, dernière section */
 
-/* ---- Lieux — .fiche-adresse (§15, §29, registre papier), 4 entrées
-   en grille plutôt qu'empilées (§18 : 4 à 6 éléments courts). ---- */
+/* ---- Lieux — .fiche-adresse (§15, §29, registre papier), 3 entrées sur
+   une seule ligne dès 900px (une colonne en dessous) — seuil demandé
+   explicitement pour ce commit plutôt que 600/1024/1440 (§30) : signalé
+   ici comme l'écart qu'il est, pas silencieusement aligné sur la grille
+   canonique. Avec seulement 3 colonnes égales, une bascule à 600px les
+   aurait rendues trop étroites pour le contenu de la fiche (adresse,
+   capacité, plan, bouton). ---- */
 .lieux-grille {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--esp-5);
   margin-top: var(--esp-3);
 }
-@media (min-width: 600px) { .lieux-grille { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .lieux-grille { grid-template-columns: repeat(3, 1fr); } }
 .fiche-adresse .bouton { margin-top: var(--esp-3); }
 
 /* ---- Prix — .distribution (§15), registre papier. Compte réel de
