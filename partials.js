@@ -63,19 +63,33 @@ const HEADER_HTML = `
 `;
 
 const FOOTER_INNER_HTML = `
-  <div class="container">
-    <img src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-2-1024x215.png" alt="Association de l'Action Universitaire (ASAU)" class="footer-logo" width="320" height="67" loading="lazy">
-    <p>Par des \u00e9tudiants marocains pour les \u00e9tudiants du Monde.</p>
-    <p>Festival International du Th\u00e9\u00e2tre Universitaire de Tanger.</p>
-    <address class="footer-contact">
-      <a href="mailto:fitutanger@gmail.com">fitutanger@gmail.com</a>
-      <a href="tel:+212662666338">+212 (0)6 62 66 63 38</a>
-      <span>Route de l'a\u00e9roport, BP 1255, 90000 Tanger Principal &mdash; ENCG Tanger</span>
-    </address>
-    <div class="footer-social" aria-label="R\u00e9seaux sociaux">
-      ${renderSocialIcons('social-icon-footer')}
+  <div class="footer-inner">
+    <div class="footer-grille">
+      <div class="footer-asau">
+        <!-- [logo ASAU blanc \u00e0 confirmer] : le seul fichier disponible est
+             hotlink\u00e9 depuis l'ancien WordPress, probablement con\u00e7u pour un
+             fond clair \u2014 son rendu sur --encre-nuit n'est pas v\u00e9rifiable
+             sans navigateur (m\u00eame r\u00e9serve que le logo de qui-sommes-nous.html,
+             CLAUDE.md \u00a77). Repli typographique en attendant. -->
+        <p class="footer-logo-texte">ASAU</p>
+        <p class="footer-description">Par des \u00e9tudiants marocains pour les \u00e9tudiants du Monde.</p>
+      </div>
+      <div class="footer-contact-bloc">
+        <p class="surtitre">Contact</p>
+        <address class="footer-contact">
+          <a href="mailto:fitutanger@gmail.com">fitutanger@gmail.com</a>
+          <a href="tel:+212662666338">+212 (0)6 62 66 63 38</a>
+          <span>Route de l'a\u00e9roport, BP 1255, 90000 Tanger Principal &mdash; ENCG Tanger</span>
+        </address>
+      </div>
     </div>
-    <p class="footer-copy">&copy; FITUT ${new Date().getFullYear()} &mdash; Tous droits r\u00e9serv\u00e9s</p>
+    <div class="filet-section"></div>
+    <div class="footer-bas">
+      <div class="footer-social" aria-label="R\u00e9seaux sociaux">
+        ${renderSocialIcons('social-icon-footer')}
+      </div>
+      <p class="footer-copy">&copy; FITUT ${new Date().getFullYear()} &mdash; ASAU</p>
+    </div>
   </div>
 `;
 
