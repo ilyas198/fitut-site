@@ -1005,8 +1005,12 @@ button:focus-visible {
    le fil se pilote déjà (flèches clavier, balayage) — à la souris, sur
    grand écran, une cible cliquable directe reste utile. Les filets ne
    sont pas remplacés : ils restent la seule source de la position dans
-   le fil, les flèches ne font qu'avancer/reculer d'un cran. ---- */
-.hero-fleche {
+   le fil, les flèches ne font qu'avancer/reculer d'un cran.
+   Composant partagé .fleche-nav : même besoin, même style, réutilisé tel
+   quel par la bande de Nos Éditions (§24 commit « flèches + mise en avant
+   centrale ») plutôt que dupliqué — .hero-fleche renommé en conséquence,
+   les modificateurs --gauche/--droite portent le sens générique. ---- */
+.fleche-nav {
   display: none;
   position: absolute;
   top: 50%;
@@ -1027,22 +1031,22 @@ button:focus-visible {
               color var(--duree-ui) var(--courbe-sortie);
 }
 @supports not (backdrop-filter: blur(1px)) {
-  .hero-fleche { background: var(--voile-barre-repli); }
+  .fleche-nav { background: var(--voile-barre-repli); }
 }
-.hero-fleche svg { width: 20px; height: 20px; fill: currentColor; }
-.hero-fleche--gauche { left: var(--esp-3); }
-.hero-fleche--droite { right: var(--esp-3); }
-.hero-fleche:hover,
-.hero-fleche:focus-visible { color: var(--corail-clair); border-color: var(--corail-clair); }
-.hero-fleche:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
-.hero-fleche[aria-disabled="true"] {
+.fleche-nav svg { width: 20px; height: 20px; fill: currentColor; }
+.fleche-nav--gauche { left: var(--esp-3); }
+.fleche-nav--droite { right: var(--esp-3); }
+.fleche-nav:hover,
+.fleche-nav:focus-visible { color: var(--corail-clair); border-color: var(--corail-clair); }
+.fleche-nav:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+.fleche-nav[aria-disabled="true"] {
   cursor: not-allowed;
   border-style: dashed;
   color: var(--papier-tiers); /* même convention que l'état désactivé des boutons, §15 */
 }
-.hero-fleche[aria-disabled="true"]:hover { color: var(--papier-tiers); border-color: var(--filet-sombre); }
+.fleche-nav[aria-disabled="true"]:hover { color: var(--papier-tiers); border-color: var(--filet-sombre); }
 @media (min-width: 1024px) {
-  .hero-fleche { display: flex; }
+  .fleche-nav { display: flex; }
 }
 
 /* ---- prefers-reduced-motion : annonces.js construit un empilement
@@ -1627,6 +1631,12 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 @media (min-width: 1024px) { :root { --affiche-largeur: 210px; } }
 
 .bande-editions { padding: 0 0 var(--esp-6); }
+
+/* Conteneur de la bande : position:relative pour ancrer les flèches sur
+   la hauteur des vignettes seules (pas sur le filet de progression, qui
+   reste en dehors, §24). */
+.bande-conteneur { position: relative; }
+
 .bande-defilement {
   display: flex;
   list-style: none; /* <ul> : la remise à zéro margin/padding est déjà
@@ -1638,19 +1648,70 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding: 0 var(--esp-2) var(--esp-3);
+  /* Barre de défilement masquée, défilement natif intact (§24 commit
+     « flèches + mise en avant centrale ») : le balayage tactile, le
+     trackpad et le clavier continuent de fonctionner sans changement. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.bande-defilement::-webkit-scrollbar { display: none; }
 @media (min-width: 600px) {
-  .bande-defilement { gap: var(--esp-3); padding: 0 var(--esp-3) var(--esp-3); }
+  .bande-defilement {
+    gap: var(--esp-3);
+    /* Gauche/droite recalculés plus bas (§24) pour que la première et la
+       dernière vignette puissent atteindre le centre — padding-bottom
+       seul reste celui-ci. */
+    padding-bottom: var(--esp-3);
+  }
 }
 @media (min-width: 1024px) {
-  .bande-defilement { padding: 0 var(--esp-4) var(--esp-3); }
+  .bande-defilement { padding-bottom: var(--esp-3); }
+}
+/* Padding latéral de centrage — actif partout où la mise en avant
+   centrale l'est aussi (≥600px, voir .affiche-entree ci-dessous) :
+   la moitié de la largeur visible du conteneur moins la moitié d'une
+   vignette, pour que même la vignette au bord de la bande puisse glisser
+   jusqu'au centre. Calcul vérifié à l'écran (voir le commit) — la
+   formule littérale du brief (« moins une vignette » entière) sous-
+   corrige d'une demi-vignette et décentre la première/dernière ; signalé
+   plutôt que reproduit tel quel. */
+@media (min-width: 600px) {
+  .bande-defilement {
+    padding-left: calc(50% - (var(--affiche-largeur) / 2));
+    padding-right: calc(50% - (var(--affiche-largeur) / 2));
+  }
 }
 
 .affiche-entree {
   flex: 0 0 var(--affiche-largeur);
   width: var(--affiche-largeur);
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+  /* Mise en avant centrale (§24) : l'échelle ne modifie jamais la boîte
+     de mise en page (transform n'affecte que le rendu), donc la place
+     de la vignette agrandie est déjà réservée par construction — 1.00
+     est la taille normale de la vignette, jamais un agrandissement
+     au-delà ; seules les vignettes voisine/au repos rétrécissent. */
+  transform: scale(0.86);
+  opacity: 0.86; /* 6,90:1 sur --encre-nuit pour --papier-tiers, encore AA — vérifié au calcul */
 }
+@media (prefers-reduced-motion: no-preference) {
+  .affiche-entree {
+    transition: transform var(--duree-contenu) var(--courbe-sortie),
+                opacity var(--duree-contenu) var(--courbe-sortie);
+  }
+}
+.affiche-entree.est-voisine { transform: scale(0.94); opacity: 0.94; }
+.affiche-entree.est-active { transform: scale(1); opacity: 1; }
+/* L'effet est décoratif (§24) : année et numéro restent lisibles à
+   toutes les échelles, y compris au repos — aucune information n'est
+   portée par l'échelle elle-même. Mobile et prefers-reduced-motion :
+   aucune mise à l'échelle, toutes les vignettes à taille égale. */
+@media (max-width: 599.98px), (prefers-reduced-motion: reduce) {
+  .affiche-entree,
+  .affiche-entree.est-voisine,
+  .affiche-entree.est-active { transform: none; opacity: 1; }
+}
+.affiche-entree.est-active .affiche-entree-annee { color: var(--corail); } /* 5,68:1 sur --encre-nuit — surtitre visible de l'édition active */
 .affiche-entree-lien {
   display: block;
   transition: transform var(--duree-ui) var(--courbe-sortie);

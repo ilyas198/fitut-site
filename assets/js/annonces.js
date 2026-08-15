@@ -62,10 +62,10 @@ function construireSquelette(mount, total) {
         ${total > 1 ? '<div class="hero-nav" id="heroNav" aria-label="Annonces"></div>' : ''}
       </div>
     </div>
-    <button type="button" class="hero-fleche hero-fleche--gauche" id="heroFlecheGauche" aria-label="Annonce précédente">
+    <button type="button" class="fleche-nav fleche-nav--gauche" id="heroFlecheGauche" aria-label="Annonce précédente">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
     </button>
-    <button type="button" class="hero-fleche hero-fleche--droite" id="heroFlecheDroite" aria-label="Annonce suivante">
+    <button type="button" class="fleche-nav fleche-nav--droite" id="heroFlecheDroite" aria-label="Annonce suivante">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
     </button>
   `;

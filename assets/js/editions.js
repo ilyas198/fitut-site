@@ -125,12 +125,26 @@ function renderBande(editions, mount) {
 
   /* <ul>/<li> plutôt que des <div> : un lecteur d'écran annonce
      « liste de 19 éléments », l'information réelle ici (nombre
-     d'éditions), pas seulement une suite de liens sans relation. */
+     d'éditions), pas seulement une suite de liens sans relation.
+     Flèches (§24 commit « flèches + mise en avant centrale ») : même
+     composant que le hero (.fleche-nav, §16) — desktop uniquement,
+     ancrées sur .bande-conteneur pour rester au centre vertical des
+     vignettes seules, pas de la bande + son filet de progression. */
   mount.innerHTML = `
-    <ul class="bande-defilement" id="bandeDefilement" role="list" aria-label="Chronologie des éditions, défilement horizontal">${entrees}</ul>
+    <div class="bande-conteneur">
+      <ul class="bande-defilement" id="bandeDefilement" role="list" aria-label="Chronologie des éditions, défilement horizontal">${entrees}</ul>
+      <button type="button" class="fleche-nav fleche-nav--gauche" id="bandeFlecheGauche" aria-label="Édition précédente">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <button type="button" class="fleche-nav fleche-nav--droite" id="bandeFlecheDroite" aria-label="Édition suivante">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      </button>
+    </div>
     <div class="bande-progression"><span class="bande-progression-remplissage" id="bandeProgression"></span></div>`;
 
   initBandeProgression();
+  initBandeFleches();
+  initBandeEmphase();
 
   injectJsonLd({
     '@context': 'https://schema.org',
