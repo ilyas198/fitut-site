@@ -869,12 +869,39 @@ Jamais une grille de cartes. La forme dépend du nombre d'entrées :
   ordinal et année en dessous, lien entier vers la fiche complète (jamais un panneau ni
   une modale — dupliquer la fiche la rendrait invisible aux moteurs). `scroll-snap-type:
   x mandatory`, jamais de scroll détourné en JavaScript. Un filet de progression sous la
-  bande plutôt que des flèches ou des pastilles — même esprit que la navigation du hero
-  (§16), lecture continue plutôt que pagination.
+  bande plutôt que des pastilles — même esprit que la navigation du hero (§16), lecture
+  continue plutôt que pagination.
   Affiches manquantes : remplacement typographique (fond `--encre-coulisse`, année à
   `--pas-2xl`, numéro d'édition en `--police-donnees`), au même ratio 3:4 qu'une vraie
   affiche — pas un cadre vide répété, et rien à changer dans la mise en page le jour où
   les vraies affiches arrivent.
+
+> **Flèches, exception desktop (commit « flèches + mise en avant centrale »).** Même
+> amendement qu'au hero (§16), même composant (`.fleche-nav`) : dès 1024 px, deux
+> `<button>` (`aria-label` « Édition précédente »/« Édition suivante ») dans les marges
+> latérales de la bande, jamais par-dessus les vignettes — fond `--voile-barre`,
+> `--rayon-plein`, flèche `--corail`, filet 1 px. Elles s'ajoutent au filet de
+> progression, ne le remplacent pas. Un clic fait défiler d'une vignette,
+> `scroll-behavior: smooth`. Désactivée et `aria-disabled` en bout de bande — jamais
+> retirée du DOM. La barre de défilement native est masquée (`scrollbar-width`,
+> `::-webkit-scrollbar`), jamais le défilement lui-même : balayage tactile, trackpad et
+> clavier continuent de fonctionner sans changement.
+>
+> **Mise en avant centrale (même commit).** L'édition au centre de la bande porte
+> l'échelle 1 (sa taille normale — l'échelle ne dépasse jamais 1, rien ne grossit
+> au-delà de la taille propre de la vignette, ce qui réserve sa place dès le départ et
+> évite tout tressautement de page), ses deux voisines immédiates 0,94, le reste au
+> repos à 0,86 (opacité assortie, encore AA sur `--encre-nuit` — vérifié au calcul).
+> Transition sur `--duree-contenu`/`--courbe-sortie`. Détection par
+> `IntersectionObserver` sur le conteneur de la bande, jamais par un calcul de
+> `scrollLeft` à chaque frame. `scroll-snap-align: center` (et non `start`) ; le
+> padding latéral du conteneur vaut la moitié de sa largeur visible moins la moitié
+> d'une vignette, pour que la première et la dernière puissent elles aussi atteindre le
+> centre. L'édition active porte un surtitre visible : son année passe en `--corail`.
+> Effet strictement décoratif — année et numéro d'édition restent lisibles à toute
+> échelle, y compris au repos ; aucune information n'est portée par la mise à l'échelle
+> elle-même. Sur mobile et sous `prefers-reduced-motion` : aucune mise à l'échelle,
+> toutes les vignettes à taille égale, l'observateur n'est même pas créé.
 
 Sur la fiche d'une édition, l'ordre suit celui d'un programme imprimé :
 **affiche → dates → thème → chiffres → sélection → palmarès → hommages → galerie →

@@ -197,6 +197,126 @@ function initBandeProgression() {
   majProgression();
 }
 
+/* ---------- Flèches de la bande (§24 commit « flèches + mise en avant
+   centrale ») ----------
+   Même composant que le hero (.fleche-nav, §16) : desktop uniquement,
+   masqué en dessous par la règle CSS. Un clic fait défiler d'une
+   vignette — largeur réelle + espacement lus au moment du clic, pas
+   recalculés en continu — en scroll-behavior: smooth (neutralisé sous
+   prefers-reduced-motion par la règle globale, §34). La bande reste un
+   overflow-x natif : les flèches avancent d'un cran, elles ne pilotent
+   rien d'autre. */
+function initBandeFleches() {
+  const bande = document.getElementById('bandeDefilement');
+  const flecheGauche = document.getElementById('bandeFlecheGauche');
+  const flecheDroite = document.getElementById('bandeFlecheDroite');
+  if (!bande || !flecheGauche || !flecheDroite) return;
+
+  function pasDefilement() {
+    const premiere = bande.querySelector('.affiche-entree');
+    if (!premiere) return bande.clientWidth;
+    const style = getComputedStyle(bande);
+    const espace = parseFloat(style.columnGap || style.gap) || 0;
+    return premiere.getBoundingClientRect().width + espace;
+  }
+
+  // Bout de bande : la première/dernière vignette est déjà centrée grâce
+  // au padding de centrage (voir style.css) dès scrollLeft ≈ 0 / max —
+  // inutile d'aller plus loin, la flèche se désactive à cette borne.
+  function majEtatFleches() {
+    const { scrollLeft, scrollWidth, clientWidth } = bande;
+    const maxScroll = scrollWidth - clientWidth;
+    const auDebut = scrollLeft <= 1;
+    const auBout = scrollLeft >= maxScroll - 1;
+    flecheGauche.disabled = auDebut;
+    flecheGauche.setAttribute('aria-disabled', String(auDebut));
+    flecheDroite.disabled = auBout;
+    flecheDroite.setAttribute('aria-disabled', String(auBout));
+  }
+
+  flecheGauche.addEventListener('click', () => {
+    bande.scrollBy({ left: -pasDefilement(), behavior: 'smooth' });
+  });
+  flecheDroite.addEventListener('click', () => {
+    bande.scrollBy({ left: pasDefilement(), behavior: 'smooth' });
+  });
+
+  let planifie = false;
+  bande.addEventListener('scroll', () => {
+    if (planifie) return;
+    planifie = true;
+    requestAnimationFrame(() => { planifie = false; majEtatFleches(); });
+  }, { passive: true });
+  window.addEventListener('resize', majEtatFleches);
+  majEtatFleches();
+}
+
+/* ---------- Mise en avant centrale (§24 commit « flèches + mise en
+   avant centrale ») ----------
+   Détection par IntersectionObserver sur .bandeDefilement, jamais par un
+   calcul de scrollLeft à chaque frame : une fenêtre resserrée au centre
+   du conteneur (rootMargin négatif à gauche/droite) ne laisse
+   « intersecter » que la vignette réellement centrée ; ses voisines
+   immédiates viennent de sa position dans la liste, pas d'un second
+   seuil à calibrer. Purement décoratif — l'année et le numéro restent
+   lisibles à toute échelle, y compris au repos (voir .affiche-entree-
+   annee, .affiche-entree-ordinal en CSS, jamais masqués). Désactivée sur
+   mobile et sous prefers-reduced-motion : l'observateur n'est même pas
+   créé, cohérent avec la neutralisation CSS de l'échelle (§34). */
+function initBandeEmphase() {
+  const media600 = window.matchMedia('(max-width: 599.98px)');
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (media600.matches || reduit.matches) return;
+
+  const bande = document.getElementById('bandeDefilement');
+  if (!bande) return;
+  const items = Array.from(bande.querySelectorAll('.affiche-entree'));
+  if (items.length === 0) return;
+
+  function appliquerEtat(actif) {
+    const idx = items.indexOf(actif);
+    items.forEach((item, i) => {
+      item.classList.remove('est-active', 'est-voisine');
+      if (i === idx) item.classList.add('est-active');
+      else if (i === idx - 1 || i === idx + 1) item.classList.add('est-voisine');
+    });
+  }
+
+  const observateur = new IntersectionObserver((entries) => {
+    const visibles = entries.filter(e => e.isIntersecting);
+    if (visibles.length === 0) return;
+    // Plus d'une entrée simultanément « intersectante » ne devrait
+    // arriver qu'en plein mouvement, brièvement — départage par la
+    // distance réelle au centre à cet instant précis (pas une boucle),
+    // simple filet de sécurité autour du mécanisme principal ci-dessus.
+    let actif = visibles[0].target;
+    if (visibles.length > 1) {
+      const centreConteneur = bande.getBoundingClientRect().left + bande.clientWidth / 2;
+      let meilleure = Infinity;
+      visibles.forEach(v => {
+        const r = v.target.getBoundingClientRect();
+        const d = Math.abs((r.left + r.width / 2) - centreConteneur);
+        if (d < meilleure) { meilleure = d; actif = v.target; }
+      });
+    }
+    appliquerEtat(actif);
+  }, { root: bande, rootMargin: '0px -45% 0px -45%', threshold: 0 });
+
+  items.forEach(item => observateur.observe(item));
+
+  // Un redimensionnement qui fait franchir le seuil de 600px, ou un
+  // changement de préférence système en cours de visite, ne doit pas
+  // laisser une échelle fantôme : déconnecte et remet les vignettes à
+  // plat plutôt que de laisser tourner un observateur devenu inutile.
+  function neutraliser(mq) {
+    if (!mq.matches) return;
+    observateur.disconnect();
+    items.forEach(item => item.classList.remove('est-active', 'est-voisine'));
+  }
+  media600.addEventListener('change', () => neutraliser(media600));
+  reduit.addEventListener('change', () => neutraliser(reduit));
+}
+
 /* ---------- Vue : fiche d'une édition ---------- */
 function renderDetail(e, mount) {
   const titre = `${ordinalTxt(e.numero)} édition du FITUT — ${e.annee}`;
