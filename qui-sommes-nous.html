@@ -17,7 +17,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Readex+Pro:wght@300;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,100 +25,126 @@
   <!-- HEADER (injecté par partials.js) -->
   <div id="site-header"></div>
 
-  <div class="page-hero">
-    <h1>Qui Sommes Nous?</h1>
-    <div class="gold-line"></div>
-  </div>
+  <main id="contenu">
 
-  <!-- ASAU Intro -->
-  <section>
-    <div class="container">
-      <div style="max-width:800px; margin:0 auto; text-align:center;" class="reveal">
-        <img src="https://fitut.ma/wp-content/uploads/2020/04/asau_logo-1-1024x215.png" alt="ASAU" style="height:60px; width:auto; margin:0 auto 2.5rem;">
-        <p style="font-size:1.05rem; line-height:1.9; color:var(--warm-grey);">
-          Créée en 2005 par <strong style="color:var(--charcoal)">Tahar Elqour</strong> en compagnie des jeunes étudiants de l'École Nationale de Commerce et de Gestion de Tanger, l'<strong style="color:var(--charcoal)">Association de l'Action Universitaire</strong> est chérie pour sa diversification culturelle et artistique mais surtout par sa jeunesse qui la porte.
+  <!-- ============ ASAU (registre encre : récit d'ouverture, ça se regarde
+       avant de se lire — la page n'est plus monorégistre, §6). ============ -->
+  <section class="asau-intro registre-encre">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">Fondée en 2005</p></div>
+      <div class="contenu-regie apparition">
+        <!-- Traduction arabe candidate, non validée par un locuteur natif —
+             à faire relire par le comité avant mise en ligne (CLAUDE.md §7).
+             Ne pas considérer comme acquise. -->
+        <h1 class="titre-bilingue">
+          <span lang="fr">Qui sommes-nous ?</span>
+          <span lang="ar" dir="rtl">من نحن؟</span><!-- [traduction à valider] -->
+        </h1>
+        <!-- EMPLACEMENT PRÉVU DU LOGO ASAU — retiré au passage en registre
+             encre : le fichier actuel (hotlinké, fond clair présumé, non
+             vérifiable sans navigateur) risquait de devenir illisible sur
+             --encre-nuit. Besoin ajouté à CLAUDE.md §7 : logo ASAU en
+             version blanche pour fond sombre. Réintroduire ici
+             <img class="asau-logo" ...> dès que ce fichier existe — ne
+             pas remettre l'actuel en l'état. -->
+        <p class="texte-revue">
+          Créée en 2005 par <strong>Tahar Elqour</strong> en compagnie des jeunes étudiants de l'École Nationale de Commerce et de Gestion de Tanger, l'Association de l'Action Universitaire est portée par sa diversification culturelle et artistique, et surtout par la jeunesse qui l'anime.
         </p>
-        <p style="font-size:1.05rem; line-height:1.9; margin-top:1.5rem; color:var(--warm-grey);">
-          L'association œuvre assidûment à garder une fusion et une conciliation entre le volet culturel, événementiel et professionnel au niveau du royaume et à l'international. Son succès s'est bâti au fil des années grâce à l'engagement de son comité et son travail laborieux.
+        <p class="texte-revue">
+          L'association œuvre à concilier le volet culturel, événementiel et professionnel, au niveau du royaume comme à l'international. Son travail s'est construit au fil des années grâce à l'engagement de son comité.
         </p>
-        <p style="font-size:1.05rem; line-height:1.9; margin-top:1.5rem; color:var(--warm-grey);">
-          Plus de 20 ans d'existence et de don à la région nord, et plus précisément à la perle du détroit « Tanger » — on ne peut nier l'importance du chemin parcouru tout au long de ces années passées.
+        <p class="texte-revue">
+          Plus de 20 ans d'existence et de travail dans la région nord, et plus précisément à Tanger — un chemin dont l'importance ne se dément pas.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- PHILOSOPHIE -->
-  <section style="background:var(--charcoal); color:var(--cream); padding:6rem 0;">
-    <div class="container">
-      <h2 class="section-title" style="color:var(--cream);">Philosophie &amp; Valeurs</h2>
-      <div class="values-grid reveal">
-        <div class="value-card" style="border-color:rgba(247,243,236,0.15);">
-          <h3>Partage</h3>
-          <p style="color:rgba(247,243,236,0.6);">Car partager c'est aussi recevoir.</p>
-        </div>
-        <div class="value-card" style="border-color:rgba(247,243,236,0.15);">
-          <h3>Persévérance</h3>
-          <p style="color:rgba(247,243,236,0.6);">Avec plus de 20 ans d'existence !</p>
-        </div>
-        <div class="value-card" style="border-color:rgba(247,243,236,0.15);">
-          <h3>Épanouissement</h3>
-          <p style="color:rgba(247,243,236,0.6);">Toujours plus haut, toujours plus loin!</p>
-        </div>
-        <div class="value-card" style="border-color:rgba(247,243,236,0.15);">
-          <h3>Tolérance</h3>
-          <p style="color:rgba(247,243,236,0.6);">Car nos différences nous rendent uniques.</p>
-        </div>
-        <div class="value-card" style="border-color:rgba(247,243,236,0.15);">
-          <h3>Créativité</h3>
-          <p style="color:rgba(247,243,236,0.6);">Notre petit secret pour rendre le rêve une réalité.</p>
+  <!-- ============ PHILOSOPHIE & VALEURS (registre papier — grille asymétrique,
+       jamais un empilement pour 4 à 6 éléments courts, §18) ============ -->
+  <section class="asau-valeurs registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">5 valeurs</p></div>
+      <div class="contenu-regie apparition">
+        <h2 class="titre-section">Philosophie &amp; valeurs</h2>
+        <div class="valeurs-grille">
+          <article class="valeur valeur--principale">
+            <span class="valeur-numero">01</span>
+            <h3 class="valeur-titre">Partage</h3>
+            <p class="valeur-texte">Car partager c'est aussi recevoir.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">02</span>
+            <h3 class="valeur-titre">Persévérance</h3>
+            <p class="valeur-texte">Plus de 20 ans d'existence.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">03</span>
+            <h3 class="valeur-titre">Épanouissement</h3>
+            <p class="valeur-texte">Toujours plus haut, toujours plus loin.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">04</span>
+            <h3 class="valeur-titre">Tolérance</h3>
+            <p class="valeur-texte">Nos différences nous rendent uniques.</p>
+          </article>
+          <article class="valeur">
+            <span class="valeur-numero">05</span>
+            <h3 class="valeur-titre">Créativité</h3>
+            <p class="valeur-texte">Le moyen de rendre le rêve réalité.</p>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- L'ÉQUIPE -->
-  <section style="background:var(--cream); border-top:1px solid var(--line);">
-    <div class="container">
-      <h2 class="section-title reveal">L'Équipe</h2>
-      <p class="team-intro reveal">Le FITUT est porté par un comité composé à 100&nbsp;% d'étudiants, encadré par l'Association de l'Action Universitaire.</p>
-      <div class="team-grid reveal" id="team-grid">
-        <!-- Chaque membre : photo carrée, nom, fonction.
-             Ajouter un membre = dupliquer un bloc .team-member. -->
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/eee-orm3c0tte0ljf98p5ey82spppq7uc9nc5dzh8ep8qw.jpg" alt="Portrait de Tahar Elqour" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Tahar Elqour</span>
-            <span class="team-role">Fondateur</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.19.09-orm3by0atihogfcslvqcdbfbxklqp6c55010sktf9k.jpeg" alt="Portrait d'Aimane Mezdioui" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Aimane Mezdioui</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/PLPLPLP-1-orm3c3nbyipee34loy63sa03hvtxzcyj5rxxo8l288.png" alt="Portrait de Fatima Zohra Guedira" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Fatima Zohra Guedira</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
-        <figure class="team-member">
-          <img src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.52.55RRR-orm3bzvz76k93na2awjliay94cch4kjlt9bzr4qmx4.jpeg" alt="Portrait de Nizar Zahour" loading="lazy" width="400" height="400">
-          <figcaption>
-            <span class="team-name">Nizar Zahour</span>
-            <span class="team-role">[Fonction à confirmer]</span>
-          </figcaption>
-        </figure>
+  <!-- ============ L'ÉQUIPE (§15 : ligne de générique, portraits carrés) ============ -->
+  <section class="asau-equipe registre-papier">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">100&nbsp;% étudiants</p></div>
+      <div class="contenu-regie apparition">
+        <h2 class="titre-section">L'équipe</h2>
+        <p class="texte-revue">Le FITUT est porté par un comité composé à 100&nbsp;% d'étudiants, encadré par l'Association de l'Action Universitaire.</p>
+        <div class="generique-liste">
+          <!-- Chaque membre : photo carrée, nom, fonction.
+               Ajouter un membre = dupliquer un bloc .generique. -->
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/eee-orm3c0tte0ljf98p5ey82spppq7uc9nc5dzh8ep8qw.jpg" alt="Portrait de Tahar Elqour" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Tahar Elqour</p>
+              <p class="generique-fonction">Fondateur</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.19.09-orm3by0atihogfcslvqcdbfbxklqp6c55010sktf9k.jpeg" alt="Portrait d'Aimane Mezdioui" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Aimane Mezdioui</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/PLPLPLP-1-orm3c3nbyipee34loy63sa03hvtxzcyj5rxxo8l288.png" alt="Portrait de Fatima Zohra Guedira" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Fatima Zohra Guedira</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
+          <article class="generique">
+            <img class="generique-portrait" src="https://fitut.ma/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-04-18-at-23.52.55RRR-orm3bzvz76k93na2awjliay94cch4kjlt9bzr4qmx4.jpeg" alt="Portrait de Nizar Zahour" loading="lazy" width="400" height="400">
+            <div>
+              <p class="generique-nom">Nizar Zahour</p>
+              <p class="generique-fonction">[Fonction à confirmer]</p>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER (injecté par partials.js) -->
-  <footer id="site-footer" class="site-footer"></footer>
+  <footer id="site-footer" class="site-footer registre-rideau"></footer>
 
   <script src="partials.js"></script>
   <script src="main.js"></script>

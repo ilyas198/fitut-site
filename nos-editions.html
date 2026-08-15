@@ -18,28 +18,49 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Readex+Pro:wght@300;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div id="site-header"></div>
 
-  <div class="page-hero">
-    <h1>Nos Éditions</h1>
-    <div class="gold-line"></div>
-    <p class="page-hero-sub">Depuis 2007, le FITUT a accueilli plus de 200 troupes venues de plus de 20 pays. Retrouvez ici l'histoire complète du festival, édition par édition.</p>
-  </div>
+  <main id="contenu">
 
-  <section>
-    <div class="container">
-      <div id="editions-grid" aria-live="polite">
-        <p class="loading-msg">Chargement des éditions…</p>
+  <!-- ============ INTRO (LOT 5a, §24) ============ -->
+  <section class="editions-intro registre-encre">
+    <div class="grille-regie">
+      <div class="marge-regie"><p class="surtitre">19 éditions</p></div>
+      <div class="contenu-regie apparition">
+        <!-- Traduction arabe candidate, non validée par un locuteur natif —
+             à faire relire par le comité avant mise en ligne. Ne pas
+             considérer comme acquise (voir CLAUDE.md §7). -->
+        <h1 class="titre-bilingue">
+          <span lang="fr">Nos Éditions</span>
+          <span lang="ar" dir="rtl">دوراتنا</span><!-- [traduction à valider] -->
+        </h1>
+        <p class="editions-intro-texte">Depuis 2007, le FITUT a accueilli plus de 200 troupes venues de plus de 20 pays. Dix-neuf éditions, de la plus récente à la première.</p>
       </div>
     </div>
   </section>
 
-  <footer id="site-footer" class="site-footer"></footer>
+  <!-- ============ BANDE HORIZONTALE D'AFFICHES (LOT 5 révisé, §24) ============
+       Plus de 6 entrées : bande horizontale plutôt qu'une frise
+       verticale, qui enterrerait les éditions anciennes sous le
+       défilement. Rendu entièrement par assets/js/editions.js
+       (renderBande) depuis data/editions.json : rien de codé en dur
+       ici, y compris le filet de progression sous la bande. Chaque
+       entrée est un lien entier vers edition.html — pas de panneau ni
+       de modale, qui dupliquerait une page déjà indexable. -->
+  <section class="bande-editions registre-encre" aria-label="Chronologie des éditions">
+    <div id="editions-grid" aria-live="polite">
+      <p class="loading-msg">Chargement des éditions…</p>
+    </div>
+  </section>
+
+  </main>
+
+  <footer id="site-footer" class="site-footer registre-rideau"></footer>
 
   <script src="partials.js"></script>
   <script src="assets/js/editions.js"></script>
