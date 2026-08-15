@@ -78,10 +78,22 @@
   --voile-barre-dense:  rgba(38, 26, 24, 0.92);
   --voile-barre-repli:  rgba(38, 26, 24, 0.94); /* @supports sans backdrop-filter */
 
-  /* ---------- Typographie — familles (§9) ---------- */
-  --police-affiche: 'Readex Pro', system-ui, sans-serif;
-  --police-revue:   'Literata', Georgia, serif;
-  --police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
+  /* ---------- Typographie — familles (§9) ----------
+     UI Fiteat (commit « polices ») : Outfit remplace Readex Pro/Literata/
+     IBM Plex Mono pour les trois rôles latins — Fiteat n'a qu'une seule
+     famille, différenciée par graisse et letter-spacing au point d'usage,
+     pas par un dessin différent par rôle. Readex Pro reste seule pour
+     l'arabe : Outfit n'en a pas. Conséquence directe, à faire remonter au
+     comité (voir le commit) : la ligne bilingue (§6) ne partage plus un
+     seul dessin entre français et arabe — Outfit et Readex Pro sont deux
+     familles distinctes, la parité n'est plus visuelle, seulement de
+     traitement (même échelle, même emplacement). PAS Paris2024 : fonte
+     propriétaire des Jeux de Paris 2024, chargée dans Fiteat depuis un
+     site de redistribution non autorisée — risque juridique réel sur un
+     site sous Haut Patronage Royal. */
+  --police-affiche: 'Outfit', system-ui, sans-serif;
+  --police-revue:   'Outfit', system-ui, sans-serif;
+  --police-donnees: 'Outfit', system-ui, sans-serif;
   --police-arabe:   'Readex Pro', 'Noto Naskh Arabic', sans-serif;
 
   /* ---------- Typographie — échelle, ratio 1,333 (quarte juste) (§9) ---------- */

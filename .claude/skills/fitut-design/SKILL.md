@@ -270,28 +270,38 @@ babouche, théière.
    « Ne manquez pas », « Réservez votre place ».
 ## 9. Typographie
 
-Le logotype est géométrique, monolinéaire, à contreformes généreuses, et bilingue dans un
-même dessin. Le système typographique prolonge cette logique **sans imiter le logo**.
+> **UI Fiteat (commit « polices »).** Outfit remplace Readex Pro / Literata / IBM Plex
+> Mono pour les trois rôles latins — Fiteat n'a qu'une seule famille, différenciée par
+> graisse et `letter-spacing` au point d'usage, pas par un dessin différent par rôle.
+> Readex Pro reste seule pour l'arabe : Outfit n'en a pas.
+>
+> **Conséquence à faire remonter au comité, pas tranchée seule ici** : la ligne bilingue
+> (§6) ne partage plus un même dessin entre français et arabe — c'était la décision
+> structurelle du système précédent (« le latin et l'arabe partagent un même dessin, une
+> même graisse, un même rythme », §5). Outfit et Readex Pro sont maintenant deux familles
+> distinctes ; la parité reste de traitement (même échelle, même emplacement, même
+> importance), mais plus visuelle.
+>
+> **PAS Paris2024** — la fonte officielle de Fiteat, chargée depuis un site de
+> redistribution non autorisée. C'est la police propriétaire des Jeux de Paris 2024 :
+> risque juridique réel sur un site placé sous le Haut Patronage Royal. Outfit, déjà le
+> repli déclaré dans Fiteat, est libre (OFL) et sur Google Fonts.
 
 | Rôle | Famille | Usage |
 |---|---|---|
-| **Affiche + interface** | `Readex Pro` (variable, latin **et** arabe dans une seule famille) | titres, navigation, texte courant, contenu arabe |
-| **Lecture longue** | `Literata` | synopsis, biographies, textes institutionnels |
-| **Données / surtitres** | `IBM Plex Mono` | surtitres, chiffres, intitulés de prix, métadonnées, crédits |
+| **Affiche + interface** | `Outfit` | titres, navigation, texte courant |
+| **Lecture longue** | `Outfit` | synopsis, biographies, textes institutionnels |
+| **Données / surtitres** | `Outfit` | surtitres, chiffres, intitulés de prix, métadonnées, crédits |
+| **Arabe** | `Readex Pro` | seul rôle qui en a encore besoin — Outfit n'a pas de jeu arabe |
 
 ```css
---police-affiche: 'Readex Pro', system-ui, sans-serif;
---police-revue:   'Literata', Georgia, serif;
---police-donnees: 'IBM Plex Mono', ui-monospace, monospace;
+--police-affiche: 'Outfit', system-ui, sans-serif;
+--police-revue:   'Outfit', system-ui, sans-serif;
+--police-donnees: 'Outfit', system-ui, sans-serif;
 --police-arabe:   'Readex Pro', 'Noto Naskh Arabic', sans-serif;
 ```
 
-**Pourquoi Readex Pro.** C'est la décision structurelle du système : le latin et l'arabe
-partagent un même dessin, une même graisse, un même rythme. La parité bilingue exigée
-en §5 est résolue par la structure, pas par l'ajout d'une police arabe à côté. Les trois
-familles sont libres et hébergeables localement.
-
-**Échelle — ratio 1,333 (quarte juste), la proportion d'un format d'affiche 3:4.**
+**Échelle — ratio 1,333 (quarte juste), la proportion d'un format d'affiche 3:4. Inchangée.**
 
 ```css
 --pas-xs:   0.750rem;   /* surtitres, crédits */
@@ -305,16 +315,19 @@ familles sont libres et hébergeables localement.
 ```
 
 **Règles de composition**
-- Titres d'affiche : `Readex Pro` 500, `letter-spacing: -0.03em`, `line-height: 1.04`
-- Contrepartie arabe d'un titre : même famille, `--pas` immédiatement inférieur, en `--corail`
+- Titres d'affiche : `Outfit` 500, `letter-spacing: -0.03em`, `line-height: 1.04`
+- Contrepartie arabe d'un titre : `Readex Pro`, `--pas` immédiatement inférieur, en `--corail`
   sur fond sombre ou `--rideau` sur papier
-- Texte de revue : `Literata`, `line-height: 1.65`, **68 caractères maximum** par ligne
-- Surtitres : `Plex Mono`, capitales, `letter-spacing: 0.18em`
-- Titres de pièces : `Literata` italique, toujours
-- Lettrine autorisée uniquement sur le premier paragraphe d'un texte institutionnel long
+- Texte de revue : `Outfit`, `line-height: 1.65`, **68 caractères maximum** par ligne
+- Surtitres : `Outfit` 500, capitales, `letter-spacing: 0.18em` — la graisse et l'espacement
+  des lettres tiennent le rôle que jouait la police à part entière
+- Titres de pièces : italique, toujours — Outfit n'a pas d'italique dessiné, l'oblique
+  synthétique du navigateur est acceptée ici (pas d'alternative sans réintroduire une
+  seconde famille)
+- Pas de lettrine (§18)
 **Interdits** : Montserrat, Cormorant Garamond, Poppins, Inter, Lato, Open Sans, Playfair
-Display, Raleway, Archivo, Newsreader. Ne jamais introduire une police hors de ce tableau
-sans validation.
+Display, Raleway, Archivo, Newsreader, **Paris2024** (propriétaire, voir plus haut).
+Ne jamais introduire une police hors de ce tableau sans validation.
 
 ## 10. Couleurs
 
