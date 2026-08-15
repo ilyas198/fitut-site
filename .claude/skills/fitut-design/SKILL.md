@@ -519,8 +519,10 @@ personnages 3D, filtres colorés, duotone.
 
 **Le site n'utilise pratiquement pas d'icônes.** L'information passe par le mot.
 
-Seules exceptions autorisées : les logos de réseaux sociaux du pied de page, et une
-flèche `→` typographique pour les liens sortants.
+Seules exceptions autorisées : les logos de réseaux sociaux du pied de page, une
+flèche `→` typographique pour les liens sortants, et les chevrons de navigation du hero
+et de la bande d'éditions (§16, §24 — desktop uniquement) : un SVG dessiné à la main,
+comme les logos sociaux, jamais une bibliothèque.
 
 **Interdits** : bibliothèques d'icônes (Lucide, Feather, Font Awesome, Heroicons),
 icônes décoratives en tête de section, pictogrammes pour illustrer une valeur, emoji.
@@ -702,7 +704,16 @@ annonces en éditant ce seul fichier, sans toucher au code.
 - Défilement automatique toutes les 7 secondes, **suspendu au survol**, au focus clavier
   et quand l'onglet passe en arrière-plan
 - Navigation par **filets horizontaux**, un par annonce, le filet actif se remplissant
-  progressivement pour indiquer le temps restant — pas de puces rondes, pas de flèches
+  progressivement pour indiquer le temps restant — pas de puces rondes
+
+> **Flèches, exception desktop (commit « hauteur + flèches »).** L'interdit valait pour
+> le mobile et le tactile, où le balayage suffit. Dès 1024 px, deux `<button>`
+> (`aria-label` « Annonce précédente »/« Annonce suivante ») dans les marges latérales,
+> jamais par-dessus le texte ni le visuel — fond `--voile-barre`, `--rayon-plein`, flèche
+> `--corail`, filet 1 px. Elles s'ajoutent aux filets, ne les remplacent pas : les filets
+> restent la seule source de la position dans le fil. Un clic suspend le défilement
+> automatique et le relance après 10 s. Désactivées et `aria-disabled` si une seule
+> annonce est active — restent dans le DOM plutôt que d'en disparaître.
 - Flèches gauche/droite au clavier, `aria-live="polite"` sur la zone de texte
 - `prefers-reduced-motion` : aucune transition, aucun défilement automatique, les annonces
   s'empilent verticalement

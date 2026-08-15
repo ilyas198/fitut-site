@@ -877,7 +877,11 @@ button:focus-visible {
     grid-template-columns: var(--marge-regie-desktop) minmax(0, 2fr) minmax(240px, 1fr);
     align-items: center;
     gap: var(--esp-4);
-    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-4)) var(--esp-4) var(--esp-4);
+    /* Gauche/droite élargis de 64px : réserve dédiée aux flèches
+       (§16 commit « hauteur + flèches »), pas un espoir que --esp-4
+       suffise déjà — le contenu de la grille ne doit jamais partager
+       cet espace avec elles. */
+    padding: calc(var(--nav-h) + var(--banner-h) + var(--esp-4)) calc(var(--esp-4) + 64px) var(--esp-4);
   }
   .hero-grille > .marge-regie  { grid-column: 1; grid-row: 1; }
   .hero-grille > .hero-contenu { grid-column: 2; grid-row: 1; }
@@ -910,12 +914,15 @@ button:focus-visible {
 .hero-titre {
   font-family: var(--police-affiche);
   font-weight: 500;
-  /* --pas-2xl (échelle affiche), pas --pas-3xl : --pas-3xl visait le
-     titre-bilingue de l'ancien hero (un nom propre très court). Ici le
-     titre est une phrase de 4 à 8 mots (§16) — à --pas-3xl (179,5px à
-     1440px), un seul mot comme « édition » dépasse déjà la colonne de
-     contenu. Vérifié au calcul, pas supposé. */
-  font-size: var(--pas-2xl);
+  /* Ni --pas-2xl ni un vw seul : un écran large mais court (1024×640,
+     1440×720) autorise en largeur une taille que la hauteur ne permet
+     pas — --pas-2xl (9vw) y produisait un titre qui débordait de la
+     colonne de contenu ET de la fenêtre (vérifié : à 1024px, la colonne
+     de contenu ne fait que ~483px, 9vw y place à peine 9-10 caractères
+     par ligne). min(vw, vh) fait gagner le plus contraignant des deux
+     axes plutôt que la seule largeur. Vérifié au calcul et par capture
+     d'écran sur les 7 rapports du §16, pas supposé. */
+  font-size: clamp(1.75rem, min(4.5vw, 7vh), 4.5rem);
   letter-spacing: -0.03em;
   line-height: var(--interligne-serre);
   margin: var(--esp-2) 0 var(--esp-3);
@@ -925,10 +932,7 @@ button:focus-visible {
   font-family: var(--police-revue);
   font-size: var(--pas-base);
   line-height: var(--interligne-lecture);
-  margin-bottom: var(--esp-4);
-}
-@media (max-width: 599px) {
-  .hero-titre { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+  margin-bottom: var(--esp-3);
 }
 
 /* ---- Visuel : pile de couches en fondu-croisé + léger zoom arrière —
@@ -995,6 +999,51 @@ button:focus-visible {
 .hero-filet-remplissage { position: absolute; inset: 0; width: 0%; background: var(--corail); }
 .hero-filet-remplissage.is-filling { transition: width linear; }
 .hero-filet:focus-visible { outline: 2px solid var(--corail); outline-offset: 3px; }
+
+/* ---- Flèches — desktop uniquement (§16 commit « hauteur + flèches »).
+   Amendement explicite à « pas de flèches » : au clavier et au tactile,
+   le fil se pilote déjà (flèches clavier, balayage) — à la souris, sur
+   grand écran, une cible cliquable directe reste utile. Les filets ne
+   sont pas remplacés : ils restent la seule source de la position dans
+   le fil, les flèches ne font qu'avancer/reculer d'un cran. ---- */
+.hero-fleche {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  background: var(--voile-barre);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--filet-sombre);
+  border-radius: var(--rayon-plein);
+  color: var(--corail);
+  cursor: pointer;
+  transition: border-color var(--duree-ui) var(--courbe-sortie),
+              color var(--duree-ui) var(--courbe-sortie);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .hero-fleche { background: var(--voile-barre-repli); }
+}
+.hero-fleche svg { width: 20px; height: 20px; fill: currentColor; }
+.hero-fleche--gauche { left: var(--esp-3); }
+.hero-fleche--droite { right: var(--esp-3); }
+.hero-fleche:hover,
+.hero-fleche:focus-visible { color: var(--corail-clair); border-color: var(--corail-clair); }
+.hero-fleche:focus-visible { outline: 2px solid var(--corail-clair); outline-offset: 3px; }
+.hero-fleche[aria-disabled="true"] {
+  cursor: not-allowed;
+  border-style: dashed;
+  color: var(--papier-tiers); /* même convention que l'état désactivé des boutons, §15 */
+}
+.hero-fleche[aria-disabled="true"]:hover { color: var(--papier-tiers); border-color: var(--filet-sombre); }
+@media (min-width: 1024px) {
+  .hero-fleche { display: flex; }
+}
 
 /* ---- prefers-reduced-motion : annonces.js construit un empilement
    statique séparé (pas de diaporama à désactiver après coup). La

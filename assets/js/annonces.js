@@ -62,6 +62,12 @@ function construireSquelette(mount, total) {
         ${total > 1 ? '<div class="hero-nav" id="heroNav" aria-label="Annonces"></div>' : ''}
       </div>
     </div>
+    <button type="button" class="hero-fleche hero-fleche--gauche" id="heroFlecheGauche" aria-label="Annonce précédente">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <button type="button" class="hero-fleche hero-fleche--droite" id="heroFlecheDroite" aria-label="Annonce suivante">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </button>
   `;
 }
 
@@ -92,6 +98,18 @@ function rendreCoucheVisuel(a, index, actif) {
 
   const total = annonces.length;
   construireSquelette(mount, total);
+
+  // Flèches desktop (§16) : désactivées d'emblée si une seule annonce,
+  // même si le diaporama (filets, minuteur…) ne se met pas en place du
+  // tout dans ce cas — le bouton reste dans le DOM, juste inerte.
+  const flecheGauche = document.getElementById('heroFlecheGauche');
+  const flecheDroite = document.getElementById('heroFlecheDroite');
+  if (total <= 1) {
+    [flecheGauche, flecheDroite].forEach(f => {
+      f.disabled = true;
+      f.setAttribute('aria-disabled', 'true');
+    });
+  }
 
   const visuelPile = document.getElementById('heroVisuel');
   visuelPile.innerHTML = annonces.map((a, i) => rendreCoucheVisuel(a, i, i === 0)).join('');
@@ -215,6 +233,21 @@ function rendreCoucheVisuel(a, index, actif) {
     positionnerRemplissage(index, largeurActuelle, restant);
     relancer();
   }
+
+  // Flèches (§16) : suspendent le défilement automatique et le relancent
+  // après 10s, indépendamment de la pause au survol/focus — reprendre()
+  // est sans effet si un survol tient déjà la pause, et inversement un
+  // départ de survol pendant les 10s ne relance pas deux fois (reprendre
+  // vérifie enPause avant d'agir).
+  let timerFleche = null;
+  function naviguerParFleche(n) {
+    aller(n);
+    clearTimeout(timerFleche);
+    pauser();
+    timerFleche = setTimeout(reprendre, 10000);
+  }
+  flecheGauche.addEventListener('click', () => naviguerParFleche(index - 1));
+  flecheDroite.addEventListener('click', () => naviguerParFleche(index + 1));
 
   const hero = document.getElementById('hero');
   const peutSurvoler = window.matchMedia('(hover: hover)').matches;
