@@ -171,20 +171,34 @@ Règles de rythme :
   c'est le rideau qui tombe, la clôture. Élément persistant et non section de contenu,
   il ne compte pas dans la limite de deux blocs rideau par page.
 
-### Rayons
+### Rayons et ombres
+
+> **UI Fiteat (commit « rayons et ombres »)** — remplace l'échelle 4/8/12px posée au
+> commit « barres translucides », jamais appliquée en CSS (seulement documentée).
+> Celle-ci l'est, sur tout élément déjà bordé, rempli ou cadré (§10, §15) : `.bouton`,
+> `.social-icon-footer`, les cadres d'affiche et de portrait, la ligne Grand Prix, toute
+> photographie de galerie. Les filets de séparation et les barres fixes (§17) n'en
+> reçoivent pas — ce sont des lignes, pas des boîtes.
 
 ```css
---rayon-s: 4px;    /* boutons, champs, puces, étiquettes */
---rayon-m: 8px;    /* blocs bordés, fiches, encadrés */
---rayon-l: 12px;   /* grands conteneurs, visuels d'annonce */
---rayon-plein: 999px; /* uniquement les puces de pagination */
+--rayon-s: 16px;      /* boutons, étiquettes */
+--rayon-m: 22px;      /* blocs, fiches, cartes */
+--rayon-l: 32px;      /* grands conteneurs, visuels */
+--rayon-plein: 50%;   /* avatars, puces — actuellement sans emploi réel : les portraits
+  restent carrés (interdit ci-dessous), et le site n'a pas de puce ronde (§16 l'interdit
+  explicitement pour la navigation du hero) */
 ```
 
-**Tout élément portant une bordure, un fond ou une image cadrée reçoit un rayon.**
-Jamais de valeur en dur : toujours un token. L'échelle s'arrête à 12 px — au-delà, on
-tombe dans le vocabulaire des applications.
+Jamais de valeur en dur : toujours un token.
 
-Les filets de séparation (§15) n'ont pas de rayon : ce sont des lignes, pas des boîtes.
+```css
+--ombre-bloc:   0 16px 40px rgba(38, 26, 24, 0.20);   /* grands visuels — hero, affiche d'édition */
+--ombre-accent: 0 6px 20px rgba(255, 82, 38, 0.45);   /* boutons pleins en --corail */
+```
+
+Appliquées avec retenue, pas partout où un rayon existe : `--ombre-bloc` seulement aux
+quelques visuels à l'échelle d'un hero (pas à chaque vignette), `--ombre-accent`
+seulement aux boutons à fond plein.
 
 ### L'élément signature : la ligne bilingue
 
@@ -250,10 +264,12 @@ babouche, théière.
 3. **Aligné à gauche par défaut.** Un bloc centré doit se justifier ; le centrage est
    réservé aux citations et aux blocs de moins de trois lignes.
 4. **Les angles sont doux mais mesurés.** Tout élément bordé, rempli ou cadré porte un
-   rayon de l'échelle `--rayon-*` (§6). Jamais au-delà de 12 px. Les filets de séparation
-   n'ont pas de rayon.
-5. **Aucune ombre d'élévation.** La séparation se fait par filet de 1 px ou par
-   changement de registre.
+   rayon de l'échelle `--rayon-*` (§6). Jamais au-delà de `--rayon-l` (32 px), sauf
+   `--rayon-plein` pour un avatar ou une puce — inexistants pour l'instant sur ce site
+   (§6). Les filets de séparation et les barres fixes n'ont pas de rayon.
+5. **Ombre limitée à deux tokens.** `--ombre-bloc` sur les grands visuels, `--ombre-accent`
+   sur les boutons à fond plein (§6) — jamais une valeur en dur, jamais ailleurs. La
+   séparation entre blocs reste d'abord le filet de 1 px ou le changement de registre.
 6. **Une seule couleur d'accent visible à la fois** dans le champ de vision.
 7. **Le filet de 1 px est le seul séparateur autorisé.**
 ## 8. Principes UX
@@ -1062,8 +1078,8 @@ Chacun de ces éléments est présent ou l'a été dans le code, et doit dispara
 
 | Anti-pattern | Pourquoi |
 |---|---|
-| `box-shadow: 0 20px 45px` | élévation Material Design |
-| `linear-gradient` décoratif | ornement sans justification |
+| `box-shadow` hors `--ombre-bloc`/`--ombre-accent` | élévation Material Design sans retenue |
+| `linear-gradient` hors `--degrade-corail` | ornement sans justification |
 | Bandeau de logos défilant | « Trusted by » de landing page SaaS |
 | Compte à rebours en quatre blocs | vocabulaire de lancement de produit |
 | Portraits ronds | avatars d'interface |
@@ -1091,13 +1107,16 @@ dans la conversation en cours.**
 - ❌ Ne pas faire une page entièrement sombre : le registre papier occupe au minimum 30 %
 - ❌ Ne pas enchaîner deux blocs `--rideau` consécutifs
 - ❌ Ne pas utiliser Montserrat, Cormorant Garamond, Poppins, Inter, Playfair Display,
-  Archivo ni Newsreader
-- ❌ Ne pas utiliser de dégradé décoratif ni de neumorphisme
+  Archivo, Newsreader ni Paris2024 (propriétaire des JO Paris 2024, §9)
+- ❌ Ne pas utiliser de dégradé décoratif ni de neumorphisme, hors `--degrade-corail`
+  sur un bouton à fond plein (§6, §10)
 - ❌ Ne pas utiliser de translucidité ailleurs que sur les barres fixes (§17)
 - ❌ Ne pas utiliser de dégradé violet/bleu générique
 - ❌ Ne pas mettre dans le hero une annonce inventée, ni plus d'un lien par vue
-- ❌ Ne pas arrondir au-delà de `--rayon-l` (12 px), sauf puces de pagination
-- ❌ Ne pas ajouter d'ombre portée d'élévation
+- ❌ Ne pas arrondir au-delà de `--rayon-l` (32 px), sauf `--rayon-plein` pour un avatar
+  ou une puce (§6)
+- ❌ Ne pas ajouter d'ombre hors `--ombre-bloc`/`--ombre-accent` (§6), et pas à chaque
+  élément qui porte un rayon — seulement aux grands visuels et aux boutons à fond plein
 - ❌ Ne pas centrer un titre de section
 - ❌ Ne pas construire une page uniquement avec des cartes
 - ❌ Ne pas introduire une bibliothèque d'icônes

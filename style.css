@@ -128,6 +128,23 @@
   --esp-7: 144px;   /* entre sections */
   --esp-8: 216px;   /* bascule encre ↔ rideau ↔ papier */
 
+  /* ---------- Rayons (§6, §7) — UI Fiteat, commit « rayons et ombres ».
+     Remplace l'échelle 4/8/12px posée au commit « barres translucides »,
+     jamais appliquée en CSS (seulement documentée) : celle-ci l'est,
+     partout où un élément est bordé, rempli ou cadré. Les filets de
+     séparation et les barres fixes (#navbar, .bandeau-patronage) n'en
+     reçoivent pas — ce sont des lignes, pas des boîtes. ---------- */
+  --rayon-s: 16px;      /* boutons, étiquettes */
+  --rayon-m: 22px;      /* blocs, fiches, cartes */
+  --rayon-l: 32px;      /* grands conteneurs, visuels */
+  --rayon-plein: 50%;   /* avatars, puces */
+
+  /* ---------- Ombres (§7) — UI Fiteat. §7 interdisait jusqu'ici toute
+     ombre d'élévation (Material Design) ; ce commit l'autorise, à ces
+     deux tokens seulement, jamais une valeur en dur. ---------- */
+  --ombre-bloc:   0 16px 40px rgba(38, 26, 24, 0.20);
+  --ombre-accent: 0 6px 20px rgba(255, 82, 38, 0.45);
+
   /* ---------- Mouvement — durées et courbes (§34) ---------- */
   --duree-ui:      200ms;   /* survol, focus, ouverture de menu */
   --duree-contenu: 400ms;   /* apparition au défilement, opacité seule */
@@ -328,6 +345,8 @@ body.est-defile #navbar {
   padding: var(--esp-2) var(--esp-3);
   background: var(--corail);
   color: var(--encre-nuit);
+  border-radius: var(--rayon-s);
+  box-shadow: var(--ombre-accent);
   font-family: var(--police-donnees);
   font-size: var(--pas-s);
   font-weight: 500;
@@ -474,6 +493,7 @@ body.est-defile .fixed-banner {
   width: 40px;
   height: 40px;
   border: 1px solid var(--filet-sombre);
+  border-radius: var(--rayon-s);
   color: var(--papier-tiers);
   transition: color var(--duree-ui) var(--courbe-sortie),
               border-color var(--duree-ui) var(--courbe-sortie);
@@ -800,6 +820,7 @@ button:focus-visible {
   background: var(--encre-nuit);
   color: var(--papier);
   padding: 0.75rem 1.25rem;
+  border-radius: var(--rayon-s);
   z-index: 2000;
   font-size: 0.8rem;
 }
@@ -920,7 +941,7 @@ button:focus-visible {
 }
 .hero-visuel-couche.is-active { position: relative; opacity: 1; }
 .hero-visuel-couche img,
-.hero-visuel-cadre { width: 100%; height: 100%; object-fit: contain; }
+.hero-visuel-cadre { width: 100%; height: 100%; object-fit: contain; border-radius: var(--rayon-l); }
 .hero-visuel-couche img { animation: hero-visuel-zoom var(--duree-hero) var(--courbe-sortie); }
 @keyframes hero-visuel-zoom {
   from { transform: scale(1.04); }
@@ -935,6 +956,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--filet-sombre);
+  box-shadow: var(--ombre-bloc); /* seul visuel du site à cette échelle — §7 */
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   line-height: var(--interligne-donnees);
@@ -1260,6 +1282,7 @@ button:focus-visible {
   padding: var(--esp-2) var(--esp-3);
   margin: 0 calc(-1 * var(--esp-3));
   border-bottom: none;
+  border-radius: var(--rayon-m);
 }
 .distribution-ligne--grand-prix dt,
 .distribution-ligne--grand-prix dd { color: var(--papier); }
@@ -1333,6 +1356,7 @@ a.entree-programme-lien { display: block; }
   width: 100%;
   max-width: 320px; /* une vignette de frise, pas l'affiche pleine page (voir .edition-affiche) */
   aspect-ratio: 3 / 4;
+  border-radius: var(--rayon-m);
 }
 .fiche-archive-affiche { object-fit: contain; }
 .fiche-archive-affiche-cadre {
@@ -1431,6 +1455,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
     pas un rôle de lecture — voir bilan si ça doit s'aligner quand même */
   background: transparent;
   border: 1px solid; /* couleur posée par le bloc États d'interaction */
+  border-radius: var(--rayon-s);
   cursor: pointer;
   transition: border-color var(--duree-ui) var(--courbe-sortie),
               color var(--duree-ui) var(--courbe-sortie);
@@ -1464,6 +1489,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   align-items: center;
   justify-content: center;
   border: 1px solid var(--filet-clair);
+  border-radius: var(--rayon-m);
   background: var(--papier-ombre);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
@@ -1525,6 +1551,8 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   width: 100%;
   aspect-ratio: 3 / 4;
   border: 1px solid var(--filet-sombre);
+  border-radius: var(--rayon-m);
+  overflow: hidden; /* clippe l'image ou le cadre-vide au rayon du cadre */
 }
 .affiche-entree-cadre img { width: 100%; height: 100%; object-fit: contain; display: block; }
 /* Remplacement typographique tant qu'aucune affiche réelle n'existe
@@ -1638,6 +1666,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   width: 100%;
   max-width: 420px;
   aspect-ratio: 3 / 4;
+  border-radius: var(--rayon-l);
 }
 .edition-affiche { object-fit: contain; }
 .edition-affiche-cadre {
@@ -1646,6 +1675,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   justify-content: center;
   text-align: center;
   border: 1px solid var(--filet-sombre);
+  box-shadow: var(--ombre-bloc);
   font-family: var(--police-donnees);
   font-size: var(--pas-xs);
   line-height: var(--interligne-donnees);
@@ -1699,7 +1729,8 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   display: block;
   width: 100%;
   max-width: 160px;
-  aspect-ratio: 1 / 1; /* carré, jamais rond — §36 */
+  aspect-ratio: 1 / 1; /* carré, jamais rond — §36, y compris avec --rayon-plein disponible */
+  border-radius: var(--rayon-m);
 }
 .hommage-portrait { object-fit: cover; }
 .hommage-portrait-cadre {
@@ -1771,7 +1802,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
 }
 @media (min-width: 600px)  { .galerie-grille { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 1024px) { .galerie-grille { grid-template-columns: repeat(4, 1fr); gap: var(--esp-3); } }
-.galerie-grille img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.galerie-grille img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: var(--rayon-m); }
 
 /* ---- Documents (registre papier) — même structure que .liste-presse
    (accueil, LOT 4 phase B), déclarée séparément par convention de nom
@@ -1888,6 +1919,7 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   width: 96px;
   height: 96px;
   object-fit: cover; /* portrait réel, cadrage carré assumé — jamais rond (§36) */
+  border-radius: var(--rayon-s); /* plus petit que .hommage-portrait : cadre plus modeste */
 }
 .generique-nom {
   font-family: var(--police-affiche);
@@ -2048,5 +2080,6 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   max-width: 480px;
   aspect-ratio: 3 / 2; /* traitement scène, §13 */
   object-fit: cover;
+  border-radius: var(--rayon-m);
   filter: saturate(0.75) contrast(1.08); /* §13, repos — pas d'entrée cliquable ici, pas de survol */
 }
