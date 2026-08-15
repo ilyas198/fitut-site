@@ -1,13 +1,18 @@
 /* =========================================
    FITUT — Feuille de style globale
 
-   Système à trois registres (encre / rideau / papier), palette dérivée
-   du logo officiel (voir .claude/skills/fitut-design/SKILL.md — source
-   de vérité de toute décision visuelle). Les 7 pages du site et
-   composants.html s'y conforment intégralement depuis la migration de
-   le-carnaval.html (LOT 6c) : l'ancien système (crème / charbon / or,
-   Cormorant + Montserrat) a disparu avec la dernière page qui en
-   dépendait, tokens compris.
+   Système à trois registres (encre / rideau / papier), voir
+   .claude/skills/fitut-design/SKILL.md — source de vérité de toute
+   décision visuelle. Les 7 pages du site et composants.html s'y
+   conforment intégralement depuis la migration de le-carnaval.html
+   (LOT 6c) : l'ancien système (crème / charbon / or, Cormorant +
+   Montserrat) a disparu avec la dernière page qui en dépendait, tokens
+   compris.
+
+   Palette dérivée de l'UI Fiteat (branche ui-fiteat, validée par le
+   comité) depuis le commit « Tokens » — remplace la dérivation depuis
+   le seul logo officiel qui prévalait jusque-là. Noms de tokens
+   inchangés, seules leurs valeurs le sont (§10).
    ========================================= */
 
 :root {
@@ -23,41 +28,55 @@
      sans revalider la skill (§0 — axes verrouillés / axes libres).
      ========================================================== */
 
-  /* ---------- Couleurs (§10) — dérivées du logo officiel ---------- */
+  /* ---------- Couleurs (§10) — dérivées de l'UI Fiteat, validée par le
+     comité (commit « ui-fiteat » — remplace la dérivation depuis le seul
+     logo officiel qui prévalait jusqu'ici). Tous les contrastes recalculés
+     à la formule WCAG, pas repris tels quels : plusieurs valeurs de
+     départ de Fiteat échouaient (voir --texte-tiers, --papier-tiers). ---------- */
   /* Primaire : l'encre — base majoritaire, on regarde */
-  --encre-nuit:     #0A1428;
-  --encre-coulisse: #101C33;  /* surfaces secondaires sur fond sombre */
+  --encre-nuit:     #261A18;  /* brun sombre Fiteat */
+  --encre-coulisse: #2D2523;  /* surfaces secondaires sur fond sombre */
 
   /* Secondaire : les surfaces */
-  --rideau:         #5B1327;  /* bordeaux du logo — interruptions, Grand Prix (§26) */
-  --rideau-profond: #3E0C1B;  /* variante pour aplats denses */
-  --papier:         #F6F1EA;  /* blanc chaud — registre de lecture, on lit */
-  --papier-ombre:   #E9E0D5;  /* aplats secondaires sur papier */
+  --rideau:         #352B2D;  /* brun moyen des sections Fiteat — interruptions, Grand Prix (§26) */
+  --rideau-profond: #221B1D;  /* variante pour aplats denses, dérivée à ~65% comme l'ancienne, inutilisée pour l'instant */
+  --papier:         #FFF6ED;  /* crème chaud Fiteat — registre de lecture, on lit */
+  --papier-ombre:   #FAF4EE;  /* aplats secondaires sur papier */
 
-  /* Accent : le corail — sur fond sombre UNIQUEMENT (2,72:1 sur --papier, échec) */
-  --corail:         #FF5D38;  /* registre encre : 6,01:1 */
-  --corail-clair:   #FF8A63;  /* registre rideau : 5,79:1, AA large */
+  /* Accent : le corail Fiteat — sur fond sombre UNIQUEMENT (2,79:1 sur --papier, échec, vérifié) */
+  --corail:         #FF6238;  /* registre encre : 5,68:1 */
+  --corail-clair:   #FF8A63;  /* inchangé : encore 5,91:1 sur le nouveau --rideau, AA */
+
+  /* Nouveaux accents Fiteat, absents du système précédent */
+  --jaune:          #FFF199;  /* accent secondaire, blocs d'exploration */
+  --degrade-corail: linear-gradient(135deg, #FF6638 0%, #FF5226 100%); /* boutons principaux uniquement — §36 */
 
   /* Texte sur papier */
-  --texte:          #1A1420;  /* 16,04:1 sur --papier */
-  --texte-tiers:    #584A4E;  /* 7,46:1 sur --papier — surtitres, crédits, métadonnées */
+  --texte:          #261A18;  /* 15,81:1 sur --papier */
+  /* --texte-tiers : #7E7572 (Fiteat) ne fait que 4,21:1 sur --papier, sous
+     le seuil AA (4,5:1) pour du texte courant — assombri jusqu'à AAA. */
+  --texte-tiers:    #595350;  /* 7,08:1 sur --papier, AAA */
 
   /* Texte secondaire sur fond sombre — seul moyen d'obtenir une hiérarchie
-     de texte en registre encre/rideau, opacity étant interdit sur du texte */
-  --papier-tiers:   #C9BDB4;  /* 9,99:1 sur --encre-nuit, 7,29:1 sur --rideau */
+     de texte en registre encre/rideau, opacity étant interdit sur du texte.
+     Recalculé (pas dans Fiteat, qui n'a pas de fond sombre à ce rôle) pour
+     AAA sur --encre-nuit ET --rideau, le plus contraignant des deux. */
+  --papier-tiers:   #C4BAB6;  /* 8,88:1 sur --encre-nuit, 7,2:1 sur --rideau */
 
   /* Filets — séparateur autorisé, jamais d'ombre */
-  --filet-sombre:   rgba(246, 241, 234, 0.16); /* sur fond --encre-nuit/--rideau */
-  --filet-clair:    rgba(26, 20, 32, 0.14);    /* sur fond --papier */
+  --filet-sombre:   rgba(255, 246, 237, 0.16); /* sur fond --encre-nuit/--rideau */
+  --filet-clair:    rgba(38, 26, 24, 0.14);    /* sur fond --papier */
 
   /* Voile des barres fixes (§17) — --encre-nuit translucide, exception unique
      à l'interdit général de transparence empilée (§10). 82 % est un plancher
      calculé, pas un réglage esthétique : composé sur du blanc pur (le pire
-     cas), --papier y garde 9,5:1 — vérifié par calcul, pas supposé. Se
-     densifie légèrement au défilement (0,82 → 0,92), jamais en dessous de 0,80. */
-  --voile-barre:        rgba(10, 20, 40, 0.82);
-  --voile-barre-dense:  rgba(10, 20, 40, 0.92);
-  --voile-barre-repli:  rgba(10, 20, 40, 0.94); /* @supports sans backdrop-filter */
+     cas), --papier y garde 8,96:1 — vérifié par calcul, pas supposé (recalculé
+     avec le nouveau --encre-nuit : 9,4:1 avec l'ancien, toujours AAA). Se
+     densifie légèrement au défilement (0,82 → 0,92), jamais en dessous de 0,80
+     (8,4:1 au plancher, encore AAA). */
+  --voile-barre:        rgba(38, 26, 24, 0.82);
+  --voile-barre-dense:  rgba(38, 26, 24, 0.92);
+  --voile-barre-repli:  rgba(38, 26, 24, 0.94); /* @supports sans backdrop-filter */
 
   /* ---------- Typographie — familles (§9) ---------- */
   --police-affiche: 'Readex Pro', system-ui, sans-serif;

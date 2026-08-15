@@ -318,57 +318,63 @@ sans validation.
 
 ## 10. Couleurs
 
-> **La palette est dérivée du logo officiel.** Le bordeaux `#5B1327` et le corail `#FF5D38`
-> sont échantillonnés directement dans le logotype. Ce ne sont pas des propositions :
-> ce sont les couleurs de la marque.
+> **La palette est dérivée de l'UI Fiteat, validée par le comité** (commit « ui-fiteat »)
+> — plus du seul logo officiel, qui prévalait jusqu'ici. Les noms des tokens ne changent
+> pas : seules leurs valeurs sont remplacées. Chaque contraste ci-dessous est recalculé à
+> la formule WCAG, pas repris tel quel de Fiteat — deux valeurs de départ y échouaient
+> (`--texte-tiers`, `--papier-tiers`) et ont été corrigées avant d'entrer ici.
 
 ```css
 :root {
   /* — Primaire : l'encre — */
-  --encre-nuit:     #0A1428;  /* base majoritaire du site */
-  --encre-coulisse: #101C33;  /* surfaces secondaires sur fond sombre */
+  --encre-nuit:     #261A18;  /* brun sombre Fiteat — base majoritaire du site */
+  --encre-coulisse: #2D2523;  /* surfaces secondaires sur fond sombre */
 
   /* — Secondaire : les surfaces — */
-  --rideau:         #5B1327;  /* bordeaux du logo — blocs d'interruption */
-  --rideau-profond: #3E0C1B;  /* variante pour aplats denses */
-  --papier:         #F6F1EA;  /* blanc chaud — registre de lecture */
-  --papier-ombre:   #E9E0D5;  /* aplats secondaires sur papier */
+  --rideau:         #352B2D;  /* brun moyen des sections Fiteat — blocs d'interruption */
+  --rideau-profond: #221B1D;  /* variante pour aplats denses, dérivée ~65% */
+  --papier:         #FFF6ED;  /* crème chaud Fiteat — registre de lecture */
+  --papier-ombre:   #FAF4EE;  /* aplats secondaires sur papier */
 
   /* — Accent : le corail — */
-  --corail:         #FF5D38;  /* accent du logo — fond sombre UNIQUEMENT */
-  --corail-clair:   #FF8A63;  /* variante lisible sur --rideau */
+  --corail:         #FF6238;  /* corail Fiteat — fond sombre UNIQUEMENT */
+  --corail-clair:   #FF8A63;  /* inchangé — encore lisible sur le nouveau --rideau */
+
+  /* — Accents secondaires Fiteat — */
+  --jaune:          #FFF199;  /* accent secondaire, blocs d'exploration */
+  --degrade-corail: linear-gradient(135deg, #FF6638 0%, #FF5226 100%); /* boutons principaux uniquement, §36 */
 
   /* — Texte sur papier — */
-  --texte:          #1A1420;  /* texte sur papier */
-  --texte-tiers:    #584A4E;  /* AAA sur papier — métadonnées, crédits */
+  --texte:          #261A18;  /* texte sur papier */
+  --texte-tiers:    #595350;  /* assombri depuis #7E7572 (Fiteat, 4,21:1, échec) jusqu'à AAA */
 
   /* — Texte secondaire sur fond sombre — */
-  --papier-tiers:   #C9BDB4;  /* AAA sur encre (9,99:1) ET sur rideau (7,29:1) */
+  --papier-tiers:   #C4BAB6;  /* recalculé — AAA sur encre (8,88:1) ET sur rideau (7,2:1) */
 
   /* — Filets — */
-  --filet-sombre:   rgba(246, 241, 234, 0.16);
-  --filet-clair:    rgba(26, 20, 32, 0.14);
+  --filet-sombre:   rgba(255, 246, 237, 0.16);
+  --filet-clair:    rgba(38, 26, 24, 0.14);
 }
 ```
 
 ### Les trois règles d'emploi
 
 **1. Le corail n'existe que sur fond sombre.**
-Sur `--papier` il tombe à 2,72:1 — échec total. Sur `--encre-nuit` il atteint 6,01:1.
-C'est l'accent des registres encre et rideau, jamais du registre papier. Sur papier,
-l'accent est `--rideau`.
+Sur `--papier` il tombe à 2,79:1 — échec total, vérifié comme pour l'ancien corail. Sur
+`--encre-nuit` il atteint 5,68:1. C'est l'accent des registres encre et rideau, jamais du
+registre papier. Sur papier, l'accent est `--rideau`.
 
-**2. Le bordeaux est une surface, jamais un texte sur fond sombre.**
-Sur `--encre-nuit` il tombe à 1,4:1 — invisible. Il n'est utilisable qu'en **fond de bloc**,
-ou en **couleur de texte sur `--papier`** (11,92:1, AAA).
+**2. Le brun rideau est une surface, et peut aussi porter du texte sur papier.**
+Sur `--papier`, `--rideau` en couleur de texte atteint 12,81:1, AAA — c'est l'accent
+interactif du registre papier (voir règle 4).
 
 **3. La hiérarchie du texte dépend aussi du registre.**
 
 | Registre | Texte principal | Texte secondaire |
 |---|---|---|
-| **Encre** | `--papier` (16,34:1) | `--papier-tiers` (9,99:1) |
-| **Rideau** | `--papier` (11,92:1) | `--papier-tiers` (7,29:1) |
-| **Papier** | `--texte` (16,04:1) | `--texte-tiers` (7,54:1) |
+| **Encre** | `--papier` (15,81:1) | `--papier-tiers` (8,88:1) |
+| **Rideau** | `--papier` (12,81:1) | `--papier-tiers` (7,2:1) |
+| **Papier** | `--texte` (15,81:1) | `--texte-tiers` (7,08:1) |
 
 `--papier-tiers` est le seul moyen d'obtenir une hiérarchie de texte sur fond sombre,
 puisque `opacity` est interdit. Métadonnées, crédits photo, attributions de citation,
@@ -378,9 +384,9 @@ mentions secondaires.
 
 | Registre | Lien / survol / focus |
 |---|---|
-| **Encre** | `--corail` (6,01:1) |
-| **Rideau** | `--corail-clair` (5,79:1) — le corail plein n'y passe qu'en AA large |
-| **Papier** | `--rideau` (11,92:1) |
+| **Encre** | `--corail` (5,68:1) |
+| **Rideau** | `--corail-clair` (5,91:1) |
+| **Papier** | `--rideau` (12,81:1) |
 
 Le focus est toujours un `outline` de 2 px, décalé de 3 px, dans la couleur du registre.
 
@@ -388,13 +394,16 @@ Le focus est toujours un `outline` de 2 px, décalé de 3 px, dans la couleur du
 
 | Fond | Texte | Ratio | Niveau |
 |---|---|---|---|
-| `--encre-nuit` | `--papier` | 16,34:1 | AAA |
-| `--encre-nuit` | `--corail` | 6,01:1 | AA |
-| `--rideau` | `--papier` | 11,92:1 | AAA |
-| `--rideau` | `--corail-clair` | 5,79:1 | AA |
-| `--papier` | `--texte` | 16,04:1 | AAA |
-| `--papier` | `--rideau` | 11,92:1 | AAA |
-| `--papier` | `--texte-tiers` | 7,54:1 | AAA |
+| `--encre-nuit` | `--papier` | 15,81:1 | AAA |
+| `--encre-nuit` | `--corail` | 5,68:1 | AA |
+| `--encre-nuit` | `--papier-tiers` | 8,88:1 | AAA |
+| `--rideau` | `--papier` | 12,81:1 | AAA |
+| `--rideau` | `--corail-clair` | 5,91:1 | AA |
+| `--rideau` | `--papier-tiers` | 7,2:1 | AAA |
+| `--papier` | `--texte` | 15,81:1 | AAA |
+| `--papier` | `--rideau` | 12,81:1 | AAA |
+| `--papier` | `--texte-tiers` | 7,08:1 | AAA |
+| `--papier-ombre` | `--texte-tiers` | 6,93:1 | AA (comme l'ancien système, déjà sous AAA à cet emplacement précis) |
 
 `--texte-tiers` est réservé aux surtitres, crédits et métadonnées. Interdit pour du texte
 courant long.
@@ -405,9 +414,10 @@ courant long.
   libellé ou d'une position.
 - **Ne jamais appliquer `opacity` à du texte** — l'opacité réduit le contraste réel, pas
   seulement l'apparence. Utiliser une couleur explicite.
-**Interdits** : dégradés décoratifs, `linear-gradient` en fond de section, couleurs d'accent
+**Interdits** : `linear-gradient` en fond de section ou de texte, couleurs d'accent
 multiples dans un même écran, transparences empilées (glassmorphism) ailleurs que sur les
-deux barres fixes (§17), crème + or.
+deux barres fixes (§17), crème + or. `--degrade-corail` est la seule exception au dégradé
+décoratif — boutons principaux uniquement (§36), jamais un fond de section.
 
 ## 11. Grilles
 
