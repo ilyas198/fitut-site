@@ -42,10 +42,13 @@ const HEADER_HTML = `
   <nav id="navbar" class="registre-encre">
     <div class="nav-inner">
       <a href="index.html" class="logo-link">
-        <!-- [logo SVG \u00e0 confirmer] : le fichier WordPress actuel (118\u00d751px,
-             pas de version claire, cf. CLAUDE.md \u00a77) est retir\u00e9. Repli
-             typographique en attendant le fichier r\u00e9el du comit\u00e9. -->
-        <span class="logo-texte">fitut</span>
+        <!-- Logo FITUT fourni par l'utilisateur (media/logos/fitut-logo.png,
+             recadr\u00e9 \u00e0 son contenu r\u00e9el depuis le fichier d'origine
+             3000\u00d73000 largement transparent). Remplace le repli
+             typographique \u00e9voqu\u00e9 en CLAUDE.md \u00a77 \u2014 ne concerne que le
+             logo FITUT : le logo ASAU (qui-sommes-nous.html, pied de page)
+             reste en attente, fichier distinct non fourni. -->
+        <img class="logo-image" src="media/logos/fitut-logo.png" alt="FITUT" width="2688" height="1040" loading="eager">
       </a>
       <button type="button" class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav-links" aria-expanded="false">
         <span></span><span></span><span></span>

@@ -263,21 +263,23 @@ body.est-defile #navbar {
 @media (min-width: 600px)  { .nav-inner { padding: 0 var(--esp-3); } }
 @media (min-width: 1024px) { .nav-inner { padding: 0 var(--esp-4); } }
 
-/* Logo — le fichier WordPress (118×51, pas de version claire) est
-   retiré : repli typographique en attendant le SVG réel du comité
-   (CLAUDE.md §7, commentaire dans partials.js). */
+/* Logo — media/logos/fitut-logo.png (PNG transparent, ratio ~2,585:1),
+   fourni par le comité et recadré à son contenu réel. Hauteur fixe,
+   largeur libre : la marque garde ses proportions à toute hauteur de
+   barre (--nav-h passe de 54 à 60px à 600px, voir plus bas). */
 .logo-link {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
   line-height: 0;
 }
-.logo-texte {
-  font-family: var(--police-affiche);
-  font-weight: 600;
-  font-size: var(--pas-m);
-  letter-spacing: -0.02em;
-  color: var(--corail);
+.logo-image {
+  display: block;
+  height: 26px;
+  width: auto;
+}
+@media (min-width: 600px) {
+  .logo-image { height: 28px; }
 }
 
 /* ---- Liens — mobile : plein écran, entrées à l'échelle de l'affiche.
