@@ -343,7 +343,7 @@ body.est-defile #navbar {
   min-height: 48px;
   margin-top: var(--esp-2);
   padding: var(--esp-2) var(--esp-3);
-  background: var(--corail);
+  background: var(--degrade-corail); /* UI Fiteat, commit « interactions » — bouton principal du site */
   color: var(--encre-nuit);
   border-radius: var(--rayon-s);
   box-shadow: var(--ombre-accent);
@@ -352,9 +352,11 @@ body.est-defile #navbar {
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: background var(--duree-ui) var(--courbe-sortie);
+  transition: background var(--duree-ui) var(--courbe-sortie),
+              transform var(--duree-ui) var(--courbe-sortie);
 }
-.nav-links .btn-apply:hover { background: var(--corail-clair); color: var(--encre-nuit); }
+.nav-links .btn-apply:hover { color: var(--encre-nuit); } /* dégradé inchangé au survol,
+  comme chez Fiteat — c'est translateY + scale qui portent la réaction, pas la couleur */
 .nav-links .btn-apply:focus-visible { outline: 2px solid var(--papier); outline-offset: 3px; }
 
 /* ---- Burger — mobile uniquement, disparaît dès la barre horizontale ---- */
@@ -1173,7 +1175,7 @@ button:focus-visible {
 .registre-papier :is(a, .bouton)[aria-disabled="true"] { color: var(--texte-tiers); }
 
 /* Communs aux trois registres */
-:is(a, .bouton):active { border-width: 2px; }
+a:active { border-width: 2px; } /* .bouton a son propre retour d'appui, §6 commit « interactions » */
 :is(a, .bouton)[aria-disabled="true"] { cursor: not-allowed; border-style: dashed; }
 
 /* ---- 1. .surtitre (§6) — les deux registres, jamais d'opacity sur du
@@ -1458,12 +1460,68 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   border-radius: var(--rayon-s);
   cursor: pointer;
   transition: border-color var(--duree-ui) var(--courbe-sortie),
-              color var(--duree-ui) var(--courbe-sortie);
+              color var(--duree-ui) var(--courbe-sortie),
+              transform var(--duree-ui) var(--courbe-sortie);
 }
 @media (hover: none) {
   .registre-encre .bouton:hover,
   .registre-rideau .bouton:hover,
-  .registre-papier .bouton:hover { color: inherit; border-color: inherit; }
+  .registre-papier .bouton:hover { color: inherit; border-color: inherit; transform: none; }
+}
+
+/* ---- Bouton principal — UI Fiteat (commit « interactions »). Fond
+   plein --degrade-corail, texte --encre-nuit fixe : ne suit pas
+   l'accent du registre (le corail plein serait illisible sur lui-même).
+   Réservé aux appels à l'action premiers d'une page (CTA du hero,
+   Postuler Ici) — .bouton seul reste en contour pour les actions
+   secondaires (Ouvrir dans Google Maps…). Préfixé par les trois
+   registres plutôt qu'un simple .bouton--principal : la spécificité du
+   bloc « États d'interaction » (.registre-X a, .registre-X a:hover,
+   1 classe + 1 type) l'aurait sinon emporté sur une simple classe —
+   vérifié, pas supposé : le texte restait --papier avant ce correctif. ---- */
+.registre-encre .bouton--principal,
+.registre-rideau .bouton--principal,
+.registre-papier .bouton--principal {
+  background: var(--degrade-corail);
+  color: var(--encre-nuit);
+  border-color: transparent;
+  box-shadow: var(--ombre-accent);
+}
+.registre-encre .bouton--principal:hover,
+.registre-rideau .bouton--principal:hover,
+.registre-papier .bouton--principal:hover,
+.registre-encre .bouton--principal:focus-visible,
+.registre-rideau .bouton--principal:focus-visible,
+.registre-papier .bouton--principal:focus-visible {
+  color: var(--encre-nuit);
+  border-color: transparent;
+}
+.registre-encre .bouton--principal:focus-visible,
+.registre-rideau .bouton--principal:focus-visible,
+.registre-papier .bouton--principal:focus-visible {
+  outline: 2px solid var(--encre-nuit);
+  outline-offset: 3px;
+}
+
+/* ---- Survol/appui — boutons et entrées cliquables compactes (UI
+   Fiteat, commit « interactions »). Remplace « jamais de mise à
+   l'échelle » (§34) pour ce système, explicitement, comité validé —
+   voir §34. Pas appliqué aux liens de texte pleine largeur (index de
+   liens, presse, distribution…) : Fiteat lui-même ne le fait pas sur
+   ses lignes de commande, seulement sur ses boutons et cartes. ---- */
+:is(.bouton, .nav-links .btn-apply, .affiche-entree-lien):hover {
+  transform: translateY(-2px) scale(1.04);
+}
+:is(.bouton, .nav-links .btn-apply, .affiche-entree-lien):active {
+  transform: scale(0.96);
+}
+@media (hover: none) {
+  :is(.bouton, .nav-links .btn-apply, .affiche-entree-lien):hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.bouton, .nav-links .btn-apply, .affiche-entree-lien) { transition: none; }
+  :is(.bouton, .nav-links .btn-apply, .affiche-entree-lien):hover,
+  :is(.bouton, .nav-links .btn-apply, .affiche-entree-lien):active { transform: none; }
 }
 
 /* ---- 8. .fiche-adresse (§15, §29) — registre papier ---- */
@@ -1544,8 +1602,10 @@ a.fiche-archive-lien { display: grid; } /* .fiche-archive fixe déjà display:gr
   width: var(--affiche-largeur);
   scroll-snap-align: start;
 }
-.affiche-entree-lien { display: block; } /* le <li> est l'item flex,
-  le <a> à l'intérieur remplit tout l'espace cliquable (§15) */
+.affiche-entree-lien {
+  display: block;
+  transition: transform var(--duree-ui) var(--courbe-sortie);
+} /* le <li> est l'item flex, le <a> à l'intérieur remplit tout l'espace cliquable (§15) */
 .affiche-entree-cadre {
   position: relative;
   width: 100%;

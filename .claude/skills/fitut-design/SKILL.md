@@ -998,10 +998,20 @@ distribution, entrées de programme…), un décalage de 60 ms sépare chaque é
 l'apparition traîne au lieu d'accompagner l'œil.
 
 **2. Survol des éléments cliquables.** Tout élément cliquable qui porte un filet
-(fiche, bouton, entrée de bande d'affiches…) change la couleur de ce filet vers l'accent
-du registre au survol ; son texte fait de même. `--duree-ui` (200 ms). Jamais de
-`transform: scale`, jamais d'ombre : la réaction est une couleur, pas un mouvement de
-forme. Un élément non cliquable ne réagit jamais au survol.
+(fiche, entrée de bande d'affiches…) change la couleur de ce filet vers l'accent
+du registre au survol ; son texte fait de même. `--duree-ui` (200 ms). Un élément non
+cliquable ne réagit jamais au survol.
+
+> **Exception UI Fiteat (commit « interactions »), comité validé.** Ce point excluait
+> jusqu'ici tout `transform: scale` et toute ombre au survol — la règle reste la
+> position par défaut, mais `.bouton`, `.nav-links .btn-apply` et `.affiche-entree-lien`
+> (les boutons et les cartes cliquables compactes) en sortent explicitement :
+> `translateY(-2px) scale(1.04)` au survol, `scale(0.96)` à l'appui, 200 ms
+> (`--duree-ui`), neutralisés sous `@media (hover: none)` et `prefers-reduced-motion`.
+> Ne pas étendre au-delà de ces trois sélecteurs sans le signaler : les liens de texte
+> pleine largeur (index de liens, presse, distribution…) gardent le seul changement de
+> couleur — Fiteat lui-même ne met pas ses lignes de commande à l'échelle, seulement ses
+> boutons et ses cartes.
 
 **3. Images.** Au survol d'une entrée cliquable, la photographie passe de
 `saturate(0.75)` (état de repos, §13) à `saturate(1)`, sur `--duree-contenu`. C'est le
@@ -1151,7 +1161,8 @@ dans la conversation en cours.**
 - ❌ Ne pas ajouter de parallaxe, de curseur personnalisé, de défilement détourné
 - ❌ Ne pas animer un compteur hors de l'encadrement du §23 (linéaire, rejoué au retour,
   sans `tabular-nums`, valeur finale absente du HTML)
-- ❌ Ne pas mettre à l'échelle au survol
+- ❌ Ne pas mettre à l'échelle au survol, sauf `.bouton`, `.nav-links .btn-apply` et
+  `.affiche-entree-lien` (§34, exception UI Fiteat) — jamais ailleurs sans le signaler
 - ❌ Ne pas ajouter d'animation qui ne serve pas le sujet
 ---
 

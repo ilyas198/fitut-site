@@ -37,7 +37,7 @@ function rendreEmpile(mount, annonces) {
               ? `<h1 class="hero-titre">${esc(a.titre)}</h1>`
               : `<h2 class="hero-titre">${esc(a.titre)}</h2>`}
             <p class="hero-description">${esc(a.description || '')}</p>
-            <a class="bouton" href="${esc(a.lien)}"${attributsLien(a)}>${esc(a.libelleLien || 'En savoir plus')}</a>
+            <a class="bouton bouton--principal" href="${esc(a.lien)}"${attributsLien(a)}>${esc(a.libelleLien || 'En savoir plus')}</a>
           </article>`).join('')}
       </div>
     </div>
@@ -57,7 +57,7 @@ function construireSquelette(mount, total) {
           <p class="surtitre" id="heroSurtitre"></p>
           <h1 class="hero-titre" id="heroTitre"></h1>
           <p class="hero-description" id="heroDescription"></p>
-          <a class="bouton" id="heroLien" href="#"></a>
+          <a class="bouton bouton--principal" id="heroLien" href="#"></a>
         </div>
         ${total > 1 ? '<div class="hero-nav" id="heroNav" aria-label="Annonces"></div>' : ''}
       </div>
